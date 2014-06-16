@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nomenclature_search_lin_label"
+        android:text="@string/lin_label"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lin_search_nomenclature"
+        android:layout_toRightOf="@+id/nomenclature_search_nsn_label"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nomenclature_search_nsn_label"
+        android:layout_below="@+id/lin_search_nomenclature"
+        android:paddingRight="3dp"
+        android:text="@string/nsn_label"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nsn_search_nomenclature"
+        android:layout_toRightOf="@+id/nomenclature_search_nsn_label"
+        android:layout_below="@+id/lin_search_nomenclature"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"/>
+
+</RelativeLayout><!-- From: file:/home/andy/android-studio-workspace/PropertyApp/src/main/res/layout/search_result_nomenclature.xml -->

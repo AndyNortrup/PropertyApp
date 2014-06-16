@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="1.7.0" >
+        <source path="/home/andy/android-studio-workspace/build/intermediates/exploded-aar/com.github.gabrielemariotti.cards/library/1.7.0/assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/home/andy/android-studio-workspace/PropertyApp/src/main/assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/home/andy/android-studio-workspace/PropertyApp/src/debug/assets" />
+    </dataSet>
+
+</merger>

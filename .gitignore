@@ -1,0 +1,6 @@
+# java files
+.class
+*build*
+!build.gradle
+.idea
+.gradle

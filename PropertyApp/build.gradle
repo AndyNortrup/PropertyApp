@@ -1,0 +1,38 @@
+apply plugin: 'android-sdk-manager'
+
+apply plugin: 'android'
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
+    signingConfigs {
+        debug {
+        }
+        releaseConfig {
+            storeFile file('release-keystore')
+            storePassword 'j@M1kFSbD`3zgg3+@+MZf]QaqcU\'V1]q'
+            keyAlias 'PropertyCommander'
+            keyPassword 'j@M1kFSbD`3zgg3+@+MZf]QaqcU\'V1]q'
+        }
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.releaseConfig
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile files('libs/jxl.jar')
+    compile 'com.github.gabrielemariotti.cards:library:1.7.1'
+    compile 'com.google.guava:guava:16.0.+'
+    compile 'com.android.support:support-v4:19.0.+'
+    compile 'com.android.support:support-v13:+'
+}

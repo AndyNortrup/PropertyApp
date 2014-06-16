@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:padding="18sp">
+
+<TextView style="@style/lin_card_value"
+    android:id="@+id/card_main_inner_simple_title"
+    android:text="Test"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    />
+</LinearLayout><!-- From: file:/home/andy/android-studio-workspace/PropertyApp/src/main/res/layout/card_statistics_layout.xml -->
