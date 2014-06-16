@@ -1,6 +1,5 @@
 package com.NortrupDevelopment.PropertyApp.view;
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,7 +16,7 @@ import com.NortrupDevelopment.PropertyApp.model.ViewContractItemData;
 /**
  * Created by andy on 3/8/14.
  */
-public class SearchResultsFragment extends ListFragment
+public class SearchResultsFragment extends android.support.v4.app.ListFragment
 
 {
     private int mFragmentType;
