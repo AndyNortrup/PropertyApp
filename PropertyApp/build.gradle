@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile files('libs/jxl.jar')
-    compile 'com.github.gabrielemariotti.cards:library:1.7.1'
+    compile 'com.github.gabrielemariotti.cards:library:1.7.2'
     compile 'com.google.guava:guava:16.0.+'
     compile 'com.android.support:support-v4:19.0.+'
     compile 'com.android.support:support-v13:+'
