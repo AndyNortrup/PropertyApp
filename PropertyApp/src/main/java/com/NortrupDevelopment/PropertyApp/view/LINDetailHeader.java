@@ -59,7 +59,7 @@ public class LINDetailHeader extends CardHeader {
 
     TextView mDueInTV = (TextView)view.findViewById(
         R.id.lin_card_due_in_value);
-    mDueInTV.setText(mLIN.getDi());
+    mDueInTV.setText(Integer.toString(mLIN.getDi()));
 
     TextView ercTV = (TextView)view.findViewById(
         R.id.lin_card_erc_value);

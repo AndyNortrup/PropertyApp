@@ -32,6 +32,7 @@ public class LINCardWithNSNs extends CardWithList
     super(context);
     mLIN = lin;
     mNSNs = new ArrayList<NSN>();
+    init();
   }
 
   @Override
