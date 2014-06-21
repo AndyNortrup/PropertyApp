@@ -4,6 +4,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:paddingLeft="15sp"
+            android:paddingTop="3sp"
+            android:paddingBottom="3sp"
             android:background="@android:color/white"
     >
 
@@ -15,62 +17,44 @@
         android:textColor="@color/property_app_dark_green"
         android:text="@string/label_nomenclature"
         />
-    <TextView android:id="@+id/nsn_list_item_nsn_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NSN: "
-        android:layout_below="@+id/nsn_list_item_nomenclature_value"
-        android:textStyle="bold"/>
+
     <TextView
         android:id="@+id/nsn_list_item_nsn_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nsn_list_item_nomenclature_value"
-        android:layout_toRightOf="@+id/nsn_list_item_nsn_label"
         android:text="1234-56-789-0123"/>
 
-
-    <TextView android:id="@+id/nsn_list_item_ui_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UI: "
-        android:layout_below="@+id/nsn_list_item_on_hand_label"
-        android:textStyle="bold"/>
-
-    <TextView android:id="@+id/nsn_list_item_ui_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nsn_list_item_on_hand_label"
-        android:layout_toRightOf="@+id/nsn_list_item_ui_label"
-        android:text="EA"/>
-
-    <TextView android:id="@+id/nsn_list_item_on_hand_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nsn_list_item_nsn_label"
-        android:textStyle="bold"
-        android:text="On Hand: "/>
     <TextView
         android:id="@+id/nsn_list_item_on_hand_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nsn_list_item_nsn_label"
-        android:layout_toRightOf="@+id/nsn_list_item_on_hand_label"
+        android:layout_below="@+id/nsn_list_item_nsn_value"
         android:text="45"/>
 
-    <TextView android:id="@+id/nsn_list_item_unit_price_label"
+    <TextView
+        android:id="@+id/nsn_list_item_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nsn_list_item_ui_label"
-        android:textStyle="bold"
-        android:text="Unit Price: "/>
+        android:layout_toRightOf="@id/nsn_list_item_on_hand_value"
+        android:layout_alignTop="@id/nsn_list_item_on_hand_value"
+        android:text=" at "/>
+
     <TextView
         android:id="@+id/nsn_list_item_unit_price_value"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nsn_list_item_ui_label"
-        android:layout_toRightOf="@+id/nsn_list_item_unit_price_label"
+        android:paddingRight="5sp"
+        android:layout_toRightOf="@id/nsn_list_item_at"
+        android:layout_alignTop="@id/nsn_list_item_on_hand_value"
         android:text="$1,000.00"
         />
+
+    <TextView android:id="@+id/nsn_list_item_ui_value"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/nsn_list_item_unit_price_value"
+              android:layout_alignTop="@id/nsn_list_item_on_hand_value"
+              android:text="EA"/>
 
 </RelativeLayout>
