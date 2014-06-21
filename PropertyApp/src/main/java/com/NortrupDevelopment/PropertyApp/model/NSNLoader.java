@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.view;
+package com.NortrupDevelopment.PropertyApp.model;
 
 import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
@@ -6,10 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
-
-import com.NortrupDevelopment.PropertyApp.model.NSN;
-import com.NortrupDevelopment.PropertyApp.model.PropertyBookContentProvider;
-import com.NortrupDevelopment.PropertyApp.model.TableContractNSN;
 
 import java.util.ArrayList;
 
@@ -45,6 +41,7 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
 
   public NSNLoader(Context context) {
     super(context);
+    mContext = context;
     mLINId = -1;
   }
 
@@ -59,7 +56,7 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
   private ArrayList<NSN> NSNFromId() {
     ArrayList<NSN> result = new ArrayList<NSN>();
 
-    String selectionString = TableContractNSN.linID + "?";
+    String selectionString = TableContractNSN.linID + " = ?";
     String selectionArgs[] = { Long.toString(mLINId) };
 
     ContentResolver resolver = mContext.getContentResolver();
@@ -82,15 +79,10 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
       return;
     }
 
-    ArrayList<NSN> oldData = mData;
     mData = data;
 
     if(isStarted()) {
       super.deliverResult(data);
-    }
-
-    if(oldData != null && oldData != data) {
-      //do nothing;
     }
   }
 
@@ -102,6 +94,10 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
 
     if(mObserver == null) {
       mObserver = new NSNChangeHandler(this);
+    }
+
+    if(takeContentChanged() || mData == null) {
+      forceLoad();
     }
   }
 

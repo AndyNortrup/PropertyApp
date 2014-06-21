@@ -9,6 +9,7 @@ import com.NortrupDevelopment.PropertyApp.R;
 import com.NortrupDevelopment.PropertyApp.model.LIN;
 import com.NortrupDevelopment.PropertyApp.model.LINLoader;
 import com.NortrupDevelopment.PropertyApp.model.NSN;
+import com.NortrupDevelopment.PropertyApp.model.NSNLoader;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,6 @@ public class LINDetailActivity extends Activity
   private static final int LIN_QUERY = 0;
   private static final int NSN_QUERY = 1;
 
-  private LIN mLIN;
   private long mLINid;
   private LINCardWithNSNs cardWithNSNs;
 
@@ -40,19 +40,23 @@ public class LINDetailActivity extends Activity
 
     //Start our search for the LIN
     getLoaderManager().initLoader(LIN_QUERY,
-        this.getIntent().getExtras(),
+        getIntent().getExtras(),
         new LINLoaderCallback());
   }
 
   private void setLINCard(LIN lin) {
-    mLIN = lin;
-
     cardWithNSNs = new LINCardWithNSNs(getBaseContext(), lin);
-    cardWithNSNs.updateProgressBar(false, false);
+    cardWithNSNs.updateProgressBar(true, true);
     cardWithNSNs.initCard();
 
     CardView cardView = (CardView)findViewById(R.id.lin_card);
     cardView.setCard(cardWithNSNs);
+
+
+    //Start the search for the NSNs
+    getLoaderManager().initLoader(NSN_QUERY,
+        getIntent().getExtras(),
+        new NSNLoaderCallback());
   }
 
   class LINLoaderCallback
@@ -70,15 +74,8 @@ public class LINDetailActivity extends Activity
 
       //we got a result, display the card
       if(data.size() > 0) {
-
         setLINCard(data.get(0));
-       //Start the search for the NSNs
-        getLoaderManager().initLoader(NSN_QUERY,
-            getIntent().getExtras(),
-            new NSNLoaderCallback());
       }
-
-
     }
 
     @Override
@@ -106,8 +103,6 @@ public class LINDetailActivity extends Activity
       if(data.size() > 0) {
         cardWithNSNs.setNSN(data);
         cardWithNSNs.updateProgressBar(true, true);
-      } else {
-
       }
     }
 

@@ -112,6 +112,7 @@ public class LINCardWithNSNs extends CardWithList
 
   public void setNSN(ArrayList<NSN> NSNs) {
     mNSNs = NSNs;
+    getLinearListAdapter().addAll(initChildren());
   }
 
 

@@ -3,13 +3,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingLeft="30sp">
+            android:paddingLeft="15sp"
+            android:background="@android:color/white"
+    >
 
     <TextView
         android:id="@+id/nsn_list_item_nomenclature_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textColor="@color/property_app_dark_green"
         android:text="@string/label_nomenclature"
         />
     <TextView android:id="@+id/nsn_list_item_nsn_label"
