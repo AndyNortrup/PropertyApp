@@ -7,8 +7,7 @@ android {
         targetSdkVersion 19
     }
     signingConfigs {
-        debug {
-        }
+
         releaseConfig {
             storeFile file('release-keystore')
             storePassword 'j@M1kFSbD`3zgg3+@+MZf]QaqcU\'V1]q'
@@ -31,6 +30,6 @@ dependencies {
     compile files('libs/jxl.jar')
     compile 'com.github.gabrielemariotti.cards:library:1.7.3'
     compile 'com.google.guava:guava:16.0.+'
-    compile 'com.android.support:support-v4:19.0.+'
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v13:20.0.0'
 }

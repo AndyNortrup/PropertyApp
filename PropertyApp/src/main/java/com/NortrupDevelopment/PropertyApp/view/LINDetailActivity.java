@@ -53,13 +53,12 @@ public class LINDetailActivity extends Activity
 
   private void setLINCard(LIN lin) {
     cardWithNSNs = new LINCardWithNSNs(getBaseContext(), lin);
-    cardWithNSNs.setUseProgressBar(true);
-    cardWithNSNs.updateProgressBar(false, false);
-    cardWithNSNs.initCard();
+    //cardWithNSNs.initCard();
 
     CardView cardView = (CardView)findViewById(R.id.lin_card);
     cardView.setCard(cardWithNSNs);
 
+    cardWithNSNs.updateProgressBar(false, false);
 
     //Start the search for the NSNs
     getLoaderManager().initLoader(NSN_QUERY,
@@ -166,7 +165,7 @@ public class LINDetailActivity extends Activity
       if(mItemQueryComplete.indexOfValue(false) < 0) {
 
         //Convert our SparseArrayList to an ArrayList and put it in the card.
-        ArrayList<NSN> arrayList = new ArrayList();
+        ArrayList<NSN> arrayList = new ArrayList<NSN>();
         for(int x = 0; x<mNSNs.size(); x++) {
           arrayList.add(mNSNs.valueAt(x));
         }
