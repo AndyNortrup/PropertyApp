@@ -98,6 +98,7 @@ public class SearchLoaderFactory {
         String sortOrder;
 
         switch (id) {
+
             case LOADER_LIN:
                 projection = LIN_PROJECTION;
                 selection = LIN_SELECTION;
