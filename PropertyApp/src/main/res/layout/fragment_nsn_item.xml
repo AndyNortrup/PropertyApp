@@ -15,7 +15,7 @@
     <it.gmariotti.cardslib.library.view.CardGridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/item_grid"
+        android:id="@+id/serial_number_list"
         android:numColumns="auto_fit"
         android:verticalSpacing="3dp"
         android:horizontalSpacing="2dp"

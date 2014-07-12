@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.model.Item;
 import com.NortrupDevelopment.PropertyApp.model.LIN;
 import com.NortrupDevelopment.PropertyApp.model.NSN;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.prototypes.CardWithList;
+import it.gmariotti.cardslib.library.prototypes.LinearListView;
 
 /**
  * Card used to display a LIN with NSN details.
@@ -61,8 +63,47 @@ public class LINCardWithNSNs extends CardWithList
       for (NSN nsn : mNSNs) {
         NSNListObject object = new NSNListObject(this, nsn);
         nsnObjects.add(object);
+
+        object.setOnItemClickListener(new OnItemClickListener() {
+          @Override
+          public void onItemClick(LinearListView linearListView,
+                                  View view,
+                                  int i,
+                                  ListObject listObject) {
+            //Get our listView
+            NonScrollingListView listView = (NonScrollingListView) view.findViewById(R.id.serial_number_list);
+
+
+            //If the listView is Visible then we want to hide it
+            if (listView.getVisibility() == View.VISIBLE) {
+              listView.setVisibility(View.GONE);
+            } else {
+
+              //Find out if we need to create a new adapter for the grid
+              if(listView.getAdapter() == null || listView.getCount() == 0) {
+
+                //Get our list of Items
+                ArrayList<Item> items =
+                    ((NSNListObject) listObject).getNSN().getItemList();
+
+                //Make sure that the list isn't empty.
+                if (items != null && items.size() > 0) {
+                  ItemArrayAdapter itemArrayAdapter =
+                      new ItemArrayAdapter(getContext(),
+                          R.layout.item_list_item,
+                          items);
+
+                  listView.setAdapter(itemArrayAdapter);
+                }
+              }
+              listView.setVisibility(View.VISIBLE);
+            }
+
+          }
+        });
       }
     }
+
     return nsnObjects;
   }
 
@@ -111,6 +152,7 @@ public class LINCardWithNSNs extends CardWithList
   }
 
   public void setNSN(ArrayList<NSN> NSNs) {
+
     mNSNs = NSNs;
     getLinearListAdapter().addAll(initChildren());
   }
@@ -121,16 +163,21 @@ public class LINCardWithNSNs extends CardWithList
    */
   public class NSNListObject extends CardWithList.DefaultListObject {
 
-    NSN mNSN;
+    private NSN mNSN;
 
     public NSNListObject(Card parent, NSN nsn) {
       super(parent);
       mNSN = nsn;
+
     }
 
     @Override
     public String getObjectId() {
       return String.valueOf(mNSN.getNsnId());
+    }
+
+    public NSN getNSN() {
+      return mNSN;
     }
 
   }

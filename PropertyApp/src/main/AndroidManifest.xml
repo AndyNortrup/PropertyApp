@@ -23,6 +23,11 @@
             android:name=".model.PropertyBookContentProvider"
             android:authorities="com.NortrupDevelopment.PropertyApp.provider"
             android:exported="false" />
+        <provider
+            android:name=".presenter.SearchSuggestionProvider"
+            android:authorities=
+                "com.NortrupDevelopment.PropertyApp.SuggestionProvider"
+            />
 
         <service
             android:name=".model.PBICImportService"
@@ -36,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".view.SearchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">

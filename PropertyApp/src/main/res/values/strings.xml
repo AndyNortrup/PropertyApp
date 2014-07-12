@@ -49,4 +49,5 @@
     <string name="dash">-</string>
     <string name="no_nsn_found">No NSNs found for this LIN</string>
     <string name="no_serial_numbers">No serial numbers found for this NSN.</string>
+    <string name="card_empty_cardwithlist_text">No NSNs for this LIN.</string>
 </resources>
