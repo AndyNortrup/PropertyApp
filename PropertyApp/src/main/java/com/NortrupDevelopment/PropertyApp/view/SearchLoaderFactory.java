@@ -2,7 +2,6 @@ package com.NortrupDevelopment.PropertyApp.view;
 
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Loader;
 
 import com.NortrupDevelopment.PropertyApp.model.PropertyBookContentProvider;
 import com.NortrupDevelopment.PropertyApp.model.ViewContractItemData;
@@ -76,13 +75,6 @@ public class SearchLoaderFactory {
     private static final String SN_SORT_ORDER =
             ViewContractItemData.ALIAS_SERIAL_NUMBER + " ASC";
 
-
-    private static final String[] NOMENCLATURE_PROJECTION = {
-            ViewContractItemData.ALIAS_LIN_ID,
-            ViewContractItemData.ALIAS_LIN_NOMENCLATURE,
-            ViewContractItemData.ALIAS_NSN_NOMENCLATURE
-    };
-
     private static final String NOMENCLATURE_SELECTION =
             ViewContractItemData.ALIAS_LIN_NOMENCLATURE + " LIKE ? OR " +
                     ViewContractItemData.ALIAS_NSN_NOMENCLATURE + " LIKE ?";
@@ -91,7 +83,7 @@ public class SearchLoaderFactory {
             ViewContractItemData.ALIAS_LIN_NOMENCLATURE + " ASC, " +
                     ViewContractItemData.ALIAS_NSN_NOMENCLATURE + " ASC";
 
-    public static Loader getLoader(int id, String query, Context context) {
+    public static CursorLoader getLoader(int id, String query, Context context) {
         String[] projection;
         String selection;
         String[] selectionArgs = { "%" + query + "%"};
