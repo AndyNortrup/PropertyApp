@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.view;
+package com.NortrupDevelopment.PropertyApp.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;

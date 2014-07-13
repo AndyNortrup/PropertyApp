@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp;
+package com.NortrupDevelopment.PropertyApp.services;
 
 import android.os.Bundle;
 import android.os.Handler;

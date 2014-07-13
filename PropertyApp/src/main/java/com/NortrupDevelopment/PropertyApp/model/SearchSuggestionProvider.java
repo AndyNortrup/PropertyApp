@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.presenter;
+package com.NortrupDevelopment.PropertyApp.model;
 
 import android.content.SearchRecentSuggestionsProvider;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.NortrupDevelopment.PropertyApp.SlidingTabView;
+package com.NortrupDevelopment.PropertyApp.view.SlidingTabView;
 
 import android.R;
 import android.content.Context;

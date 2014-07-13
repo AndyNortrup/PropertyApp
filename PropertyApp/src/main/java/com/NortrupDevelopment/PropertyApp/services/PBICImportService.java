@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.model;
+package com.NortrupDevelopment.PropertyApp.services;
 
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.NortrupDevelopment.PropertyApp.model.PropertyBook;
+import com.NortrupDevelopment.PropertyApp.model.PropertyBookContentProvider;
 import com.NortrupDevelopment.PropertyApp.view.PrimaryHandReceiptReader;
 import com.google.common.io.Closer;
 

@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.SlidingTabView;
+package com.NortrupDevelopment.PropertyApp.view.SlidingTabView;
 
 import com.NortrupDevelopment.PropertyApp.R;
 
