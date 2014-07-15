@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.NortrupDevelopment.PropertyApp.R;
@@ -28,7 +27,6 @@ public class LINBrowserActivity extends Activity
   private LINBrowserPresenter mPresenter;
   private CardListView mCardList;
   private LinearLayout mEmptyLayout, mLoadingLayout;
-  private Button mImportButton;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +37,6 @@ public class LINBrowserActivity extends Activity
     mCardList = (CardListView)findViewById(R.id.lin_list);
     mEmptyLayout = (LinearLayout)findViewById(android.R.id.empty);
     mLoadingLayout = (LinearLayout)findViewById(R.id.lin_loading_progress);
-    mImportButton = (Button)findViewById(R.id.btn_import_property_book);
 
     //Connect our presenter
     mPresenter = new LINBrowserPresenter(this);
@@ -65,14 +62,14 @@ public class LINBrowserActivity extends Activity
 	/***
 	 * Handles button clicks from the ActionBar
 	 * @param item Button that was clicked.
-	 * @return True if the button has been handled well
+	 * @return True if the button has been handled
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
 		    case R.id.import_property_book:
-			    startActivity(new Intent(this, ImportPropertyBookActivity.class));
+			    mPresenter.importRequested();
 			    break;
         case R.id.search_property_book:
             //Open search activity
@@ -80,12 +77,11 @@ public class LINBrowserActivity extends Activity
             break;
         case R.id.property_book_statistics:
           //Open statistics activity
-            startActivity(new Intent(this,
-                PropertyBookStatisticsActivity.class));
+            mPresenter.statisticsRequested();
             break;
     }
 	
-	return true;
+	  return true;
 	}
 
 
@@ -96,11 +92,14 @@ public class LINBrowserActivity extends Activity
   @Override
   public void onClick(View v) {
     if(v.getId() == R.id.btn_import_property_book) {
-      startActivity(new Intent(this, ImportPropertyBookActivity.class));
+      mPresenter.importRequested();
     }
   }
 
 
+  /**
+   * Shows the Loading progress bar and hides mCardLista and mEmptyLayout.
+   */
   @Override
   public void showLoadingProgressBar() {
     mCardList.setVisibility(View.GONE);
@@ -108,6 +107,9 @@ public class LINBrowserActivity extends Activity
     mLoadingLayout.setVisibility(View.VISIBLE);
   }
 
+  /**
+   * Shows the empty layout and hides mCardList and progress bar.
+   */
   @Override
   public void showEmptyView() {
     mCardList.setVisibility(View.GONE);
@@ -115,6 +117,9 @@ public class LINBrowserActivity extends Activity
     mEmptyLayout.setVisibility(View.VISIBLE);
   }
 
+  /**
+   * Shows the mCardList and hides the progress bar and empty list view.
+   */
   @Override
   public void showList() {
     mLoadingLayout.setVisibility(View.GONE);
@@ -138,6 +143,20 @@ public class LINBrowserActivity extends Activity
     intent.putExtra(LINDetailActivity.LIN_ID_KEY, linId);
 
     startActivity(intent);
+  }
+
+  /**
+   * Called when the user wants to start the import activity.
+   */
+  public void startImportActivity() {
+    startActivity(new Intent(this, ImportPropertyBookActivity.class));
+  }
+
+  /**
+   * Called when the user wants to start the property book statistics activity.
+   */
+  public void startStatisticsActivity() {
+    startActivity(new Intent(this, PropertyBookStatisticsActivity.class));
   }
 
   /**

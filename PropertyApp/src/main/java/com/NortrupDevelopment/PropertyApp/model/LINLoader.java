@@ -49,10 +49,6 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     mLinID = linID;
   }
 
-  public void setLin(String lin) {
-    mLin = lin;
-  }
-
   public void setGroupSubLINs(boolean groupSubLINs) {
     mGroupSubLINs = groupSubLINs;
   }

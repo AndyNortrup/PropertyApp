@@ -42,6 +42,21 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   public void listItemSelected(LIN selected) {
     mActivity.startLINDetailActivity(selected.getLinId());
   }
+
+  /**
+   * Called by the Activity when the user requests the import activity.
+   */
+  public void importRequested() {
+    mActivity.startImportActivity();
+  }
+
+
+  /**
+   * Called by the Activity when the user request the import activity.
+   */
+  public void statisticsRequested() {
+    mActivity.startStatisticsActivity();
+  }
   //endregion
 
   //region LoaderCallbacks

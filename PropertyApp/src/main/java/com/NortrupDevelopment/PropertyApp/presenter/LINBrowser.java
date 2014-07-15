@@ -51,4 +51,14 @@ public interface LINBrowser {
    *              LinDetailActivity.
    */
   public void startLINDetailActivity(long linId);
+
+  /**
+   * Directs the activity to start the Import Activity.
+   */
+  public void startImportActivity();
+
+  /**
+   * Directs the activity to start the Property Book Statistics Activity
+   */
+  public void startStatisticsActivity();
 }
