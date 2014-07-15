@@ -14,12 +14,14 @@ import com.NortrupDevelopment.PropertyApp.R;
 import com.NortrupDevelopment.PropertyApp.model.ViewContractItemData;
 
 /**
+ * Search results fragment recieves a fragment and a search type then displays
+ * search results for that type by changin the list item layout to match the type
+ * of search being conducted.
  * Created by andy on 3/8/14.
  */
 public class SearchResultsFragment extends android.support.v4.app.ListFragment
 
 {
-    private int mFragmentType;
     private Cursor mCursor;
     private SimpleCursorAdapter mCursorAdapter;
 
@@ -61,17 +63,13 @@ public class SearchResultsFragment extends android.support.v4.app.ListFragment
                 Intent startNSNBrowser = new Intent(getActivity(),
                         LINDetailActivity.class);
                 startNSNBrowser.putExtra(LINDetailActivity.LIN_ID_KEY,
-                        mCursor.getString(mCursor.getColumnIndex(
+                        mCursor.getLong(mCursor.getColumnIndex(
                                 ViewContractItemData.ALIAS_LIN_ID)));
 
                 getActivity().startActivity(startNSNBrowser);
             }
         });
 
-    }
-
-    public void setFragmentType(int mFragmentType) {
-        this.mFragmentType = mFragmentType;
     }
 
     public void setCursor(Cursor mCursor) {
@@ -81,7 +79,6 @@ public class SearchResultsFragment extends android.support.v4.app.ListFragment
 
     public void init(int fragmentType, Cursor data, Context context) {
 
-        setFragmentType(fragmentType);
         setCursor(data);
         mCursorAdapter = SearchCursorAdapterFactory.getCursorAdapter(
                 data,

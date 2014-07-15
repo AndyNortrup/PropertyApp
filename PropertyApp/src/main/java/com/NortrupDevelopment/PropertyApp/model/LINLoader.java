@@ -33,17 +33,28 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   private static final String SORT_ORDER = TableContractLIN.columnLIN + " ASC";
 
-  private long mLinID;
+  private boolean mGroupSubLINs = false;
+  private long mLinID = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
   private LINContentObserver mObserver;
 
-
-  public LINLoader(long linID, Context context) {
+  public LINLoader(Context context) {
     super(context);
 
-    mLinID = linID;
     mContext = context;
+  }
+
+  public void setLinID(long linID) {
+    mLinID = linID;
+  }
+
+  public void setLin(String lin) {
+    mLin = lin;
+  }
+
+  public void setGroupSubLINs(boolean groupSubLINs) {
+    mGroupSubLINs = groupSubLINs;
   }
 
   //<editor-fold desc="Async Task Methods">
@@ -53,7 +64,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   @Override
   public ArrayList<LIN> loadInBackground() {
-    return LINFromId(mLinID, mContext);
+        return queryLINs();
   }
 
   @Override
@@ -63,7 +74,6 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
       return;
     }
 
-    ArrayList<LIN> oldData = mLoaderData;
     mLoaderData = data;
 
     if(isStarted()) {
@@ -122,20 +132,32 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   /**
    * Retrieve one or all LINs in the database.
-   * @param linID ID of the LIN requested sending null returns all LINs in the
-   *              database.
    * @return LIN object with all information from the database. Null if no LIN
    * is found for the ID.
    */
-  private ArrayList<LIN> LINFromId(long linID, Context context) {
+  private ArrayList<LIN> queryLINs() {
 
-    String selectionString = TableContractLIN._ID + " = ?";
-    String selectionArgs[] = { Long.toString(linID) };
+    StringBuilder selectionString = new StringBuilder();
+    String[] selectionArgs = null;
 
-    ContentResolver resolver = context.getContentResolver();
+    if(mLinID != -1) {
+      selectionString.append(TableContractLIN._ID + " = ?");
+      selectionArgs = new String[]{ String.valueOf(mLinID) };
+    }
+
+    //We will "group" the sublins into their parent lin by only searching for
+    //entries that do not have a SubLIN value.
+    if(mGroupSubLINs) {
+      if(mLinID != -1) {
+        selectionString.append(" AND ");
+      }
+      selectionString.append(TableContractLIN.columnSubLIN + " = ''");
+    }
+
+    ContentResolver resolver = mContext.getContentResolver();
     Cursor data = resolver.query(PropertyBookContentProvider.CONTENT_URI_LIN,
         PROJECTION,
-        selectionString,
+        selectionString.toString(),
         selectionArgs,
         SORT_ORDER);
 
@@ -152,6 +174,12 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
   }
 
 
+  /**
+   * Converts one row of a cursor into a LIN object. The cursor is not advanced
+   * or modified by calls to this method.
+   * @param data Cursor with data to be converted.
+   * @return a LIN object filled with data from the current cursor row.
+   */
   private LIN createLINFromCursor(Cursor data) {
     return  new LIN(
         data.getLong(data.getColumnIndex(TableContractLIN._ID)),

@@ -24,13 +24,13 @@
             android:authorities="com.NortrupDevelopment.PropertyApp.provider"
             android:exported="false" />
         <provider
-            android:name=".presenter.SearchSuggestionProvider"
+            android:name=".model.SearchSuggestionProvider"
             android:authorities=
                 "com.NortrupDevelopment.PropertyApp.SuggestionProvider"
             />
 
         <service
-            android:name=".model.PBICImportService"
+            android:name=".services.PBICImportService"
             android:exported="false" />
 
         <activity android:name=".view.LINDetailActivity"/>

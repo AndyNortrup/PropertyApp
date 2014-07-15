@@ -1,15 +1,11 @@
 package com.NortrupDevelopment.PropertyApp.view;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -19,10 +15,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.NortrupDevelopment.PropertyApp.ImportServiceReceiver;
-import com.NortrupDevelopment.PropertyApp.ImportServiceReceiver.PBICReceiver;
 import com.NortrupDevelopment.PropertyApp.R;
-import com.NortrupDevelopment.PropertyApp.model.PBICImportService;
+import com.NortrupDevelopment.PropertyApp.services.ImportServiceReceiver;
+import com.NortrupDevelopment.PropertyApp.services.ImportServiceReceiver.PBICReceiver;
+import com.NortrupDevelopment.PropertyApp.services.PBICImportService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,30 +77,6 @@ public class ImportPropertyBookActivity extends Activity
 		
 	}
 
-	/**
-	 * Backward-compatible version of {@link ActionBar#getThemedContext()} that
-	 * simply returns the {@link android.app.Activity} if
-	 * <code>getThemedContext</code> is unavailable.
-	 */
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-	private Context getActionBarThemedContextCompat() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return getActionBar().getThemedContext();
-		} else {
-			return this;
-		}
-	}
-
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-
-	}
-	
 	public void onActivityResult(
 			int requestCode, 
 			int resultCode, 
@@ -142,7 +114,7 @@ public class ImportPropertyBookActivity extends Activity
                             int which,
                             boolean isChecked) {
                         if(isChecked) {
-                            importSheetIndexes.add(Integer.valueOf(which));
+                            importSheetIndexes.add(which);
                         }
                         else if(
                             importSheetIndexes.contains(
@@ -178,7 +150,7 @@ public class ImportPropertyBookActivity extends Activity
 
         int[] importSheetsArray = new int[importSheetIndexes.size()];
         for(int x = 0; x<importSheetIndexes.size(); x++) {
-            importSheetsArray[x] = (int)importSheetIndexes.get(x);
+            importSheetsArray[x] = importSheetIndexes.get(x);
         }
 
 

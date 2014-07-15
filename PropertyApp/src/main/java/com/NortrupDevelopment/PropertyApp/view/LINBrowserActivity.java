@@ -1,89 +1,55 @@
 package com.NortrupDevelopment.PropertyApp.view;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.NortrupDevelopment.PropertyApp.R;
-import com.NortrupDevelopment.PropertyApp.model.PropertyBookContentProvider;
-import com.NortrupDevelopment.PropertyApp.model.TableContractLIN;
+import com.NortrupDevelopment.PropertyApp.model.LIN;
+import com.NortrupDevelopment.PropertyApp.presenter.LINBrowser;
+import com.NortrupDevelopment.PropertyApp.presenter.LINBrowserPresenter;
 
+import java.util.ArrayList;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardListView;
 
-public class LINBrowserActivity extends ListActivity
-    implements LoaderManager.LoaderCallbacks<Cursor>,
-    View.OnClickListener
-{
-	
-  private static final int LOADER_ID_LINS = 0;
+public class LINBrowserActivity extends Activity
+    implements View.OnClickListener, LINBrowser, Card.OnCardClickListener {
 
-  private LinCardCursorAdapter mLinCardCursorAdapter;
-  //private LinCursorAdapter mCursorAdapter;
-
-
-  private static final String[] LIN_PROJECTION =
-  {
-      TableContractLIN._ID,
-      TableContractLIN.columnLIN,
-      TableContractLIN.columnNomenclature,
-      TableContractLIN.columnSubLIN,
-      TableContractLIN.columnRequired,
-      TableContractLIN.columnAuthorized,
-      TableContractLIN.columnAuthDoc,
-      TableContractLIN.columnSRI,
-      TableContractLIN.columnERC
-  };
-
-  private static final String[] LIN_DATABASE_FIELDS =
-      {
-          TableContractLIN.columnLIN,
-          TableContractLIN.columnNomenclature
-      };
-
-  private static final int[] LIN_DISPLAY_FIELDS =
-      {
-        R.id.lin,
-        R.id.lin_nomenclature
-      };
+  private LINBrowserPresenter mPresenter;
+  private CardListView mCardList;
+  private LinearLayout mEmptyLayout, mLoadingLayout;
+  private Button mImportButton;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_lin_browser);
+    setContentView(R.layout.activity_lin_browser);
+    getActionBar();
 
-		getActionBar();
+    //Grab our view elements
+    mCardList = (CardListView)findViewById(R.id.lin_list);
+    mEmptyLayout = (LinearLayout)findViewById(android.R.id.empty);
+    mLoadingLayout = (LinearLayout)findViewById(R.id.lin_loading_progress);
+    mImportButton = (Button)findViewById(R.id.btn_import_property_book);
 
-		fillLinList();
-
-    getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent,
-                              View view,
-                              int position,
-                              long id)
-      {
-        Intent intent = new Intent(parent.getContext(),
-            LINDetailActivity.class);
-        intent.putExtra(LINDetailActivity.LIN_ID_KEY, id);
-        startActivity(intent);
-      }
-    });
-
+    //Connect our presenter
+    mPresenter = new LINBrowserPresenter(this);
 	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getLoaderManager().restartLoader(LOADER_ID_LINS, null, this);
-    }
+  @Override
+  public void onResume() {
+      super.onResume();
+      mPresenter.activityResumed();
+  }
 	
 	/***
 	 * Load up the Action Bar
@@ -92,9 +58,6 @@ public class LINBrowserActivity extends ListActivity
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_lin_list, menu);
 
-        //MenuItem searchViewItem = menu.findItem(R.id.search_property_book);
-       // SearchView searchView = (SearchView)searchViewItem.getActionView();
-       // searchView.setIconifiedByDefault(false);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -128,7 +91,7 @@ public class LINBrowserActivity extends ListActivity
 
   /**
    * Respond to button clicks in the interface
-   * @param v
+   * @param v View sending the onClick event.
    */
   @Override
   public void onClick(View v) {
@@ -136,57 +99,81 @@ public class LINBrowserActivity extends ListActivity
       startActivity(new Intent(this, ImportPropertyBookActivity.class));
     }
   }
-	
-
-    /**
-     * Fill the display with all items that meet the filter requirements
-     */
-	private void fillLinList() {
 
 
-    mLinCardCursorAdapter = new LinCardCursorAdapter(this);
-    CardListView mCardListView = (CardListView)getListView();
-    if(mCardListView != null) {
-        mCardListView.setAdapter(mLinCardCursorAdapter);
-    }
+  @Override
+  public void showLoadingProgressBar() {
+    mCardList.setVisibility(View.GONE);
+    mEmptyLayout.setVisibility(View.GONE);
+    mLoadingLayout.setVisibility(View.VISIBLE);
+  }
 
-    getListView().setAdapter(mLinCardCursorAdapter);
-    getLoaderManager().initLoader(LOADER_ID_LINS, null, this);
+  @Override
+  public void showEmptyView() {
+    mCardList.setVisibility(View.GONE);
+    mLoadingLayout.setVisibility(View.GONE);
+    mEmptyLayout.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void showList() {
+    mLoadingLayout.setVisibility(View.GONE);
+    mEmptyLayout.setVisibility(View.GONE);
+    mCardList.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public LoaderManager getActivityLoaderManager() {
+    return getLoaderManager();
+  }
+
+  /**
+   * Starts the LINDetailActivity
+   * @param linId Database _id number of the LIN to be displayed by the
+   *              LINDetailActivity
+   */
+  public void startLINDetailActivity(long linId) {
+    Intent intent = new Intent(this, LINDetailActivity.class);
+
+    intent.putExtra(LINDetailActivity.LIN_ID_KEY, linId);
+
+    startActivity(intent);
+  }
+
+  /**
+   * Takes a list of LINs, converts them into UI cards then creates and array
+   * adapter for display in the CardList.
+   * @param lins List of LINs to be displayed.
+   */
+  public void setCardList(ArrayList<LIN> lins) {
 
 
-	}
+    if(lins == null) {
+      mCardList.setAdapter((CardArrayAdapter)null);
+    } else {
+      ArrayList<Card> cards = new ArrayList<Card>();
+      for(LIN lin : lins) {
+        LinCard card = new LinCard(this);
+        card.setLIN(lin);
+        cards.add(card);
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
-        return new CursorLoader(
-                this,
-                PropertyBookContentProvider.CONTENT_URI_LIN,
-                LIN_PROJECTION,
-                null,
-                null,
-                TableContractLIN.columnLIN);
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-
-
-      //mLinCardCursorAdapter.swapCursor(cursor);
-      mLinCardCursorAdapter.swapCursor(cursor);
-
-      if(cursor.getCount() > 0) {
-        getListView().setFastScrollEnabled(true);
-          //cardListView.setFastScrollEnabled(true);
+        //Have this class listen for clicks on this card
+        card.setOnClickListener(this);
       }
+
+      mCardList.setAdapter(new CardArrayAdapter(this, cards));
     }
+  }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        getListView().setFastScrollEnabled(false);
-
-        mLinCardCursorAdapter.swapCursor(null);
-    }
-
+  /**
+   * Implements onCardClickListener interface.  Captures card clicks from
+   * mCardList.
+   * @param card  Card Model associated with the view which generated the call.
+   * @param view View that generated the call.
+   */
+  @Override
+  public void onClick(Card card, View view) {
+    LIN selected = ((LinCard)card).getLIN();
+    mPresenter.listItemSelected(selected);
+  }
 }

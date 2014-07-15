@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.adapters.ItemArrayAdapter;
 import com.NortrupDevelopment.PropertyApp.model.Item;
 import com.NortrupDevelopment.PropertyApp.model.LIN;
 import com.NortrupDevelopment.PropertyApp.model.NSN;

@@ -42,8 +42,7 @@ public class LINDetailActivity extends Activity
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lin_detail);
-
-    mLINid = Long.parseLong(getIntent().getExtras().getString(LIN_ID_KEY));
+    mLINid = getIntent().getExtras().getLong(LIN_ID_KEY);
 
     //Start our search for the LIN
     getLoaderManager().initLoader(LIN_QUERY,
@@ -71,7 +70,9 @@ public class LINDetailActivity extends Activity
   {
     @Override
     public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
-      return new LINLoader(mLINid, getBaseContext());
+      LINLoader loader = new LINLoader(getBaseContext());
+      loader.setLinID(mLINid);
+      return loader;
     }
 
     @Override

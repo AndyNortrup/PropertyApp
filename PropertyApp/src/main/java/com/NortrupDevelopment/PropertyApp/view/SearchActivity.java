@@ -17,7 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.NortrupDevelopment.PropertyApp.R;
-import com.NortrupDevelopment.PropertyApp.presenter.SearchSuggestionProvider;
+import com.NortrupDevelopment.PropertyApp.model.SearchSuggestionProvider;
 
 import java.util.ArrayList;
 

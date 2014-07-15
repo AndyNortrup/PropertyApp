@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.model.LIN;
 
 import it.gmariotti.cardslib.library.internal.Card;
 
@@ -16,11 +17,7 @@ import it.gmariotti.cardslib.library.internal.Card;
  */
 public class LinCard extends Card {
 
-  private String mLin;
-  private long mLinId;
-  private String mSubLin;
-  private String mNomenclature;
-
+  private LIN mLIN;
 
   public LinCard(Context context) {
       super(context, R.layout.card_lin_browser);
@@ -29,20 +26,20 @@ public class LinCard extends Card {
   @Override
   public void setupInnerViewElements(ViewGroup parent, View view) {
 
-    if(!TextUtils.isEmpty(mLin)) {
+    if(!TextUtils.isEmpty(mLIN.getLin())) {
       TextView linTextView = (TextView)view.findViewById(R.id.lin);
-      linTextView.setText(mLin);
+      linTextView.setText(mLIN.getLin());
     }
 
-    if(!TextUtils.isEmpty(mNomenclature)) {
+    if(!TextUtils.isEmpty(mLIN.getNomencalture())) {
         TextView textView = (TextView)view.findViewById(
                 R.id.lin_nomenclature);
-        textView.setText(mNomenclature);
+        textView.setText(mLIN.getNomencalture());
     }
 
     TextView subLinView = (TextView)view.findViewById(R.id.sub_lin);
-    if(!TextUtils.isEmpty(mSubLin)) {
-      subLinView.setText("Sub LIN: " + mSubLin);
+    if(!TextUtils.isEmpty(mLIN.getSubLin())) {
+      subLinView.setText("Sub LIN: " + mLIN.getSubLin());
       subLinView.setVisibility(View.VISIBLE);
     } else {
       subLinView.setVisibility(View.GONE);
@@ -50,38 +47,12 @@ public class LinCard extends Card {
 
   }
 
-  public long getLinId() {
-    return mLinId;
+  public void setLIN(LIN lin) {
+    mLIN = lin;
   }
 
-  public void setLinId(long linId) {
-    this.mLinId = linId;
+  public LIN getLIN() {
+    return mLIN;
   }
-
-  public String getSubLin() {
-    return mSubLin;
-  }
-
-  public void setSubLin(String subLin) {
-    this.mSubLin = subLin;
-  }
-
-
-  public String getNomenclature() {
-      return mNomenclature;
-  }
-
-    public void setNomenclature(String nomenclature) {
-        this.mNomenclature = nomenclature;
-    }
-
-  public void setLin(String lin) {
-    mLin = lin;
-  }
-
-  public String getLin() {
-    return mLin;
-  }
-
 
 }
