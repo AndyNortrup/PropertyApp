@@ -63,7 +63,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   @Override
   public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
     LINLoader loader = new LINLoader((Context)mActivity);
-    loader.setGroupSubLINs(true);
+    loader.includeSubLINs(false);
     return loader;
   }
 

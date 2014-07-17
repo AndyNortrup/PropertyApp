@@ -33,7 +33,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   private static final String SORT_ORDER = TableContractLIN.columnLIN + " ASC";
 
-  private boolean mGroupSubLINs = false;
+  private boolean mIncludeSubLINs = false;
   private long mLinID = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
@@ -49,8 +49,8 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     mLinID = linID;
   }
 
-  public void setGroupSubLINs(boolean groupSubLINs) {
-    mGroupSubLINs = groupSubLINs;
+  public void includeSubLINs(boolean includeSubLINs) {
+    mIncludeSubLINs = includeSubLINs;
   }
 
   //<editor-fold desc="Async Task Methods">
@@ -128,32 +128,65 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   /**
    * Retrieve one or all LINs in the database.
+   *
+   * <p>
+   *   LINs are selected by looking at a combination of two values,
+   *   mIncludeSubLINs and if mLinID has been set.  This produces four options
+   *   <ol>
+   *     <li>Select all LINs that share a base LIN.  This gets all of a LIN and
+   *      it's SubLINs.</li>
+   *     <li>Select just one LIN, excluding any SubLINs that may exist</li>
+   *     <li>Select all LINs but exculde SUB LINs</li>
+   *     <li>Select everything in the table. (includeSubLINs = true &
+   *      no _ID specified)</li>
+   *   </ol>
+   * </p>
    * @return LIN object with all information from the database. Null if no LIN
    * is found for the ID.
    */
   private ArrayList<LIN> queryLINs() {
 
-    StringBuilder selectionString = new StringBuilder();
+    StringBuilder selectionBuilder = new StringBuilder();
+    String selectionString = null;
     String[] selectionArgs = null;
 
-    if(mLinID != -1) {
-      selectionString.append(TableContractLIN._ID + " = ?");
-      selectionArgs = new String[]{ String.valueOf(mLinID) };
-    }
+    if(mIncludeSubLINs && mLinID != -1) {
+      //Use a subquery to select all of the LINs that share a Line Number
+      //with the LIN with the given _ID (mLinID).
+      selectionBuilder.append(TableContractLIN.columnLIN)
+          .append(" IN (SELECT ")
+          .append(TableContractLIN.columnLIN)
+          .append(" FROM ")
+          .append(TableContractLIN.tableName)
+          .append(" WHERE ")
+          .append(TableContractLIN._ID)
+          .append(" = ?)");
+      selectionString = selectionBuilder.toString();
 
-    //We will "group" the sublins into their parent lin by only searching for
-    //entries that do not have a SubLIN value.
-    if(mGroupSubLINs) {
-      if(mLinID != -1) {
-        selectionString.append(" AND ");
-      }
-      selectionString.append(TableContractLIN.columnSubLIN + " = ''");
+      selectionArgs = new String[]{String.valueOf(mLinID)};
+
+    } else if(!mIncludeSubLINs && mLinID != -1) {
+      //Query for just the specified LIN, don't grab any SubLINs that share the
+      //same Line Number (A12345)
+      selectionBuilder.append(TableContractLIN._ID + " = ?");
+      selectionString = selectionBuilder.toString();
+
+      selectionArgs = new String[]{String.valueOf(mLinID)};
+
+    } else if(!mIncludeSubLINs && mLinID == -1) {
+      //Select all primary LINs in the property book.  Any LIN with a value in
+      //SubLIN field is excluded.
+      selectionBuilder.append(TableContractLIN.columnSubLIN + " = ''");
+      selectionString = selectionBuilder.toString();
     }
+    //The fourth case in this set is to select everything from the database
+    //this requires no else because the query has no where clause and
+    //selectionString remains equal to null
 
     ContentResolver resolver = mContext.getContentResolver();
     Cursor data = resolver.query(PropertyBookContentProvider.CONTENT_URI_LIN,
         PROJECTION,
-        selectionString.toString(),
+        selectionString,
         selectionArgs,
         SORT_ORDER);
 

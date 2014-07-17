@@ -2,6 +2,7 @@ package com.NortrupDevelopment.PropertyApp.view;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,12 +30,10 @@ public class LINCardWithNSNs extends CardWithList
 {
 
   private LIN mLIN;
-  private ArrayList<NSN> mNSNs;
 
   public LINCardWithNSNs(Context context, LIN lin) {
     super(context);
     mLIN = lin;
-    mNSNs = new ArrayList<NSN>();
     init();
   }
 
@@ -60,8 +59,12 @@ public class LINCardWithNSNs extends CardWithList
     ArrayList<ListObject> nsnObjects =
         new ArrayList<ListObject>();
 
-    if(mNSNs != null) {
-      for (NSN nsn : mNSNs) {
+    SparseArray<NSN> nsns = mLIN.getNSNs();
+
+    if(nsns.size() > 0) {
+      for (int x=0; x<nsns.size(); x++) {
+        NSN nsn = nsns.valueAt(x);
+
         NSNListObject object = new NSNListObject(this, nsn);
         nsnObjects.add(object);
 
@@ -114,7 +117,7 @@ public class LINCardWithNSNs extends CardWithList
                              View view,
                              ViewGroup viewGroup)
   {
-    NSN nsn = mNSNs.get(i);
+    NSN nsn = ((NSNListObject)listObject).getNSN();
 
     //Set the NSN
     if(!TextUtils.isEmpty(nsn.getFormatedNSN())) {
@@ -152,10 +155,12 @@ public class LINCardWithNSNs extends CardWithList
     return R.layout.nsn_card;
   }
 
-  public void setNSN(ArrayList<NSN> NSNs) {
-
-    mNSNs = NSNs;
+  public void setNSN() {
     getLinearListAdapter().addAll(initChildren());
+  }
+
+  public LIN getLIN() {
+    return mLIN;
   }
 
 

@@ -118,6 +118,10 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
     mLINId = linId;
   }
 
+  public long getLIN() {
+    return mLINId;
+  }
+
   class NSNChangeHandler extends Handler
   {
 
