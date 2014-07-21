@@ -34,6 +34,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
   private static final String SORT_ORDER = TableContractLIN.columnLIN + " ASC";
 
   private boolean mIncludeSubLINs = false;
+  private boolean mDistinctLIN = false;
   private long mLinID = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
@@ -51,6 +52,10 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   public void includeSubLINs(boolean includeSubLINs) {
     mIncludeSubLINs = includeSubLINs;
+  }
+
+  public void setDistinctLIN(boolean distinctLIN) {
+    mDistinctLIN = distinctLIN;
   }
 
   //<editor-fold desc="Async Task Methods">
@@ -183,8 +188,15 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     //this requires no else because the query has no where clause and
     //selectionString remains equal to null
 
+
+    //Change provider URI if we are executing a distinct query for LINs
+    Uri queryURI = PropertyBookContentProvider.CONTENT_URI_LIN;
+    if(mDistinctLIN) {
+      queryURI = PropertyBookContentProvider.CONTENT_URI_LIN_DISTINCT;
+    }
+
     ContentResolver resolver = mContext.getContentResolver();
-    Cursor data = resolver.query(PropertyBookContentProvider.CONTENT_URI_LIN,
+    Cursor data = resolver.query(queryURI,
         PROJECTION,
         selectionString,
         selectionArgs,

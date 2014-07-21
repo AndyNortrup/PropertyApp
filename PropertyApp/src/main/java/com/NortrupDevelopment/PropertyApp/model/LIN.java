@@ -4,13 +4,14 @@ import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 
-public class LIN {
+public class LIN implements Parcelable {
 
   private long linId;
   private String lin;
@@ -154,6 +155,35 @@ public class LIN {
         null,
         new Hashtable<String, NSN>());
 
+  }
+
+  public LIN(Parcel out) {
+    linId = out.readLong();
+    lin = out.readString();
+    subLin = out.readString();
+    sri = out.readString();
+    erc = out.readString();
+    nomenclature = out.readString();
+    authDoc = out.readString();
+    required = out.readInt();
+    authorized = out.readInt();
+    di = out.readInt();
+
+    //Recreate the mNSN frome pacel
+    mNSNs = new SparseArray<NSN>();
+    ArrayList<NSN> stockNumberList = new ArrayList<NSN>();
+    out.readTypedList(stockNumberList, new NSN.NSNCreator());
+    for(NSN nsn : stockNumberList) {
+      mNSNs.put((int)nsn.getNsnId(), nsn);
+      nsn.setParentLin(this);
+    }
+
+    mNewNSNs = new Hashtable<String, NSN>();
+    out.readTypedList(stockNumberList, new NSN.NSNCreator());
+    for(NSN nsn : stockNumberList) {
+      mNewNSNs.put(nsn.getNsn(), nsn);
+      nsn.setParentLin(this);
+    }
   }
 
   /**
@@ -420,9 +450,8 @@ public class LIN {
             PropertyBookContentProvider.CONTENT_URI_LIN, linId)
     ).build());
 
-    Iterator<NSN> i = mNewNSNs.values().iterator();
-    while (i.hasNext()) {
-      result.addAll(i.next().getDeleteAction());
+    for(NSN nsn : mNewNSNs.values()) {
+      result.addAll(nsn.getDeleteAction());
     }
 
     return result;
@@ -433,4 +462,44 @@ public class LIN {
     return getLin() + " " + getNomencalture();
   }
 
+  /**
+   * Describe the kinds of special objects contained in this Parcelable's
+   * marshalled representation.
+   *
+   * @return a bitmask indicating the set of special object types marshalled
+   * by the Parcelable.
+   */
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  /**
+   * Flatten this object in to a Parcel.
+   *
+   * @param dest  The Parcel in which the object should be written.
+   * @param flags Additional flags about how the object should be written.
+   *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+   */
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeLong(linId);
+    dest.writeString(lin);
+    dest.writeString(subLin);
+    dest.writeString(sri);
+    dest.writeString(erc);
+    dest.writeString(nomenclature);
+    dest.writeString(authDoc);
+    dest.writeInt(required);
+    dest.writeInt(authorized);
+    dest.writeInt(di);
+
+    NSN[] nsns = new NSN[mNSNs.size()];
+    for(int x=0; x<mNSNs.size(); x++) {
+      nsns[x] = mNSNs.valueAt(x);
+    }
+    dest.writeTypedArray(nsns, 0);
+
+    dest.writeTypedArray(mNewNSNs.values().toArray(nsns), 0);
+  }
 }

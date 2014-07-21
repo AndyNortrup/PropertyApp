@@ -33,9 +33,11 @@ public class PropertyBookContentProvider extends ContentProvider {
   private static final int URI_CODE_NUM_LINS = 5;
   private static final int URI_CODE_NUM_ITEMS = 6;
   private static final int URI_CODE_TOTAL_VALUE = 7;
+  private static final int URI_CODE_LIN_DISTINCT = 8;
 
   private static final String PATH_ITEM = "item";
   private static final String PATH_LIN = "lin";
+  private static final String PATH_LIN_DISTINCT="lin_distinct";
   private static final String PATH_NSN = "nsn";
   private static final String PATH_PROPERTY_BOOK = "property_book";
   private static final String PATH_ITEM_DATA = "item_data";
@@ -47,6 +49,8 @@ public class PropertyBookContentProvider extends ContentProvider {
       "content://" + AUTHORITY + "/" + PATH_ITEM);
   public static final Uri CONTENT_URI_LIN = Uri.parse(
       "content://" + AUTHORITY + "/" + PATH_LIN);
+  public static final Uri CONTENT_URI_LIN_DISTINCT = Uri.parse(
+      "content://" + AUTHORITY + "/" + PATH_LIN_DISTINCT);
   public static final Uri CONTENT_URI_NSN = Uri.parse(
       "content://" + AUTHORITY + "/" + PATH_NSN);
   public static final Uri CONTENT_URI_PROPERTY_BOOK = Uri.parse(
@@ -114,6 +118,7 @@ public class PropertyBookContentProvider extends ContentProvider {
     uriMatcher.addURI(AUTHORITY, PATH_NUM_LINS, URI_CODE_NUM_LINS);
     uriMatcher.addURI(AUTHORITY, PATH_NUM_ITEMS, URI_CODE_NUM_ITEMS);
     uriMatcher.addURI(AUTHORITY, PATH_TOTAL_VALUE, URI_CODE_TOTAL_VALUE);
+    uriMatcher.addURI(AUTHORITY, PATH_LIN_DISTINCT, URI_CODE_LIN_DISTINCT);
   }
 
   @Override
@@ -226,10 +231,25 @@ public class PropertyBookContentProvider extends ContentProvider {
       throws NullPointerException {
     Cursor result = null;
 
+    SQLiteQueryBuilder queryBuilder;
+
     switch (uriMatcher.match(uri)) {
       case URI_CODE_LIN:
         result = mDatabaseHelper.getReadableDatabase().query(
             TableContractLIN.tableName,
+            projection,
+            selection,
+            selectionArgs,
+            "",
+            "",
+            sortOrder);
+        break;
+      case URI_CODE_LIN_DISTINCT:
+        queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder.setDistinct(true);
+        queryBuilder.setTables(TableContractLIN.tableName);
+        result = queryBuilder.query(
+            mDatabaseHelper.getReadableDatabase(),
             projection,
             selection,
             selectionArgs,
@@ -269,7 +289,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
       case URI_CODE_ITEM_DATA:
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setDistinct(true);
         queryBuilder.setTables(ViewContractItemData.VIEW_NAME);
 
@@ -350,7 +370,7 @@ public class PropertyBookContentProvider extends ContentProvider {
   public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations)
       throws OperationApplicationException {
     batchMode = true;
-    ContentProviderResult[] result = new ContentProviderResult[operations.size()];
+    ContentProviderResult[] result;
 
     SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
     database.beginTransaction();
@@ -385,7 +405,8 @@ public class PropertyBookContentProvider extends ContentProvider {
   /**
    * Returns the total number of LINs recorded in the property book
    *
-   * @return
+   * @return A cursor with a count of the total number of LINs in the property
+   * book.
    * @throws NullPointerException
    */
   public Cursor getTotalLINs() throws NullPointerException {

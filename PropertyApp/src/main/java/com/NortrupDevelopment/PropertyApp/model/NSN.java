@@ -4,17 +4,18 @@ import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
 import android.content.ContentUris;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class NSN {
+public class NSN  implements Parcelable {
 
-  private long nsnId; //unique identifier for the NSN, assigned by the database
+  private int nsnId; //unique identifier for the NSN, assigned by the database
   private String nsn; //NSN
   private String ui; //Unit of Issue
   private BigDecimal unitPrice; //Unit Price
@@ -33,12 +34,12 @@ public class NSN {
 
   private static String DASH = "-";
 
-  private Multimap<Long, Item> mItemList;
+  private Multimap<Integer, Item> mItemList;
 
   //Default ID value
   public static final int DEFAULT_ID = -1;
 
-  NSN(long nsnId,
+  NSN(int nsnId,
       String nsn,
       String ui,
       BigDecimal unitPrice,
@@ -68,7 +69,7 @@ public class NSN {
     mItemList = ArrayListMultimap.create();
   }
 
-  NSN(long nsnId,
+  NSN(int nsnId,
       String nsn,
       String ui,
       BigDecimal unitPrice,
@@ -129,10 +130,37 @@ public class NSN {
         parentLin);
   }
 
+  /**
+   * Construct a NSN object from a parcel
+   * @param out Parcel with information to create the NSN.
+   */
+  public NSN(Parcel out) {
+    nsnId = out.readInt();
+    nsn = out.readString();
+    ui = out.readString();
+    unitPrice = new BigDecimal(out.readDouble());
+    nomencalture = out.readString();
+    llc = out.readString();
+    ecs = out.readString();
+    srrc = out.readString();
+    uiiManaged = out.readString();
+    ciic = out.readString();
+    dla = out.readString();
+    pubData = out.readString();
+    onHand = out.readInt();
+
+    ArrayList<Item> items = new ArrayList<Item>();
+    out.readTypedList(items, new Item.ItemCreator());
+    for(Item item : items) {
+      item.setNsn(this);
+      addItem(item);
+    }
+  }
+
 
   public static NSN NSNFromCursor(Cursor cursor) {
     return new NSN(
-        cursor.getLong(cursor.getColumnIndex(TableContractNSN._ID)),
+        cursor.getInt(cursor.getColumnIndex(TableContractNSN._ID)),
         cursor.getString(cursor.getColumnIndex(TableContractNSN.columnNSN)),
         cursor.getString(cursor.getColumnIndex(TableContractNSN.columnUI)),
         new BigDecimal(cursor.getDouble(
@@ -152,6 +180,7 @@ public class NSN {
   }
 
 
+  //region Getter and Setter Methods.
   /**
    * @return the nsnId
    */
@@ -162,7 +191,7 @@ public class NSN {
   /**
    * @param nsnId the nsnId to set
    */
-  public void setNsnId(long nsnId) {
+  public void setNsnId(int nsnId) {
     this.nsnId = nsnId;
   }
 
@@ -364,6 +393,7 @@ public class NSN {
   public LIN getParentLin() {
     return parentLin;
   }
+  //endregion
 
   public ArrayList<ContentProviderOperation> getWriteAction(boolean includeSubElements,
                                                             ArrayList<ContentProviderOperation> result,
@@ -436,6 +466,10 @@ public class NSN {
     mItemList.put(newItem.getItemId(), newItem);
   }
 
+  public boolean containsItem(Item compare) {
+    return mItemList.containsKey(compare.getItemId());
+  }
+
   public void removeItem(Item remove) {
     mItemList.remove(remove.getItemId(), remove);
   }
@@ -445,4 +479,71 @@ public class NSN {
   }
 
 
+  /**
+   * Describe the kinds of special objects contained in this Parcelable's
+   * marshalled representation.
+   *
+   * @return a bitmask indicating the set of special object types marshalled
+   * by the Parcelable.
+   */
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  /**
+   * Flatten this object in to a Parcel.
+   *
+   * @param dest  The Parcel in which the object should be written.
+   * @param flags Additional flags about how the object should be written.
+   *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+   */
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(nsnId);
+    dest.writeString(nsn);
+    dest.writeString(ui);
+    dest.writeDouble(unitPrice.doubleValue());
+    dest.writeString(nomencalture);
+    dest.writeString(llc);
+    dest.writeString(ecs);
+    dest.writeString(srrc);
+    dest.writeString(uiiManaged);
+    dest.writeString(ciic);
+    dest.writeString(dla);
+    dest.writeString(pubData);
+    dest.writeInt(onHand);
+
+    Item[] items = new Item[mItemList.values().size()];
+    dest.writeTypedArray(items, 0);
+
+  }
+
+  public static class NSNCreator implements Parcelable.Creator<NSN> {
+
+    /**
+     * Create a new instance of the Parcelable class, instantiating it
+     * from the given Parcel whose data had previously been written by
+     * {@link android.os.Parcelable#writeToParcel Parcelable.writeToParcel()}.
+     *
+     * @param source The Parcel to read the object's data from.
+     * @return Returns a new instance of the Parcelable class.
+     */
+    @Override
+    public NSN createFromParcel(Parcel source) {
+      return new NSN(source);
+    }
+
+    /**
+     * Create a new array of the Parcelable class.
+     *
+     * @param size Size of the array.
+     * @return Returns an array of the Parcelable class, with every entry
+     * initialized to null.
+     */
+    @Override
+    public NSN[] newArray(int size) {
+      return new NSN[size];
+    }
+  }
 }

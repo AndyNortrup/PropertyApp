@@ -6,15 +6,17 @@ import android.content.ContentProviderOperation.Builder;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * This is the basic data structure to track a serial numbered property book
  * item.
  * Created by andy on 5/16/13.
  */
-public class Item {
+public class Item implements Parcelable{
 
-  private long itemId;
+  private int itemId;
   private String serialNumber;
   private String sysNo;
   private NSN nsn;
@@ -42,26 +44,25 @@ public class Item {
     this(serialNumber, sysNo, DEFAULT_ID, nsn);
   }
 
-  public Item(String serialNumber,
-              String sysNo,
-              String detectSN,
-              String lot) {
-    this(serialNumber, sysNo, DEFAULT_ID, null);
+  public Item(Parcel in) {
+    serialNumber = in.readString();
+    sysNo = in.readString();
+    itemId = in.readInt();
   }
 
   public static Item itemFromCursor(Cursor data) {
     return new Item(
         data.getString(data.getColumnIndex(TableContractItem.columnSerialNumber)),
         data.getString(data.getColumnIndex(TableContractItem.columnSysNo)),
-        data.getString(data.getColumnIndex(TableContractItem._ID)),
+        data.getInt(data.getColumnIndex(TableContractItem._ID)),
         null);
   }
 
-  public long getItemId() {
+  public int getItemId() {
     return itemId;
   }
 
-  public void setItemId(long itemId) {
+  public void setItemId(int itemId) {
     this.itemId = itemId;
   }
 
@@ -138,5 +139,59 @@ public class Item {
     deleteAction.withSelection(queryString, queryValues);
 
     return deleteAction.build();
+  }
+
+  /**
+   * Describe the kinds of special objects contained in this Parcelable's
+   * marshalled representation.
+   *
+   * @return a bitmask indicating the set of special object types marshalled
+   * by the Parcelable.
+   */
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  /**
+   * Flatten this object in to a Parcel.
+   *
+   * @param dest  The Parcel in which the object should be written.
+   * @param flags Additional flags about how the object should be written.
+   *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+   */
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(serialNumber);
+    dest.writeString(sysNo);
+    dest.writeInt(itemId);
+  }
+
+  public static class ItemCreator implements Parcelable.Creator<Item> {
+
+    /**
+     * Create a new instance of the Parcelable class, instantiating it
+     * from the given Parcel whose data had previously been written by
+     * {@link android.os.Parcelable#writeToParcel Parcelable.writeToParcel()}.
+     *
+     * @param source The Parcel to read the object's data from.
+     * @return Returns a new instance of the Parcelable class.
+     */
+    @Override
+    public Item createFromParcel(Parcel source) {
+      return new Item(source);
+    }
+
+    /**
+     * Create a new array of the Parcelable class.
+     *
+     * @param size Size of the array.
+     * @return Returns an array of the Parcelable class, with every entry
+     * initialized to null.
+     */
+    @Override
+    public Item[] newArray(int size) {
+      return new Item[0];
+    }
   }
 }

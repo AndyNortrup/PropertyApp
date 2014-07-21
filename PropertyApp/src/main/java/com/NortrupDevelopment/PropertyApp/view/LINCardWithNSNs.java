@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.NortrupDevelopment.PropertyApp.R;
 import com.NortrupDevelopment.PropertyApp.adapters.ItemArrayAdapter;
@@ -82,25 +83,30 @@ public class LINCardWithNSNs extends CardWithList
             if (listView.getVisibility() == View.VISIBLE) {
               listView.setVisibility(View.GONE);
             } else {
+              //Get our list of Items
+              ArrayList<Item> items =
+                  ((NSNListObject) listObject).getNSN().getItemList();
 
-              //Find out if we need to create a new adapter for the grid
-              if(listView.getAdapter() == null || listView.getCount() == 0) {
+              if(items.size() > 0) {
+                //Find out if we need to create a new adapter for the grid
+                if (listView.getAdapter() == null || listView.getCount() == 0) {
 
-                //Get our list of Items
-                ArrayList<Item> items =
-                    ((NSNListObject) listObject).getNSN().getItemList();
+                  //Make sure that the list isn't empty.
+                  if (items != null && items.size() > 0) {
+                    ItemArrayAdapter itemArrayAdapter =
+                        new ItemArrayAdapter(getContext(),
+                            R.layout.item_list_item,
+                            items);
 
-                //Make sure that the list isn't empty.
-                if (items != null && items.size() > 0) {
-                  ItemArrayAdapter itemArrayAdapter =
-                      new ItemArrayAdapter(getContext(),
-                          R.layout.item_list_item,
-                          items);
-
-                  listView.setAdapter(itemArrayAdapter);
+                    listView.setAdapter(itemArrayAdapter);
+                  }
                 }
+                listView.setVisibility(View.VISIBLE);
+              } else {
+                Toast.makeText(getContext(),
+                    R.string.no_serial_numbers,
+                    Toast.LENGTH_SHORT);
               }
-              listView.setVisibility(View.VISIBLE);
             }
 
           }
@@ -156,7 +162,9 @@ public class LINCardWithNSNs extends CardWithList
   }
 
   public void setNSN() {
+    getLinearListAdapter().clear();
     getLinearListAdapter().addAll(initChildren());
+    getLinearListAdapter().notifyDataSetChanged();
   }
 
   public LIN getLIN() {

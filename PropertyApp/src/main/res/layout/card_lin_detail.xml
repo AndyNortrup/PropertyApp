@@ -56,6 +56,7 @@
                 android:paddingRight="14dp"
                 android:textColor="@android:color/darker_gray"/>
         </LinearLayout>
+
     </LinearLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -127,6 +128,18 @@
                   android:id="@+id/lin_card_auth_doc_value"
                   android:layout_below="@+id/lin_card_due_in_label"
                   android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"/>
-
+        <TextView
+            style="@style/lin_card_label"
+            android:id="@+id/lin_card_pbic_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lin_card_erc_label"
+            android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"
+            android:text="PBIC: "
+            />
+        <TextView style="@style/lin_card_value"
+                  android:layout_below="@+id/lin_card_erc_label"
+                  android:layout_toRightOf="@+id/lin_card_pbic_label"
+            android:text="PBIC 8"/>
     </RelativeLayout>
 </LinearLayout>

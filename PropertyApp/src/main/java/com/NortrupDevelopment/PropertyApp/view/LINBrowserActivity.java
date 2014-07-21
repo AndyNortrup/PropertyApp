@@ -28,6 +28,8 @@ public class LINBrowserActivity extends Activity
   private CardListView mCardList;
   private LinearLayout mEmptyLayout, mLoadingLayout;
 
+  private CardArrayAdapter cardArrayAdapter;
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_lin_browser);
@@ -166,9 +168,8 @@ public class LINBrowserActivity extends Activity
    */
   public void setCardList(ArrayList<LIN> lins) {
 
-
     if(lins == null) {
-      mCardList.setAdapter((CardArrayAdapter)null);
+      cardArrayAdapter = null;
     } else {
       ArrayList<Card> cards = new ArrayList<Card>();
       for(LIN lin : lins) {
@@ -179,9 +180,9 @@ public class LINBrowserActivity extends Activity
         //Have this class listen for clicks on this card
         card.setOnClickListener(this);
       }
-
-      mCardList.setAdapter(new CardArrayAdapter(this, cards));
+      cardArrayAdapter = new CardArrayAdapter(this, cards);
     }
+    mCardList.setAdapter(cardArrayAdapter);
   }
 
   /**
