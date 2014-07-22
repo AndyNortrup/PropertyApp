@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
@@ -45,16 +46,18 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 		db.beginTransaction();
 		
 		try{
-            if(oldVersion == 10) {
-                db.execSQL(ViewContractItemData.CREATE_VIEW);
-            }
+
+      if(oldVersion == 10) {
+          db.execSQL(ViewContractItemData.CREATE_VIEW);
+      }
+
 			if(oldVersion < 8)	 {
 				
 				//drop tables
 				db.execSQL("DROP TABLE " + TableContractItem.tableName);
 				db.execSQL("DROP TABLE " + TableContractNSN.tableName);
-				db.execSQL("DROP TABLE " + TableContractLIN.tableName);
-				db.execSQL("DROP TABLE " + TableContractPropertyBook.tableName);
+				db.execSQL("DROP TABLE " + TableContractLIN.TABLE_NAME);
+				db.execSQL("DROP TABLE " + TableContractPropertyBook.TABLE_NAME);
 				
 				//create our table to hold LIN listings
 				db.execSQL(TableContractLIN.createLinTable);
@@ -67,14 +70,12 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 				
 				//create a table to hold property book listings
 				db.execSQL(TableContractPropertyBook.createPropertyBookTable);
-				
-				oldVersion += 1;
 			}
 			
 			db.setTransactionSuccessful();
 		} catch(SQLException e) {
-			throw e;
-		} finally {
+      Log.e("DATABASE OPEN HELPER", e.getMessage(), e);
+    } finally {
 			db.endTransaction();
 		}
 	}

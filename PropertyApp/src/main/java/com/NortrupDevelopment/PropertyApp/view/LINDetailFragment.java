@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyApp.view.SlidingTabView;
+package com.NortrupDevelopment.PropertyApp.view;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -16,8 +16,6 @@ import com.NortrupDevelopment.PropertyApp.model.LIN;
 import com.NortrupDevelopment.PropertyApp.model.NSN;
 import com.NortrupDevelopment.PropertyApp.presenter.LINDetail;
 import com.NortrupDevelopment.PropertyApp.presenter.LINDetailPresenter;
-import com.NortrupDevelopment.PropertyApp.view.LINCardWithNSNs;
-import com.NortrupDevelopment.PropertyApp.view.LINDetailActivity;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
@@ -85,7 +83,7 @@ public class LINDetailFragment extends Fragment
       mLINCards = new SparseArray<LINCardWithNSNs>();
     }
     LINCardWithNSNs cardWithNSNs = createCard(lin);
-    mLINCards.put((int)lin.getLinId(), cardWithNSNs);
+    mLINCards.put(lin.getLinId(), cardWithNSNs);
 
     //Create the CardView and add it to the Layout
     CardView cardView = createCardView(cardWithNSNs);
@@ -102,7 +100,7 @@ public class LINDetailFragment extends Fragment
    */
   @Override
   public void addNSNtoLIN(NSN nsn, LIN lin) {
-    LINCardWithNSNs linCard = mLINCards.get((int)lin.getLinId());
+    LINCardWithNSNs linCard = mLINCards.get(lin.getLinId());
     linCard.getLIN().addNSN(nsn);
     linCard.setNSN();
   }

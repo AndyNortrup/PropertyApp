@@ -2,22 +2,17 @@ package com.NortrupDevelopment.PropertyApp.model;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 
 public class PropertyBook {
-	private long propertyBookId;
+	private int propertyBookId;
 	private String description;
 	private String uic;
 	private String pbic;
@@ -26,7 +21,7 @@ public class PropertyBook {
     //Default ID value
     public static final int DEFAULT_ID = -1;
 		
-	public PropertyBook(long propertyBookId, 
+	public PropertyBook(int propertyBookId,
 			String description,
 			String uic,
 			String pbic) {
@@ -43,77 +38,12 @@ public class PropertyBook {
 			String pbic) {
 		this(DEFAULT_ID, description, uic, pbic);
 	}
-	
-	/**
-	 * PropertyBook factory from a URI 
-	 * @param c Context to query from
-	 * @param uri URI to query
-	 * @param id ID of the PropertyBook to search for
-	 * @return
-	 */
-	public static PropertyBook propertyBookFromURI(Context c, Uri uri, Long id) {
-		ContentResolver resolver = c.getContentResolver();
-		String[] projection = {TableContractPropertyBook.columnDescription,
-				TableContractPropertyBook.columnUIC,
-				TableContractPropertyBook.columnPBIC};
-		
-		String queryString = TableContractPropertyBook._ID + " = ?";
-		String[] queryValues = {String.valueOf(id)};
-		
-		Cursor cursor = resolver.query(
-				uri, projection, queryString, queryValues, "");
-		
-		PropertyBook result = null;
-		
-		while(cursor.moveToNext()) {
-			result = new PropertyBook(
-					id, 
-					cursor.getString(0), 
-					cursor.getString(1),
-					cursor.getString(2));
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Generates an array list of all property books for the given URI 
-	 * @param c Context to query from
-	 * @param uri URI to query
-	 * @return
-	 */
-	public static ArrayList<PropertyBook> getAllPropertyBooks(Context c, Uri uri) {
-		ArrayList<PropertyBook> result = new ArrayList<PropertyBook>();
-		
-		ContentResolver resolver = c.getContentResolver();
-		String[] projection = {TableContractPropertyBook.columnDescription,
-				TableContractPropertyBook.columnUIC, 
-				TableContractPropertyBook._ID,
-				TableContractPropertyBook.columnPBIC};
-		String queryString = "";
-		String[] queryValues = {};
-		
-		Cursor cursor = resolver.query(
-				uri, projection, queryString, queryValues, "");
-		
-		PropertyBook pb = null;
-		while(cursor.moveToNext()) {
-			pb = new PropertyBook(
-					cursor.getLong(2), 
-					cursor.getString(0), 
-					cursor.getString(1),
-					cursor.getString(3));
-			result.add(pb);
-		}
-		
-		return result;
-	}
-	
-	public long getPropertyBookId() {
+
+	public int getPropertyBookId() {
 		return propertyBookId;
 	}
 	
-	public void setPropertyBookId(long propertyBookId) {
+	public void setPropertyBookId(int propertyBookId) {
 		this.propertyBookId = propertyBookId;
 	}
 	
@@ -153,10 +83,6 @@ public class PropertyBook {
 		return (ArrayList<LIN>)linList.get(lin);
 	}
 	
-	public Collection<LIN> getAllLINs() {
-		return linList.values();
-	}
-	
 	public ArrayList<ContentProviderOperation> getWriteAction(boolean recurse,
                  ArrayList<ContentProviderOperation> result) {
 
@@ -172,17 +98,15 @@ public class PropertyBook {
 		}
 		
 		ContentValues values = new ContentValues();
-		values.put(TableContractPropertyBook.columnDescription, description);
-		values.put(TableContractPropertyBook.columnUIC, uic);
-        values.put(TableContractPropertyBook.columnPBIC, pbic);
+		values.put(TableContractPropertyBook.DESCRIPTION, description);
+		values.put(TableContractPropertyBook.UIC, uic);
+        values.put(TableContractPropertyBook.PBIC, pbic);
 		updateAction.withValues(values);
 		
 		result.add(updateAction.build());
 		if(recurse) {
             int propertyBookBackReference = result.size() - 1;
-			Iterator<LIN> i = linList.values().iterator();
-			while(i.hasNext()) {
-				LIN lin = i.next();
+      for(LIN lin : linList.values()) {
 				result = lin.getWriteAction(recurse, result, propertyBookBackReference);
 			}
 		}

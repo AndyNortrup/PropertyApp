@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.NortrupDevelopment.PropertyApp.R;
-import com.NortrupDevelopment.PropertyApp.view.SlidingTabView.LINDetailFragment;
 
 /**
  * This activity presents the user with a listing of all NSN's and Serial

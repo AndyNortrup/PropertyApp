@@ -13,7 +13,7 @@ import java.util.Hashtable;
 
 public class LIN implements Parcelable {
 
-  private long linId;
+  private int linId;
   private String lin;
   private String subLin;
   private String sri;
@@ -23,6 +23,7 @@ public class LIN implements Parcelable {
   private int required;
   private int authorized;
   private int di;
+  private int mPropertyBookID;
 
   private PropertyBook propertyBook;
   private Hashtable<String, NSN> mNewNSNs;
@@ -48,7 +49,7 @@ public class LIN implements Parcelable {
    * @param authorized   Input quantity authorized
    */
   public LIN(
-      long linId,
+      int linId,
       String lin,
       String subLin,
       String sri,
@@ -59,7 +60,8 @@ public class LIN implements Parcelable {
       int authorized,
       int di,
       PropertyBook propertyBook,
-      Hashtable<String, NSN> nsnList) {
+      Hashtable<String, NSN> nsnList,
+      int propertyBookID) {
 
     this.linId = linId;
     this.lin = lin;
@@ -75,6 +77,7 @@ public class LIN implements Parcelable {
     this.mNewNSNs = nsnList;
 
     mNSNs = new SparseArray<NSN>();
+    mPropertyBookID = propertyBookID;
 
   }
 
@@ -92,7 +95,7 @@ public class LIN implements Parcelable {
    * @param authorized   Input quantity authorized
    */
   public LIN(
-      Long _id,
+      int _id,
       String lin,
       String subLin,
       String sri,
@@ -114,7 +117,51 @@ public class LIN implements Parcelable {
         authorized,
         di,
         null,
-        new Hashtable<String, NSN>());
+        new Hashtable<String, NSN>(),
+        -1);
+
+  }
+
+  /**
+   * Creates a LIN object representing information for an individual LIN
+   * without having a property book object to nest it in, but does provide a
+   * property book ID for later look up.
+   *
+   * @param lin          Input LIN
+   * @param subLin       Input SubLIN
+   * @param sri          Input SRI Code
+   * @param erc          Input ERC Code
+   * @param nomenclature Input Nomenclature
+   * @param authDoc      Input authorizing document
+   * @param required     Input quantity required
+   * @param authorized   Input quantity authorized
+   */
+  public LIN(
+      int _id,
+      String lin,
+      String subLin,
+      String sri,
+      String erc,
+      String nomenclature,
+      String authDoc,
+      int required,
+      int authorized,
+      int di,
+      int propertyBookID) {
+
+    this(_id,
+        lin,
+        subLin,
+        sri,
+        erc,
+        nomenclature,
+        authDoc,
+        required,
+        authorized,
+        di,
+        null,
+        new Hashtable<String, NSN>(),
+        propertyBookID);
 
   }
 
@@ -153,12 +200,13 @@ public class LIN implements Parcelable {
         authorized,
         di,
         null,
-        new Hashtable<String, NSN>());
+        new Hashtable<String, NSN>(),
+        -1);
 
   }
 
   public LIN(Parcel out) {
-    linId = out.readLong();
+    linId = out.readInt();
     lin = out.readString();
     subLin = out.readString();
     sri = out.readString();
@@ -189,7 +237,7 @@ public class LIN implements Parcelable {
   /**
    * @return the linID
    */
-  public long getLinId() {
+  public int getLinId() {
     return linId;
   }
 
@@ -197,7 +245,7 @@ public class LIN implements Parcelable {
   /**
    * @param linID the linID to set
    */
-  public void setLinID(long linID) {
+  public void setLinID(int linID) {
     this.linId = linID;
   }
 
@@ -343,6 +391,14 @@ public class LIN implements Parcelable {
     this.di = di;
   }
 
+  public void setPropertyBookID(int propertyBookID) {
+    mPropertyBookID = propertyBookID;
+  }
+
+  public int getPropertyBookID() {
+    return mPropertyBookID;
+  }
+
   public PropertyBook getPropertyBook() {
     return propertyBook;
   }
@@ -372,7 +428,7 @@ public class LIN implements Parcelable {
   }
 
   public void deleteNSN(NSN nsn) {
-    mNewNSNs.remove(nsn.getNsnId());
+    mNewNSNs.remove(nsn.getNsn());
   }
 
   public ArrayList<ContentProviderOperation> getWriteAction(
@@ -382,19 +438,19 @@ public class LIN implements Parcelable {
 
     ContentValues values = new ContentValues();
 
-    values.put(TableContractLIN.columnLIN, lin);
-    values.put(TableContractLIN.columnSubLIN, subLin);
-    values.put(TableContractLIN.columnAuthDoc, authDoc);
-    values.put(TableContractLIN.columnAuthorized, authorized);
-    values.put(TableContractLIN.columnERC, erc);
-    values.put(TableContractLIN.columnNomenclature, nomenclature);
-    values.put(TableContractLIN.columnRequired, required);
-    values.put(TableContractLIN.columnDI, di);
-    values.put(TableContractLIN.columnSRI, sri);
+    values.put(TableContractLIN.LIN, lin);
+    values.put(TableContractLIN.SUB_LIN, subLin);
+    values.put(TableContractLIN.AUTH_DOC, authDoc);
+    values.put(TableContractLIN.AUTHORIZED, authorized);
+    values.put(TableContractLIN.ERC, erc);
+    values.put(TableContractLIN.NOMENCLATURE, nomenclature);
+    values.put(TableContractLIN.REQUIRED, required);
+    values.put(TableContractLIN.DI, di);
+    values.put(TableContractLIN.SRI, sri);
 
 
     if (propertyBook != null) {
-      values.put(TableContractLIN.columnPropertyBookId,
+      values.put(TableContractLIN.PROPERTY_BOOK_ID,
           propertyBook.getPropertyBookId());
     }
 
@@ -412,7 +468,7 @@ public class LIN implements Parcelable {
           PropertyBookContentProvider.CONTENT_URI_LIN);
     }
 
-    builder.withValueBackReference(TableContractLIN.columnPropertyBookId,
+    builder.withValueBackReference(TableContractLIN.PROPERTY_BOOK_ID,
         propertyBookBackReference);
 
     builder.withValues(values);
@@ -483,7 +539,7 @@ public class LIN implements Parcelable {
    */
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeLong(linId);
+    dest.writeInt(linId);
     dest.writeString(lin);
     dest.writeString(subLin);
     dest.writeString(sri);

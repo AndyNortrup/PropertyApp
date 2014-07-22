@@ -50,6 +50,10 @@ public class LINCardWithNSNs extends CardWithList
     setUseEmptyView(true);
   }
 
+  public void setLIN(LIN lin) {
+    mLIN = lin;
+  }
+
   /**
    * Convert our List of NSNs into a list of ListObjects
    * @return List of ListObjects with IDs corresponding to the NSN Id.
@@ -92,7 +96,7 @@ public class LINCardWithNSNs extends CardWithList
                 if (listView.getAdapter() == null || listView.getCount() == 0) {
 
                   //Make sure that the list isn't empty.
-                  if (items != null && items.size() > 0) {
+                  if (items.size() > 0) {
                     ItemArrayAdapter itemArrayAdapter =
                         new ItemArrayAdapter(getContext(),
                             R.layout.item_list_item,

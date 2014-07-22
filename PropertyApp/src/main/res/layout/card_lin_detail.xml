@@ -138,8 +138,9 @@
             android:text="PBIC: "
             />
         <TextView style="@style/lin_card_value"
+                  android:id="@+id/lin_card_pbic_value"
                   android:layout_below="@+id/lin_card_erc_label"
                   android:layout_toRightOf="@+id/lin_card_pbic_label"
-            android:text="PBIC 8"/>
+            android:text="PBIC ##"/>
     </RelativeLayout>
 </LinearLayout>
