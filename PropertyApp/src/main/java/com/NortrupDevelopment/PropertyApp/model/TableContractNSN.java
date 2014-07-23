@@ -42,7 +42,7 @@ public class TableContractNSN implements BaseColumns {
 				columnCIIC + " TEXT, " +
 				linID + " INTEGER, " +
 				"FOREIGN KEY(" + linID + ") REFERENCES " + 
-					TableContractLIN.TABLE_NAME +"(" +
+					TableContractLIN.tableName +"(" + 
 					TableContractLIN._ID + ")" + 
 			")";
 }

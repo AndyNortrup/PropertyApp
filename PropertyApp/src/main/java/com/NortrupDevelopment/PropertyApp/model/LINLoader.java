@@ -1,10 +1,10 @@
 package com.NortrupDevelopment.PropertyApp.model;
 
 import android.content.AsyncTaskLoader;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -19,22 +19,21 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   private static final String PROJECTION[] = {
     TableContractLIN._ID,
-        TableContractLIN.NOMENCLATURE,
-        TableContractLIN.SUB_LIN,
-        TableContractLIN.LIN,
-        TableContractLIN.AUTH_DOC,
-        TableContractLIN.AUTHORIZED,
-        TableContractLIN.DI,
-        TableContractLIN.ERC,
-        TableContractLIN.PROPERTY_BOOK_ID,
-        TableContractLIN.REQUIRED,
-        TableContractLIN.SRI
+        TableContractLIN.columnNomenclature,
+        TableContractLIN.columnSubLIN,
+        TableContractLIN.columnLIN,
+        TableContractLIN.columnAuthDoc,
+        TableContractLIN.columnAuthorized,
+        TableContractLIN.columnDI,
+        TableContractLIN.columnERC,
+        TableContractLIN.columnPropertyBookId,
+        TableContractLIN.columnRequired,
+        TableContractLIN.columnSRI
   };
 
-  private static final String SORT_ORDER = TableContractLIN.LIN + " ASC";
+  private static final String SORT_ORDER = TableContractLIN.columnLIN + " ASC";
 
   private boolean mIncludeSubLINs = false;
-  private boolean mGroupByLIN = false;
   private long mLinID = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
@@ -52,10 +51,6 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   public void includeSubLINs(boolean includeSubLINs) {
     mIncludeSubLINs = includeSubLINs;
-  }
-
-  public void setGroupByLIN(boolean groupByLIN) {
-    mGroupByLIN = groupByLIN;
   }
 
   //<editor-fold desc="Async Task Methods">
@@ -151,26 +146,18 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   private ArrayList<LIN> queryLINs() {
 
-    SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-    queryBuilder.setTables(TableContractLIN.TABLE_NAME);
-
     StringBuilder selectionBuilder = new StringBuilder();
     String selectionString = null;
     String[] selectionArgs = null;
-    String groupBy = "";
-
-    if(mGroupByLIN) {
-      groupBy = TableContractLIN.LIN;
-    }
 
     if(mIncludeSubLINs && mLinID != -1) {
       //Use a subquery to select all of the LINs that share a Line Number
       //with the LIN with the given _ID (mLinID).
-      selectionBuilder.append(TableContractLIN.LIN)
+      selectionBuilder.append(TableContractLIN.columnLIN)
           .append(" IN (SELECT ")
-          .append(TableContractLIN.LIN)
+          .append(TableContractLIN.columnLIN)
           .append(" FROM ")
-          .append(TableContractLIN.TABLE_NAME)
+          .append(TableContractLIN.tableName)
           .append(" WHERE ")
           .append(TableContractLIN._ID)
           .append(" = ?)");
@@ -186,26 +173,21 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
       selectionArgs = new String[]{String.valueOf(mLinID)};
 
-    } else if(!mIncludeSubLINs) {
+    } else if(!mIncludeSubLINs && mLinID == -1) {
       //Select all primary LINs in the property book.  Any LIN with a value in
       //SubLIN field is excluded.
-      selectionBuilder.append(TableContractLIN.SUB_LIN + " = ''");
+      selectionBuilder.append(TableContractLIN.columnSubLIN + " = ''");
       selectionString = selectionBuilder.toString();
     }
     //The fourth case in this set is to select everything from the database
     //this requires no else because the query has no where clause and
     //selectionString remains equal to null
 
-
-    DatabaseOpenHelper dbHelp = new DatabaseOpenHelper(getContext());
-
-    Cursor data = queryBuilder.query(
-        dbHelp.getReadableDatabase(),
+    ContentResolver resolver = mContext.getContentResolver();
+    Cursor data = resolver.query(PropertyBookContentProvider.CONTENT_URI_LIN,
         PROJECTION,
         selectionString,
         selectionArgs,
-        groupBy,
-        "",
         SORT_ORDER);
 
     if(data.getCount() == 0) {
@@ -229,17 +211,16 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   private LIN createLINFromCursor(Cursor data) {
     return  new LIN(
-        data.getInt(data.getColumnIndex(TableContractLIN._ID)),
-        data.getString(data.getColumnIndex(TableContractLIN.LIN)),
-        data.getString(data.getColumnIndex(TableContractLIN.SUB_LIN)),
-        data.getString(data.getColumnIndex(TableContractLIN.SRI)),
-        data.getString(data.getColumnIndex(TableContractLIN.ERC)),
-        data.getString(data.getColumnIndex(TableContractLIN.NOMENCLATURE)),
-        data.getString(data.getColumnIndex(TableContractLIN.AUTH_DOC)),
-        data.getInt(data.getColumnIndex(TableContractLIN.REQUIRED)),
-        data.getInt(data.getColumnIndex(TableContractLIN.AUTHORIZED)),
-        data.getInt(data.getColumnIndex(TableContractLIN.DI)),
-        data.getInt(data.getColumnIndex(TableContractLIN.PROPERTY_BOOK_ID)));
+        data.getLong(data.getColumnIndex(TableContractLIN._ID)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnLIN)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnSubLIN)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnSRI)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnERC)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnNomenclature)),
+        data.getString(data.getColumnIndex(TableContractLIN.columnAuthDoc)),
+        data.getInt(data.getColumnIndex(TableContractLIN.columnRequired)),
+        data.getInt(data.getColumnIndex(TableContractLIN.columnAuthorized)),
+        data.getInt(data.getColumnIndex(TableContractLIN.columnDI)));
   }
 }
 

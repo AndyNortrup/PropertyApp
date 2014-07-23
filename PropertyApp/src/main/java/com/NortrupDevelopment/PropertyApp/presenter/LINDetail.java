@@ -38,5 +38,4 @@ public interface LINDetail {
    * @param lin LIN which it belongs to,
    */
   public void addNSNtoLIN(NSN nsn, LIN lin);
-
 }
