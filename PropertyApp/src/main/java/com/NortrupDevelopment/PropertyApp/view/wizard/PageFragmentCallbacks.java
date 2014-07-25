@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
-import co.juliansuarez.libwizardpager.wizard.model.Page;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.Page;
 
 public interface PageFragmentCallbacks {
     Page onGetPage(String key);

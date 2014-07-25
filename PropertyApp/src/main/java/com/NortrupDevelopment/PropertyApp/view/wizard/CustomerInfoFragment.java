@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,8 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import co.juliansuarez.libwizardpager.R;
-import co.juliansuarez.libwizardpager.wizard.model.CustomerInfoPage;
+
+import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.CustomerInfoPage;
+
 
 public class CustomerInfoFragment extends Fragment {
     private static final String ARG_KEY = "key";

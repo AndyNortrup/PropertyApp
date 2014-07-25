@@ -1,4 +1,4 @@
-package co.juliansuarez.libwizardpager.wizard.ui;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.annotation.SuppressLint;
 import android.os.Build;

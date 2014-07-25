@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -31,11 +26,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import co.juliansuarez.libwizardpager.R;
-import co.juliansuarez.libwizardpager.wizard.model.AbstractWizardModel;
-import co.juliansuarez.libwizardpager.wizard.model.ModelCallbacks;
-import co.juliansuarez.libwizardpager.wizard.model.Page;
-import co.juliansuarez.libwizardpager.wizard.model.ReviewItem;
+
+import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.AbstractWizardModel;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.ModelCallbacks;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.Page;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.ReviewItem;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
     private Callbacks mCallbacks;

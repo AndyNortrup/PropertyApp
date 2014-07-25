@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -29,9 +26,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import co.juliansuarez.libwizardpager.R;
-import co.juliansuarez.libwizardpager.wizard.model.Page;
-import co.juliansuarez.libwizardpager.wizard.model.SingleFixedChoicePage;
+
+import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.Page;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.SingleFixedChoicePage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SingleChoiceFragment extends ListFragment {
     private static final String ARG_KEY = "key";

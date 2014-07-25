@@ -1,7 +1,8 @@
-package co.juliansuarez.libwizardpager.wizard.model;
+package com.NortrupDevelopment.PropertyApp.presenter.wizard;
 
 import android.support.v4.app.Fragment;
-import co.juliansuarez.libwizardpager.wizard.ui.NumberFragment;
+
+import com.NortrupDevelopment.PropertyApp.view.wizard.NumberFragment;
 
 public class NumberPage extends TextPage {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.model;
+package com.NortrupDevelopment.PropertyApp.presenter.wizard;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

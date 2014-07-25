@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,7 +26,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import co.juliansuarez.libwizardpager.R;
+
+import com.NortrupDevelopment.PropertyApp.R;
 
 public class StepPagerStrip extends View {
     private static final int[] ATTRS = new int[]{

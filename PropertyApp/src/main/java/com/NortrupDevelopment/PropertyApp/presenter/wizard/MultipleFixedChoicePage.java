@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.model;
-
-import java.util.ArrayList;
+package com.NortrupDevelopment.PropertyApp.presenter.wizard;
 
 import android.support.v4.app.Fragment;
-import co.juliansuarez.libwizardpager.wizard.ui.MultipleChoiceFragment;
+
+import com.NortrupDevelopment.PropertyApp.view.wizard.MultipleChoiceFragment;
+
+import java.util.ArrayList;
 
 /**
  * A page offering the user a number of non-mutually exclusive choices.

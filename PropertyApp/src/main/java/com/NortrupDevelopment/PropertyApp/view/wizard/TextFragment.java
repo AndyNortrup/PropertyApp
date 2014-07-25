@@ -1,4 +1,4 @@
-package co.juliansuarez.libwizardpager.wizard.ui;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,15 +13,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import co.juliansuarez.libwizardpager.R;
-import co.juliansuarez.libwizardpager.wizard.model.Page;
+
+import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.Page;
 
 public class TextFragment extends Fragment {
 	protected static final String ARG_KEY = "key";
 
 	private PageFragmentCallbacks mCallbacks;
 	private String mKey;
-	private Page mPage;
+  private Page mPage;
 
 	protected EditText mEditTextInput;
 

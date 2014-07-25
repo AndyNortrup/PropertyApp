@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.ui;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+package com.NortrupDevelopment.PropertyApp.view.wizard;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,9 +27,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import co.juliansuarez.libwizardpager.R;
-import co.juliansuarez.libwizardpager.wizard.model.MultipleFixedChoicePage;
-import co.juliansuarez.libwizardpager.wizard.model.Page;
+
+import com.NortrupDevelopment.PropertyApp.R;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.MultipleFixedChoicePage;
+import com.NortrupDevelopment.PropertyApp.presenter.wizard.Page;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 public class MultipleChoiceFragment extends ListFragment {
     private static final String ARG_KEY = "key";

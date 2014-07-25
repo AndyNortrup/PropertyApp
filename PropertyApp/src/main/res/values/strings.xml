@@ -45,4 +45,12 @@
     <string name="card_empty_cardwithlist_text">No NSNs for this LIN.</string>
     <string name="select_import_file">Select file</string>
     <string name="import_header">Import property book</string>
+
+    <!--Strings from WizardPager-->
+    <string name="label_your_name">Name</string>
+    <string name="hint_your_name">e.g. Larry</string>
+    <string name="label_your_email">Email</string>
+    <string name="hint_your_email">Optional</string>
+    <string name="review">Review</string>
+    <!--End strings from WizardPager-->
 </resources>

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package co.juliansuarez.libwizardpager.wizard.model;
-
-import java.util.ArrayList;
+package com.NortrupDevelopment.PropertyApp.presenter.wizard;
 
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import co.juliansuarez.libwizardpager.wizard.ui.CustomerInfoFragment;
+
+import com.NortrupDevelopment.PropertyApp.view.wizard.CustomerInfoFragment;
+
+import java.util.ArrayList;
 
 /**
  * A page asking for a name and an email.
