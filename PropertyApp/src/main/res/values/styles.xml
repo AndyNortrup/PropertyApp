@@ -44,11 +44,49 @@
 
     <style name="PropertyApp" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarTabStyle">@style/PropertyApp.ActionBarTab</item>
+        <item name="android:buttonStyle">@style/PropertyApp.Button</item>
     </style>
 
     <style name="PropertyApp.ActionBarTab">
         <item name="android:background">@drawable/tab_bar_background</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="PropertyApp.Button" parent="android:style/Widget.Button">
+        <item name="android:background">@color/property_app_dark_green</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="PropertyApp.HeaderText">
+        <item name="android:textColor">@color/property_app_dark_green</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="PropertyApp.ImportFileName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:layout_margin">14dp</item>
+    </style>
+
+    <style name="PropertyApp.ImportProgressText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">14dp</item>
+    </style>
+
+    <style name="PropertyApp.RightSideIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">32dp</item>
+        <item name="android:layout_marginTop">5dp</item>
     </style>
 
 </resources>
