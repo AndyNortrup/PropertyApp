@@ -133,11 +133,13 @@ public class PropertyBookContentProvider extends ContentProvider {
       case URI_CODE_ITEM:
         deletedRows = mDatabaseHelper.getWritableDatabase().delete(
             TableContractItem.tableName, selection, selectionArgs);
+        break;
       case URI_CODE_PROPERTY_BOOK:
         deletedRows = mDatabaseHelper.getWritableDatabase().delete(
             TableContractPropertyBook.TABLE_NAME,
             selection,
             selectionArgs);
+        break;
     }
 
     if (deletedRows > 0 && !batchMode) {
