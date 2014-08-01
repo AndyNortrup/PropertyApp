@@ -3,7 +3,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:id="@+id/"
               android:orientation="vertical">
     <TextView
         android:text="@string/import_header"
@@ -27,8 +26,7 @@
 
         <TextView
             android:id="@+id/filename_text"
-            style="@style/PropertyApp.ImportFileName"
-            android:text="PhrPrint.xls"/>
+            style="@style/PropertyApp.ImportFileName"/>
         <ImageView
             android:id="@+id/image_ok_file"
             style="@style/PropertyApp.RightSideIcon"
@@ -39,7 +37,7 @@
         android:id="@+id/error_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Incorrect file type."
+        android:text="wrong_file_type"
         android:textColor="@android:color/holo_red_dark"
         android:gravity="center"
         android:visibility="gone"/>

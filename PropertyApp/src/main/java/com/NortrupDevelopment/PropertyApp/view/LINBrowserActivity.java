@@ -26,7 +26,7 @@ public class LINBrowserActivity extends Activity
 
   private LINBrowserPresenter mPresenter;
   private CardListView mCardList;
-  private LinearLayout mEmptyLayout, mLoadingLayout;
+  private LinearLayout mLoadingLayout;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,7 +35,6 @@ public class LINBrowserActivity extends Activity
 
     //Grab our view elements
     mCardList = (CardListView)findViewById(R.id.lin_list);
-    mEmptyLayout = (LinearLayout)findViewById(android.R.id.empty);
     mLoadingLayout = (LinearLayout)findViewById(R.id.lin_loading_progress);
 
     //Connect our presenter
@@ -103,19 +102,9 @@ public class LINBrowserActivity extends Activity
   @Override
   public void showLoadingProgressBar() {
     mCardList.setVisibility(View.GONE);
-    mEmptyLayout.setVisibility(View.GONE);
     mLoadingLayout.setVisibility(View.VISIBLE);
   }
 
-  /**
-   * Shows the empty layout and hides mCardList and progress bar.
-   */
-  @Override
-  public void showEmptyView() {
-    mCardList.setVisibility(View.GONE);
-    mLoadingLayout.setVisibility(View.GONE);
-    mEmptyLayout.setVisibility(View.VISIBLE);
-  }
 
   /**
    * Shows the mCardList and hides the progress bar and empty list view.
@@ -123,7 +112,6 @@ public class LINBrowserActivity extends Activity
   @Override
   public void showList() {
     mLoadingLayout.setVisibility(View.GONE);
-    mEmptyLayout.setVisibility(View.GONE);
     mCardList.setVisibility(View.VISIBLE);
   }
 
@@ -149,7 +137,7 @@ public class LINBrowserActivity extends Activity
    * Called when the user wants to start the import activity.
    */
   public void startImportActivity() {
-    startActivity(new Intent(this, ImportPropertyBookActivity.class));
+    startActivity(new Intent(this, ImportActivity.class));
   }
 
   /**
@@ -166,12 +154,9 @@ public class LINBrowserActivity extends Activity
    */
   public void setCardList(ArrayList<LIN> lins) {
 
-
-    if(lins == null) {
-      mCardList.setAdapter(null);//.setAdapter(null);
-    } else {
-      ArrayList<Card> cards = new ArrayList<Card>();
-      for(LIN lin : lins) {
+    ArrayList<Card> cards = new ArrayList<Card>();
+    if(lins != null) {
+      for (LIN lin : lins) {
         LinCard card = new LinCard(this);
         card.setLIN(lin);
         cards.add(card);
@@ -181,7 +166,10 @@ public class LINBrowserActivity extends Activity
       }
 
       mCardList.setAdapter(new CardArrayAdapter(this, cards));
+    } else {
+      mPresenter.importRequested();
     }
+
   }
 
   /**

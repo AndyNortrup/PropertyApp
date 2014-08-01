@@ -18,11 +18,6 @@ public interface LINBrowser {
    */
   public void showLoadingProgressBar();
 
-  /**
-   * Change the view to show the empty view (recommend import)
-   * when there is no data.
-   */
-  public void showEmptyView();
 
   /**
    * Change the view to show the list when there is data.

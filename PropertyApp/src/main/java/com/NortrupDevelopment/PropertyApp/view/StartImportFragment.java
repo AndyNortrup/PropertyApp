@@ -45,12 +45,6 @@ public class StartImportFragment extends DialogFragment
          intent = Intent.createChooser(chooseFile, "Choose a file");
          getActivity().startActivityForResult(intent, REQUEST_PROPERTY_BOOK_FILE);
 
-         /**
-		 Intent getContentIntent = FileUtils.createGetContentIntent();
-
-		 Intent intent = Intent.createChooser(getContentIntent, "Select a file");
-		 getActivity().startActivityForResult(intent, REQUEST_PROPERTY_BOOK_FILE);
-          */
 	 }
 
 	@Override

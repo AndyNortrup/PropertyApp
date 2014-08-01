@@ -54,7 +54,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 				db.execSQL("DROP TABLE " + TableContractItem.tableName);
 				db.execSQL("DROP TABLE " + TableContractNSN.tableName);
 				db.execSQL("DROP TABLE " + TableContractLIN.tableName);
-				db.execSQL("DROP TABLE " + TableContractPropertyBook.tableName);
+				db.execSQL("DROP TABLE " + TableContractPropertyBook.TABLE_NAME);
 				
 				//create our table to hold LIN listings
 				db.execSQL(TableContractLIN.createLinTable);

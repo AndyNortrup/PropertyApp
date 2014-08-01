@@ -2,12 +2,8 @@ package com.NortrupDevelopment.PropertyApp.model;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -43,72 +39,7 @@ public class PropertyBook {
 			String pbic) {
 		this(DEFAULT_ID, description, uic, pbic);
 	}
-	
-	/**
-	 * PropertyBook factory from a URI 
-	 * @param c Context to query from
-	 * @param uri URI to query
-	 * @param id ID of the PropertyBook to search for
-	 * @return
-	 */
-	public static PropertyBook propertyBookFromURI(Context c, Uri uri, Long id) {
-		ContentResolver resolver = c.getContentResolver();
-		String[] projection = {TableContractPropertyBook.columnDescription,
-				TableContractPropertyBook.columnUIC,
-				TableContractPropertyBook.columnPBIC};
-		
-		String queryString = TableContractPropertyBook._ID + " = ?";
-		String[] queryValues = {String.valueOf(id)};
-		
-		Cursor cursor = resolver.query(
-				uri, projection, queryString, queryValues, "");
-		
-		PropertyBook result = null;
-		
-		while(cursor.moveToNext()) {
-			result = new PropertyBook(
-					id, 
-					cursor.getString(0), 
-					cursor.getString(1),
-					cursor.getString(2));
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Generates an array list of all property books for the given URI 
-	 * @param c Context to query from
-	 * @param uri URI to query
-	 * @return
-	 */
-	public static ArrayList<PropertyBook> getAllPropertyBooks(Context c, Uri uri) {
-		ArrayList<PropertyBook> result = new ArrayList<PropertyBook>();
-		
-		ContentResolver resolver = c.getContentResolver();
-		String[] projection = {TableContractPropertyBook.columnDescription,
-				TableContractPropertyBook.columnUIC, 
-				TableContractPropertyBook._ID,
-				TableContractPropertyBook.columnPBIC};
-		String queryString = "";
-		String[] queryValues = {};
-		
-		Cursor cursor = resolver.query(
-				uri, projection, queryString, queryValues, "");
-		
-		PropertyBook pb = null;
-		while(cursor.moveToNext()) {
-			pb = new PropertyBook(
-					cursor.getLong(2), 
-					cursor.getString(0), 
-					cursor.getString(1),
-					cursor.getString(3));
-			result.add(pb);
-		}
-		
-		return result;
-	}
-	
+
 	public long getPropertyBookId() {
 		return propertyBookId;
 	}
@@ -172,9 +103,9 @@ public class PropertyBook {
 		}
 		
 		ContentValues values = new ContentValues();
-		values.put(TableContractPropertyBook.columnDescription, description);
-		values.put(TableContractPropertyBook.columnUIC, uic);
-        values.put(TableContractPropertyBook.columnPBIC, pbic);
+		values.put(TableContractPropertyBook.DESCRIPTION, description);
+		values.put(TableContractPropertyBook.UIC, uic);
+        values.put(TableContractPropertyBook.PBIC, pbic);
 		updateAction.withValues(values);
 		
 		result.add(updateAction.build());

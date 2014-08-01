@@ -10,11 +10,10 @@ import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 public class LIN implements Parcelable {
 
-  private long linId;
+  private int linId;
   private String lin;
   private String subLin;
   private String sri;
@@ -49,7 +48,7 @@ public class LIN implements Parcelable {
    * @param authorized   Input quantity authorized
    */
   public LIN(
-      long linId,
+      int linId,
       String lin,
       String subLin,
       String sri,
@@ -93,7 +92,7 @@ public class LIN implements Parcelable {
    * @param authorized   Input quantity authorized
    */
   public LIN(
-      Long _id,
+      int _id,
       String lin,
       String subLin,
       String sri,
@@ -159,7 +158,7 @@ public class LIN implements Parcelable {
   }
 
   public LIN(Parcel out) {
-    linId = out.readLong();
+    linId = out.readInt();
     lin = out.readString();
     subLin = out.readString();
     sri = out.readString();
@@ -190,7 +189,7 @@ public class LIN implements Parcelable {
   /**
    * @return the linID
    */
-  public long getLinId() {
+  public int getLinId() {
     return linId;
   }
 
@@ -198,7 +197,7 @@ public class LIN implements Parcelable {
   /**
    * @param linID the linID to set
    */
-  public void setLinID(long linID) {
+  public void setLinID(int linID) {
     this.linId = linID;
   }
 
@@ -373,7 +372,7 @@ public class LIN implements Parcelable {
   }
 
   public void deleteNSN(NSN nsn) {
-    mNewNSNs.remove(nsn.getNsnId());
+    mNSNs.remove(nsn.getNsnId());
   }
 
   public ArrayList<ContentProviderOperation> getWriteAction(
@@ -451,9 +450,8 @@ public class LIN implements Parcelable {
             PropertyBookContentProvider.CONTENT_URI_LIN, linId)
     ).build());
 
-    Iterator<NSN> i = mNewNSNs.values().iterator();
-    while (i.hasNext()) {
-      result.addAll(i.next().getDeleteAction());
+    for(NSN nsn : mNewNSNs.values()) {
+      result.addAll(nsn.getDeleteAction());
     }
 
     return result;

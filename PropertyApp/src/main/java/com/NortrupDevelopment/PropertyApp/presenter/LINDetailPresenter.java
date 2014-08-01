@@ -78,12 +78,12 @@ public class LINDetailPresenter {
           mLINs = new SparseArray<LIN>();
         }
         for (LIN lin : data) {
-          if(mLINs.indexOfKey((int)lin.getLinId()) < 0) {
+          if(mLINs.indexOfKey(lin.getLinId()) < 0) {
             mDetailView.addLIN(lin);
-            mLINs.put((int) lin.getLinId(), lin);
+            mLINs.put(lin.getLinId(), lin);
 
             //Start the search for the NSNs
-            mDetailView.getViewLoaderManager().initLoader((int) lin.getLinId(),
+            mDetailView.getViewLoaderManager().initLoader(lin.getLinId(),
                 null,
                 new NSNLoaderCallback());
           }
@@ -157,10 +157,12 @@ public class LINDetailPresenter {
     @Override
     public void onLoadFinished(Loader<ArrayList<Item>> loader, ArrayList<Item> data) {
 
+      LIN lin = mLINs.get((int)((ItemLoader)loader).getLIN());
+      NSN nsn = lin.getNSNById(loader.getId());
+
       if (data.size() > 0) {
         //Find the NSN in the list of LINs.
-        LIN lin = mLINs.get((int)((ItemLoader)loader).getLIN());
-        NSN nsn = lin.getNSNById(loader.getId());
+
 
         //Add the item to the NSN
         for (Item item : data) {
@@ -168,8 +170,11 @@ public class LINDetailPresenter {
             nsn.addItem(item);
           }
         }
-        mDetailView.addNSNtoLIN(nsn, lin);
+
       }
+
+      //add the NSN even if there are no serial numbers.
+      mDetailView.addNSNtoLIN(nsn, lin);
     }
 
     @Override

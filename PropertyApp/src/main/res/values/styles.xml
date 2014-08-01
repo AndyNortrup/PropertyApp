@@ -44,7 +44,6 @@
 
     <style name="PropertyApp" parent="android:style/Theme.Holo.Light">
         <item name="android:actionBarTabStyle">@style/PropertyApp.ActionBarTab</item>
-        <item name="android:buttonStyle">@style/PropertyApp.Button</item>
     </style>
 
     <style name="PropertyApp.ActionBarTab">
@@ -52,12 +51,19 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="PropertyApp.Button" parent="android:style/Widget.Button">
-        <item name="android:background">@color/property_app_dark_green</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:padding">10dp</item>
+
+
+    <style name="ButtonFullWidth">
+        <item name="android:textColor">@color/property_app_dark_green</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
     </style>
+
+    <style name="ButtonFullWidth.WithMargin">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
+
 
     <style name="PropertyApp.HeaderText">
         <item name="android:textColor">@color/property_app_dark_green</item>
@@ -89,24 +95,6 @@
         <item name="android:layout_marginTop">5dp</item>
     </style>
 
-    <!--Styles from WizardPager-->
-    <style name="WizardPageContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-    </style>
 
-    <style name="WizardPageTitle">
-        <item name="android:id">@android:id/title</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:paddingLeft">@dimen/list_item_padding_left</item>
-        <item name="android:textSize">36sp</item>
-        <item name="android:textColor">#ff0099cc</item>
-    </style>
-    <!--End styles from Wizard Pager-->
 
 </resources>

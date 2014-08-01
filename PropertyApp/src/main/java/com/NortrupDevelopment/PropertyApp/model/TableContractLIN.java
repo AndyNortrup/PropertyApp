@@ -31,6 +31,6 @@ public class TableContractLIN implements BaseColumns {
             columnDI + " INTEGER, " +
 			columnPropertyBookId + " INTEGER, " +
 			"FOREIGN KEY(" + columnPropertyBookId + ") REFERENCES " +
-			TableContractPropertyBook.tableName + "(" +
+			TableContractPropertyBook.TABLE_NAME + "(" +
 			TableContractPropertyBook._ID + "))";
 }

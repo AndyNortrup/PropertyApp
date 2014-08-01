@@ -70,7 +70,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   @Override
   public void onLoadFinished(Loader<ArrayList<LIN>> loader, ArrayList<LIN> data) {
     if(data == null || data.size() == 0) {
-      mActivity.showEmptyView();
+      mActivity.startImportActivity();
     } else {
       mActivity.setCardList(data);
       mActivity.showList();

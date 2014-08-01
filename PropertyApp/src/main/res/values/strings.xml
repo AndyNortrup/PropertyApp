@@ -8,8 +8,8 @@
     <string name="dialog_button_import">Import</string>
     <string name="dialog_button_cancel">Cancel</string>
     <string name="start_import_fragment_button_text">Select a file to import.</string>
-    <string name="start_import_fragment_welcome">
-        Select an unmodified property book file saved as a .XLS file.
+    <string name="import_welcome_text">
+        Select an unmodified property book file from PBUSE saved as a .XLS file.
     </string>
     <string name="chooser_label">Pick File</string>
     <string name="pbic_select_button">Import PBICs</string>
@@ -43,8 +43,10 @@
     <string name="nsn_nomenclature_label">NSN Nomenclature: </string>
     <string name="no_serial_numbers">No serial numbers for this NSN.</string>
     <string name="card_empty_cardwithlist_text">No NSNs for this LIN.</string>
+    <string name="import_select_file_title">Select property book.</string>
     <string name="select_import_file">Select file</string>
     <string name="import_header">Import property book</string>
+    <string name="wrong_file_type">Incorrect file type.</string>
 
     <!--Strings from WizardPager-->
     <string name="label_your_name">Name</string>
@@ -52,5 +54,10 @@
     <string name="label_your_email">Email</string>
     <string name="hint_your_email">Optional</string>
     <string name="review">Review</string>
+    <string name="prev">Previous</string>
+    <string name="next">Next</string>
+    <string name="finish">Import</string>
+    <string name="submit_confirm_message">Proceed with import?</string>
+    <string name="error_reading_excel_file">Error reading excel file.</string>
     <!--End strings from WizardPager-->
 </resources>

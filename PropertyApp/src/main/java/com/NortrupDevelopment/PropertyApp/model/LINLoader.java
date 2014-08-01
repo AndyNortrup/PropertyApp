@@ -211,7 +211,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   private LIN createLINFromCursor(Cursor data) {
     return  new LIN(
-        data.getLong(data.getColumnIndex(TableContractLIN._ID)),
+        data.getInt(data.getColumnIndex(TableContractLIN._ID)),
         data.getString(data.getColumnIndex(TableContractLIN.columnLIN)),
         data.getString(data.getColumnIndex(TableContractLIN.columnSubLIN)),
         data.getString(data.getColumnIndex(TableContractLIN.columnSRI)),

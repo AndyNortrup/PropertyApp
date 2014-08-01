@@ -184,7 +184,7 @@ public class NSN  implements Parcelable {
   /**
    * @return the nsnId
    */
-  public long getNsnId() {
+  public int getNsnId() {
     return nsnId;
   }
 

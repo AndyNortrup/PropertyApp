@@ -135,7 +135,7 @@ public class PropertyBookContentProvider extends ContentProvider {
             TableContractItem.tableName, selection, selectionArgs);
       case URI_CODE_PROPERTY_BOOK:
         deletedRows = mDatabaseHelper.getWritableDatabase().delete(
-            TableContractPropertyBook.tableName,
+            TableContractPropertyBook.TABLE_NAME,
             selection,
             selectionArgs);
     }
@@ -196,12 +196,12 @@ public class PropertyBookContentProvider extends ContentProvider {
       case URI_CODE_PROPERTY_BOOK:
         //must have a description
         if (values.containsKey(
-            TableContractPropertyBook.columnDescription) &&
+            TableContractPropertyBook.DESCRIPTION) &&
             !values.getAsString(
-                TableContractPropertyBook.columnDescription)
+                TableContractPropertyBook.DESCRIPTION)
                 .equals("")) {
           id = mDatabaseHelper.getWritableDatabase().insert(
-              TableContractPropertyBook.tableName, "", values);
+              TableContractPropertyBook.TABLE_NAME, "", values);
           path = PATH_ITEM;
         }
     }
@@ -259,7 +259,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
       case URI_CODE_PROPERTY_BOOK:
         result = mDatabaseHelper.getReadableDatabase().query(
-            TableContractPropertyBook.tableName,
+            TableContractPropertyBook.TABLE_NAME,
             projection,
             selection,
             selectionArgs,
@@ -328,7 +328,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
       case URI_CODE_PROPERTY_BOOK:
         result = mDatabaseHelper.getReadableDatabase().update(
-            TableContractPropertyBook.tableName,
+            TableContractPropertyBook.TABLE_NAME,
             values,
             selection,
             selectionArgs);

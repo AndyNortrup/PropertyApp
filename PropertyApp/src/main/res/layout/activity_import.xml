@@ -1,8 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/import_header"
+        android:id="@+id/import_header"
+        android:textColor="@color/property_app_dark_green"
+        android:singleLine="true"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_import_file"
+        android:id="@+id/import_file_select_button"
+        style="@style/ButtonFullWidth.WithMargin"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/import_file_path"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/import_welcome_text"
+        android:id="@+id/import_welcome_textview"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:visibility="visible"/>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/pbic_select_list"
+        android:layout_weight="1"
+        android:divider="@color/property_app_dark_green"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:dividerHeight="1sp"
+        android:drawSelectorOnTop="false"
+        android:visibility="gone"
+        android:choiceMode="multipleChoice"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:text="@string/button_cancel"
+            android:id="@+id/cancel_button"
+            style="@style/ButtonFullWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:text="@string/import_label"
+            android:id="@+id/import_button"
+            style="@style/ButtonFullWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
 
 </LinearLayout>
