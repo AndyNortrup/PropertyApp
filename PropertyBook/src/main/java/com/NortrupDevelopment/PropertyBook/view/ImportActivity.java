@@ -1,0 +1,301 @@
+package com.NortrupDevelopment.PropertyBook.view;
+
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
+import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
+
+import java.util.ArrayList;
+
+/**
+ * Displays a wizard to manage the import of a property book into the database.
+ * Created by andy on 7/23/14.
+ */
+public class ImportActivity extends Activity
+    implements ImportView,
+      View.OnClickListener,
+      ListView.OnItemClickListener,
+      DialogInterface.OnCancelListener,
+      DialogInterface.OnClickListener
+
+
+{
+
+  private static final String FILE_URI_KEY = "FILE_URI";
+  private static final String PBIC_LIST_KEY = "PBIC_LIST_KEY";
+  private static final String SELECTED_ITEMS_KEY = "SELECTED_ITEMS_KEY";
+  private static final String PROGRESS_DIALOG_KEY = "PROGRESS_DIALOG_KEY";
+
+  private static final int FILE_SELECT_CODE = 1;
+
+  private Button mImportButton, mFileSelectButton;
+  private ListView mPBICSelectList;
+  private ArrayAdapter<String> mPBICListAdapter;
+  private ArrayList<String> mPBICs;
+  private ProgressDialog mImportProgressDialog;
+
+  private String mImportMessage;
+
+  private ImportPresenter mPresenter;
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    mPresenter = new ImportPresenter(this);
+    setContentView(R.layout.activity_import);
+
+    mFileSelectButton = (Button)findViewById(R.id.import_file_select_button);
+    mFileSelectButton.setOnClickListener(this);
+
+    mImportButton = (Button)findViewById(R.id.import_button);
+    mImportButton.setOnClickListener(this);
+    mImportButton.setEnabled(false);
+
+    mPBICSelectList = (ListView)findViewById(R.id.pbic_select_list);
+
+    //Restore instance state if it exists
+    if(savedInstanceState != null) {
+
+      if(savedInstanceState.containsKey(FILE_URI_KEY)) {
+        if(savedInstanceState.containsKey(PBIC_LIST_KEY)) {
+          mPresenter.restoreFileInformation(
+              Uri.parse(savedInstanceState.getString(FILE_URI_KEY)),
+              savedInstanceState.getStringArray(PBIC_LIST_KEY));
+
+          //Restore checked items
+          if(savedInstanceState.containsKey(SELECTED_ITEMS_KEY)) {
+            ArrayList<Integer> checkedItems =
+                savedInstanceState.getIntegerArrayList(SELECTED_ITEMS_KEY);
+
+            for(Integer index : checkedItems) {
+              mPBICSelectList.setItemChecked(index, true);
+            }
+            mPresenter.pbicSelectionChanged(
+                mPBICSelectList.getCheckedItemPositions());
+          }
+        } else {
+          mPresenter.fileSelected(
+              Uri.parse(savedInstanceState.getString(FILE_URI_KEY)));
+        }
+
+        if(savedInstanceState.containsKey(PROGRESS_DIALOG_KEY)) {
+          mImportMessage = savedInstanceState.getString(PROGRESS_DIALOG_KEY);
+          showImportProgress();
+          mImportProgressDialog.setMessage(mImportMessage);
+        }
+      }
+    }
+  }
+
+  @Override
+  /**
+   * Store state for the activity when the activity is destroyed.
+   */
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if(mPresenter.getFileUri() != null) {
+      outState.putString(FILE_URI_KEY, mPresenter.getFileUri().toString());
+    }
+
+    if(mPBICs != null) {
+      outState.putStringArray(PBIC_LIST_KEY, mPBICs.toArray(new String[0]));
+
+      //Store which items are checked in case of screen rotation
+      ArrayList<Integer> selectedIndexes = new ArrayList<Integer>();
+      SparseBooleanArray items = mPBICSelectList.getCheckedItemPositions();
+      for(int x=0; x<items.size(); x++) {
+        if(items.get(x)) {
+          selectedIndexes.add(x);
+        }
+      }
+      outState.putIntegerArrayList(SELECTED_ITEMS_KEY, selectedIndexes);
+    }
+
+    if(mImportProgressDialog != null) {
+      outState.putString(PROGRESS_DIALOG_KEY, mImportMessage);
+    }
+  }
+
+
+  /**
+   * Called when the interface must display an intent to allow the user to
+   * select a file.
+   */
+  public void showFileSelectIntent() {
+
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+    MimeTypeMap mime = MimeTypeMap.getSingleton();
+    intent.setType(mime.getMimeTypeFromExtension("xls"));
+
+    try {
+      startActivityForResult(intent, FILE_SELECT_CODE);
+    } catch(ActivityNotFoundException ex) {
+      Toast.makeText(this,
+          "Please install a file manager.",
+          Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  public void showPBICSelect() {
+    mPBICSelectList.setVisibility(View.VISIBLE);
+    findViewById(R.id.import_welcome_textview).setVisibility(View.GONE);
+
+    //Create list and list adapter
+    mPBICs = new ArrayList<String>();
+    mPBICListAdapter = new ArrayAdapter<String>(
+        this, android.R.layout.simple_list_item_multiple_choice, mPBICs);
+    mPBICSelectList.setAdapter(mPBICListAdapter);
+
+    mPBICSelectList.setOnItemClickListener(this);
+  }
+
+  /**
+   * Displays the selected file in the file display TextView
+   * @param value Value to set for the text
+   * @param good Good if the file is acceptable, bad if the file is not.
+   */
+  public void setFileNameView(String value, boolean good) {
+
+    TextView filePathDisplay = (TextView)findViewById(R.id.import_file_path);
+    filePathDisplay.setText(value);
+
+    if(!good) {
+      filePathDisplay.setTextColor(
+          getResources().getColor(android.R.color.holo_red_dark));
+    } else {
+      filePathDisplay.setTextColor(
+          getResources().getColor(R.color.property_app_dark_green));
+    }
+  }
+
+  /**
+   * Directs the view to add a PBIC to the list
+   *
+   * @param index position in the list that the PBIC should be added
+   * @param pbicName String name of he PBIC from the property book
+   */
+  @Override
+  public void addPBIC(int index, String pbicName) {
+    mPBICListAdapter.add(pbicName);
+    mPBICListAdapter.notifyDataSetChanged();
+  }
+
+
+  /**
+   * Called by the presenter to enable or disable the import button
+   * @param state True if the import button should be enabled.
+   */
+  @Override
+  public void setImportButtonEnabled(boolean state) {
+    mImportButton.setEnabled(state);
+  }
+
+  /**
+   * Called by the presenter to have the view show the user that the import
+   * has started.
+   */
+  @Override
+  public void showImportProgress() {
+    mImportMessage = getString(R.string.import_starting);
+    mImportProgressDialog = new ProgressDialog(this);
+
+    mImportProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+        getString(R.string.button_cancel),
+        this);
+
+
+
+    mImportProgressDialog.show(this,
+        getString(R.string.import_progress_title),
+        mImportMessage,
+        false,
+        true,
+        this);
+  }
+
+
+  /**
+   * Callback method to be invoked when an item in this AdapterView has
+   * been clicked.
+   * <p/>
+   * Implementers can call getItemAtPosition(position) if they need
+   * to access the data associated with the selected item.
+   *
+   * @param parent   The AdapterView where the click happened.
+   * @param view     The view within the AdapterView that was clicked (this
+   *                 will be a view provided by the adapter)
+   * @param position The position of the view in the adapter.
+   * @param id       The row id of the item that was clicked.
+   */
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    mPresenter.pbicSelectionChanged(mPBICSelectList.getCheckedItemPositions());
+  }
+
+  /**
+   * This method will be invoked when the dialog is canceled.
+   *
+   * @param dialog The dialog that was canceled will be passed into the
+   *               method.
+   */
+  @Override
+  public void onCancel(DialogInterface dialog) {
+    mPresenter.importCancelRequested();
+  }
+
+  /**
+   * This method will be invoked when a button in the dialog is clicked.
+   *
+   * @param dialog The dialog that received the click.
+   * @param which  The button that was clicked (e.g.
+   *               {@link android.content.DialogInterface#BUTTON1}) or the position
+   */
+  @Override
+  public void onClick(DialogInterface dialog, int which) {
+    if(which == DialogInterface.BUTTON_NEGATIVE) {
+      mPresenter.importCancelRequested();
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
+  {
+    if(requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
+      mPresenter.fileSelected(data.getData());
+    }
+  }
+
+  /**
+   * Called when a view has been clicked.
+   *
+   * @param v The view that was clicked.
+   */
+  @Override
+  public void onClick(View v) {
+    if(v == mImportButton) {
+      mPresenter.importRequested();
+    } else if(v == mFileSelectButton) {
+      mPresenter.fileSelectRequested();
+    }
+  }
+}

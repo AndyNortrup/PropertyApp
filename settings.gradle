@@ -1,2 +1,2 @@
-include 'PropertyApp'
+include 'PropertyBook'
 include ':aFileChooser', ':aFileChooser:aFileChooser'
