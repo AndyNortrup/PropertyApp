@@ -49,6 +49,11 @@
     <string name="wrong_file_type">Incorrect file type.</string>
 
     <string name="error_reading_excel_file">Error reading excel file.</string>
+    <string name="import_complete">Import complete!</string>
     <string name="import_starting">Starting Import</string>
     <string name="import_progress_title">Importing Property Book</string>
+    <string name="import_failed">
+        Import failed, check your file and try again.
+    </string>
+
 </resources>

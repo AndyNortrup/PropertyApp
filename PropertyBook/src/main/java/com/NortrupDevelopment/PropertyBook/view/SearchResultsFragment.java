@@ -1,5 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
+import android.support.v4.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,7 +20,7 @@ import com.NortrupDevelopment.PropertyBook.model.ViewContractItemData;
  * of search being conducted.
  * Created by andy on 3/8/14.
  */
-public class SearchResultsFragment extends android.support.v4.app.ListFragment
+public class SearchResultsFragment extends ListFragment
 
 {
     private Cursor mCursor;

@@ -6,8 +6,7 @@ import android.content.ContentProviderResult;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.ResultReceiver;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
@@ -29,14 +28,17 @@ public class PBICImportService extends IntentService {
 			"com.NortrupDevelopment.PropertyApp.EXTRA_IMPORT_URI";
 	public static final String FILE_SHEET_INDEX_KEY = 
 			"com.NortrupDevelopment.PropertyApp.EXTRA_SHEET_INDEX_KEY";
-	public static final String RESULT_KEY = 
-			"com.NortrupDevelopment.PropertyApp.RESULT_KEY";
+	public static final String RESULT_CODE =
+			"com.NortrupDevelopment.PropertyApp.RESULT_CODE";
 	public static final String RESULT_STRING = 
 			"com.NortrupDevelopment.PropertyApp.RESULT_STRING";
 	public static final String RECEIVER_KEY = 
 			"com.NortrupDevelopment.PropertyApp.RECEIVER_KEY";
 	public static final String EMPTY_DATABASE_KEY =
       "com.NortrupDevelopment.PropertyApp.EMPTY_DATABASE_KEY";
+
+  public static final String BROADCAST_ACTION =
+      "com.NortrupDevelopment.PropertyBook.BROADCAST";
 
     private static final String DEBUG_CODE = "PBIC_IMPORT_SERVICE";
 	
@@ -45,9 +47,8 @@ public class PBICImportService extends IntentService {
 	public static final int RESULT_PROCESSING = 1;
 	
 	private static final String PBIC_IMPORT_ERROR = "PBIC Import Error";
-	
-	private ResultReceiver receiver;
-	private Bundle results;
+
+	private String results;
 	
 	private boolean isStopped = false;
 	
@@ -64,8 +65,6 @@ public class PBICImportService extends IntentService {
 
 		int[] sheetIndexes =
 				arg0.getIntArrayExtra(FILE_SHEET_INDEX_KEY);
-		receiver = arg0.getParcelableExtra(RECEIVER_KEY);
-		results = new Bundle();
 		int resultCode = RESULT_PROCESSING;
 		
 		InputStream inStream;
@@ -95,41 +94,36 @@ public class PBICImportService extends IntentService {
 				 * Use of an if will eventually support a decision to merge or
 				 * replace the data.  
 				 */
-				if(arg0.hasExtra(EMPTY_DATABASE_KEY) && arg0.getBooleanExtra(EMPTY_DATABASE_KEY, false)) {
-					//Send a status update
-					results.clear();
-					results.putString(RESULT_STRING, "Deleting old data.");
-					receiver.send(resultCode, results);
+				if(arg0.hasExtra(EMPTY_DATABASE_KEY) &&
+            arg0.getBooleanExtra(EMPTY_DATABASE_KEY, false)) {
+
+          sendUpdate("Deleting old data.", RESULT_PROCESSING);
 					
 					
 					//Clear the contents of all tables
-					ContentProviderOperation.Builder deleteItems = 
+					writeActions.add(
 							ContentProviderOperation.newDelete(
-									PropertyBookContentProvider.CONTENT_URI_ITEM);
-          writeActions.add(deleteItems.build());
+									PropertyBookContentProvider.CONTENT_URI_ITEM).build());
+
+
+          writeActions.add(
+							ContentProviderOperation.newDelete(
+									PropertyBookContentProvider.CONTENT_URI_LIN).build());
+
+
+          writeActions.add(
+							ContentProviderOperation.newDelete(
+									PropertyBookContentProvider.CONTENT_URI_NSN).build());
 					
-					ContentProviderOperation.Builder deleteNSNs = 
+					writeActions.add(
 							ContentProviderOperation.newDelete(
-									PropertyBookContentProvider.CONTENT_URI_LIN);
-          writeActions.add(deleteNSNs.build());
-					
-					ContentProviderOperation.Builder deleteLINs = 
-							ContentProviderOperation.newDelete(
-									PropertyBookContentProvider.CONTENT_URI_NSN);
-          writeActions.add(deleteLINs.build());
-					
-					ContentProviderOperation.Builder deletePropertyBooks = 
-							ContentProviderOperation.newDelete(
-									PropertyBookContentProvider.CONTENT_URI_ITEM);
-          writeActions.add(deletePropertyBooks.build());
+									PropertyBookContentProvider.CONTENT_URI_ITEM).build());
+
           Log.i(DEBUG_CODE, "Added removal old data removal commands.");
 				}
 				
 
-        results.clear();
-        results.putString(RESULT_STRING,
-                "Reading property book.");
-        receiver.send(resultCode, results);
+        sendUpdate("Reading property book.", RESULT_PROCESSING);
 
         Log.i(DEBUG_CODE, "Starting to read property book.");
         ArrayList<PropertyBook> pbics = PrimaryHandReceiptReader
@@ -148,18 +142,15 @@ public class PBICImportService extends IntentService {
 				
 				if(!isStopped) {
 					
-					results.clear();
-					results.putString(RESULT_STRING, "Writing data");
-					receiver.send(resultCode, results);
+					sendUpdate("Writing data", RESULT_PROCESSING);
 
           try {
             ContentProviderResult[] insertResult =
               provider.applyBatch(writeActions);
 
             if(insertResult.length != writeActions.size()) {
-              results.putString(RESULT_STRING,
-                  "Some items were not written to the database.");
-              resultCode = RESULT_ERROR;
+              sendUpdate("Some items were not written to the database.",
+                  RESULT_ERROR);
             }
           } catch (ArrayIndexOutOfBoundsException err) {
               Log.w("PBICImportService", "Error inserting into database");
@@ -167,39 +158,33 @@ public class PBICImportService extends IntentService {
 				}
 				
 				if(!isStopped) {
-					results.putString(RESULT_STRING, "File import complete.");
-					resultCode = RESULT_OK;
+					sendUpdate("File import complete.", RESULT_OK);
 				} else {
-					results.putString(RESULT_STRING, "File import stopped");
-					resultCode = RESULT_ERROR;
+					sendUpdate("File import stopped", RESULT_ERROR);
 				}
 				
 				inStream.close();
 			} catch (FileNotFoundException e) {
 				Log.e(PBIC_IMPORT_ERROR, e.getMessage(), e);
-				results.putString(RESULT_STRING, 
-						"The file could not be found or accessed.");
+				results = "The file could not be found or accessed.";
 				resultCode = RESULT_ERROR;
 			} catch (IOException e) {
 				Log.e(PBIC_IMPORT_ERROR, e.getMessage(), e);
-				results.putString(RESULT_STRING, 
-						"There was an IO exception reading your file");
+				results = "There was an IO exception reading your file";
 				resultCode = RESULT_ERROR;
 			} catch (BiffException e) {
 				Log.e(PBIC_IMPORT_ERROR, e.getMessage(), e);
-				results.putString(RESULT_STRING, 
-						"There was a problem reading the excel file provided.");
+				results = "There was a problem reading the excel file provided.";
 				resultCode = RESULT_ERROR;
 			} catch (OperationApplicationException e) {
 				Log.e(PBIC_IMPORT_ERROR, e.getMessage(), e);
-				results.putString(RESULT_STRING, 
-						"The application caused and exception during import.");
+				results = "The application caused and exception during import.";
 				resultCode = RESULT_ERROR;
 			}  catch (Throwable t) {
 				Log.e(PBIC_IMPORT_ERROR, t.getMessage(), t);
                 throw closer.rethrow(t);
 			} finally { 
-				receiver.send(resultCode, results);
+				sendUpdate(results, resultCode);
 				closer.close();
 			}
 		} catch (IOException ioe) {
@@ -217,4 +202,11 @@ public class PBICImportService extends IntentService {
 		isStopped = true;
 		super.onDestroy();
 	}
+
+  private void sendUpdate(String message, int resultCode) {
+    Intent intent = new Intent(BROADCAST_ACTION)
+        .putExtra(RESULT_STRING, message)
+        .putExtra(RESULT_CODE, resultCode);
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+  }
 }

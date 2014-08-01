@@ -21,7 +21,7 @@ public class PropertyBookContentProvider extends ContentProvider {
   private Context context;
 
   public static final String AUTHORITY =
-      "com.NortrupDevelopment.PropertyApp.provider";
+      "com.NortrupDevelopment.PropertyBook.provider";
 
   private static UriMatcher uriMatcher;
 

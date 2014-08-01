@@ -2,8 +2,10 @@ package com.NortrupDevelopment.PropertyBook.view;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -52,6 +54,7 @@ public class ImportActivity extends Activity
   private ProgressDialog mImportProgressDialog;
 
   private String mImportMessage;
+  private int mProgressUpdates = 0;
 
   private ImportPresenter mPresenter;
 
@@ -223,7 +226,7 @@ public class ImportActivity extends Activity
         getString(R.string.button_cancel),
         this);
 
-
+    mImportProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
     mImportProgressDialog.show(this,
         getString(R.string.import_progress_title),
@@ -231,6 +234,103 @@ public class ImportActivity extends Activity
         false,
         true,
         this);
+  }
+
+  /**
+   * Directs the view to update the progress of the import with the provided
+   * message.
+   *
+   * @param progressUpdate Message to be displayed.
+   */
+  @Override
+  public void updateImportProgress(String progressUpdate) {
+    mImportProgressDialog.setProgress(mProgressUpdates++);
+    UpdateMessageRunnable runable = new UpdateMessageRunnable(progressUpdate);
+    runOnUiThread(runable);
+  }
+
+  /**
+   * Directs the view to stop showing the import progress reports and report to
+   * the user that the import is complete.
+   */
+  @Override
+  public void importComplete() {
+
+    ToastAndDismissRunnable runnable =
+        new ToastAndDismissRunnable(mImportProgressDialog,
+            getString(R.string.import_complete),
+            this);
+
+    runOnUiThread(runnable);
+  }
+
+  /**
+   * Directs the view to inform the user that the import has failed.
+   */
+  @Override
+  public void importFailed() {
+    ToastAndDismissRunnable runnable =
+        new ToastAndDismissRunnable(mImportProgressDialog,
+            getString(R.string.import_failed),
+            this);
+
+    runOnUiThread(runnable);
+  }
+
+  /**
+   * Lets us do status updates on the main thread.
+   */
+  class UpdateMessageRunnable implements Runnable {
+
+    private String mMessage;
+
+    public UpdateMessageRunnable(String message) {
+      mMessage = message;
+    }
+
+    @Override
+    public void run() {
+      mImportProgressDialog.setMessage(mMessage);
+    }
+  }
+
+  /**
+   * Dismisses the dialog box and displays a toast message to the user on the
+   * UI thread
+   */
+  class ToastAndDismissRunnable implements Runnable {
+    Dialog mDialog;
+    String mMessage;
+    Context mContext;
+
+    /**
+     * Constructor gathers dialog, message and context
+     * @param dialog Dialog to be dismissed
+     * @param message Message to be displayed in the toast
+     * @param context Context that all of this occurs in.
+     */
+    public ToastAndDismissRunnable(Dialog dialog,
+                                   String message,
+                                   Context context) {
+      mDialog = dialog;
+      mMessage = message;
+      mContext = context;
+    }
+
+    public void run() {
+      mDialog.dismiss();
+      Toast.makeText(mContext,
+          getString(R.string.import_failed),
+          Toast.LENGTH_LONG);
+    }
+  }
+
+  /**
+   * Provide the presenter with a current copy of the context.
+   */
+  @Override
+  public Context getContext() {
+    return this;
   }
 
 
