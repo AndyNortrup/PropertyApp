@@ -2,7 +2,7 @@ package com.NortrupDevelopment.PropertyBook.view;
 
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
+import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
@@ -36,14 +38,13 @@ public class ImportActivity extends Activity
       ListView.OnItemClickListener,
       DialogInterface.OnCancelListener,
       DialogInterface.OnClickListener
-
-
 {
-
   private static final String FILE_URI_KEY = "FILE_URI";
   private static final String PBIC_LIST_KEY = "PBIC_LIST_KEY";
   private static final String SELECTED_ITEMS_KEY = "SELECTED_ITEMS_KEY";
   private static final String PROGRESS_DIALOG_KEY = "PROGRESS_DIALOG_KEY";
+
+  private static final String TAG_IMPORT_FRAGMENT = "TAG_IMPORT_FRAGMENT";
 
   private static final int FILE_SELECT_CODE = 1;
 
@@ -54,9 +55,9 @@ public class ImportActivity extends Activity
   private ProgressDialog mImportProgressDialog;
 
   private String mImportMessage;
-  private int mProgressUpdates = 0;
-
   private ImportPresenter mPresenter;
+
+  private ImportTaskFragment mImportFragment;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,9 @@ public class ImportActivity extends Activity
         }
       }
     }
+
+    mImportFragment = (ImportTaskFragment)getFragmentManager()
+        .findFragmentByTag(TAG_IMPORT_FRAGMENT);
   }
 
   @Override
@@ -159,6 +163,9 @@ public class ImportActivity extends Activity
     }
   }
 
+  /**
+   * Displays the PBIC List.
+   */
   public void showPBICSelect() {
     mPBICSelectList.setVisibility(View.VISIBLE);
     findViewById(R.id.import_welcome_textview).setVisibility(View.GONE);
@@ -220,18 +227,11 @@ public class ImportActivity extends Activity
   @Override
   public void showImportProgress() {
     mImportMessage = getString(R.string.import_starting);
-    mImportProgressDialog = new ProgressDialog(this);
-
-    mImportProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
-        getString(R.string.button_cancel),
-        this);
-
-    mImportProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-    mImportProgressDialog.show(this,
+    mImportProgressDialog = new ProgressDialog(this)
+    .show(this,
         getString(R.string.import_progress_title),
         mImportMessage,
-        false,
+        true,
         true,
         this);
   }
@@ -244,9 +244,8 @@ public class ImportActivity extends Activity
    */
   @Override
   public void updateImportProgress(String progressUpdate) {
-    mImportProgressDialog.setProgress(mProgressUpdates++);
-    UpdateMessageRunnable runable = new UpdateMessageRunnable(progressUpdate);
-    runOnUiThread(runable);
+    mImportMessage = progressUpdate;
+    mImportProgressDialog.setMessage(mImportMessage);
   }
 
   /**
@@ -256,12 +255,14 @@ public class ImportActivity extends Activity
   @Override
   public void importComplete() {
 
-    ToastAndDismissRunnable runnable =
-        new ToastAndDismissRunnable(mImportProgressDialog,
-            getString(R.string.import_complete),
-            this);
+    mImportProgressDialog.dismiss();
+    Toast.makeText(this,
+        getString(R.string.import_complete),
+        Toast.LENGTH_LONG).show();
 
-    runOnUiThread(runnable);
+    getFragmentManager().beginTransaction().remove(mImportFragment).commit();
+    mImportFragment = null;
+    this.finish();
   }
 
   /**
@@ -269,60 +270,14 @@ public class ImportActivity extends Activity
    */
   @Override
   public void importFailed() {
-    ToastAndDismissRunnable runnable =
-        new ToastAndDismissRunnable(mImportProgressDialog,
-            getString(R.string.import_failed),
-            this);
 
-    runOnUiThread(runnable);
-  }
+    mImportProgressDialog.dismiss();
+    Toast.makeText(this,
+        getString(R.string.import_failed),
+        Toast.LENGTH_LONG).show();
 
-  /**
-   * Lets us do status updates on the main thread.
-   */
-  class UpdateMessageRunnable implements Runnable {
-
-    private String mMessage;
-
-    public UpdateMessageRunnable(String message) {
-      mMessage = message;
-    }
-
-    @Override
-    public void run() {
-      mImportProgressDialog.setMessage(mMessage);
-    }
-  }
-
-  /**
-   * Dismisses the dialog box and displays a toast message to the user on the
-   * UI thread
-   */
-  class ToastAndDismissRunnable implements Runnable {
-    Dialog mDialog;
-    String mMessage;
-    Context mContext;
-
-    /**
-     * Constructor gathers dialog, message and context
-     * @param dialog Dialog to be dismissed
-     * @param message Message to be displayed in the toast
-     * @param context Context that all of this occurs in.
-     */
-    public ToastAndDismissRunnable(Dialog dialog,
-                                   String message,
-                                   Context context) {
-      mDialog = dialog;
-      mMessage = message;
-      mContext = context;
-    }
-
-    public void run() {
-      mDialog.dismiss();
-      Toast.makeText(mContext,
-          getString(R.string.import_failed),
-          Toast.LENGTH_LONG);
-    }
+    getFragmentManager().beginTransaction().remove(mImportFragment).commit();
+    mImportFragment = null;
   }
 
   /**
@@ -331,6 +286,36 @@ public class ImportActivity extends Activity
   @Override
   public Context getContext() {
     return this;
+  }
+
+  /**
+   * Return a copy of the Activity's presenter
+   *
+   * @return The presenter for this activity.
+   */
+  @Override
+  public ImportPresenter getPresenter() {
+    return mPresenter;
+  }
+
+  /**
+   * Instructs the view to start an ImportTaskFragment
+   */
+  public void startImportFragment(Uri file, int[] sheets, boolean emptyDatabase)
+  {
+
+    if(mImportFragment == null) {
+      FragmentManager fm = getFragmentManager();
+      mImportFragment = new ImportTaskFragment();
+
+      Bundle arguments = new Bundle();
+      arguments.putParcelable(ImportTaskFragment.ARGUMENTS_KEY,
+          new ImportParameters(file, sheets, emptyDatabase));
+
+      mImportFragment.setArguments(arguments);
+      fm.beginTransaction().add(mImportFragment, TAG_IMPORT_FRAGMENT).commit();
+    }
+
   }
 
 

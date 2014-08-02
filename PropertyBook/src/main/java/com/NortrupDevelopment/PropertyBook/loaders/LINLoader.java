@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.model;
+package com.NortrupDevelopment.PropertyBook.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+
+import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
+import com.NortrupDevelopment.PropertyBook.model.TableContractLIN;
 
 import java.util.ArrayList;
 
