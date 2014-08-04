@@ -161,7 +161,7 @@ public class ImportTaskFragment extends Fragment {
           }
 
 
-          publishProgress("Reading property book.");
+          publishProgress("Reading property book");
 
           Log.i(DEBUG_CODE, "Starting to read property book.");
           ArrayList<PropertyBook> pbics = PrimaryHandReceiptReader

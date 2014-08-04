@@ -167,8 +167,6 @@ public class ImportActivity extends Activity
    * Displays the PBIC List.
    */
   public void showPBICSelect() {
-    mPBICSelectList.setVisibility(View.VISIBLE);
-    findViewById(R.id.import_welcome_textview).setVisibility(View.GONE);
 
     //Create list and list adapter
     mPBICs = new ArrayList<String>();
@@ -222,6 +220,7 @@ public class ImportActivity extends Activity
    */
   @Override
   public void setImportButtonEnabled(boolean state) {
+    mImportButton.setEnabled(state);
     if(state) {
       mImportButton.setVisibility(View.VISIBLE);
     } else {

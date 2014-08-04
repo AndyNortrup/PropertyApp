@@ -73,6 +73,7 @@
     <ImageButton android:id="@+id/import_button"
         style="@style/ButtonFullWidth.WithMargin"
         android:src="@drawable/ic_action_import"
-        android:background="@null"/>
+        android:background="@null"
+        android:visibility="gone"/>
 
 </LinearLayout>

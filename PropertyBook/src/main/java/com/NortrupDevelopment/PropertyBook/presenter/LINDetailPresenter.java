@@ -240,10 +240,11 @@ public class LINDetailPresenter {
     @Override
     public void onLoadFinished(Loader<ArrayList<Item>> loader, ArrayList<Item> data) {
 
+      //Find the NSN in the list of LINs.
+      LIN lin = mLINs.get(((ItemLoader)loader).getLIN());
+      NSN nsn = lin.getNSNById(loader.getId());
+
       if (data.size() > 0) {
-        //Find the NSN in the list of LINs.
-        LIN lin = mLINs.get(((ItemLoader)loader).getLIN());
-        NSN nsn = lin.getNSNById(loader.getId());
 
         //Add the item to the NSN
         for (Item item : data) {
@@ -251,8 +252,9 @@ public class LINDetailPresenter {
             nsn.addItem(item);
           }
         }
-        mDetailView.addNSNtoLIN(nsn, lin);
       }
+
+      mDetailView.addNSNtoLIN(nsn, lin);
     }
 
     @Override
