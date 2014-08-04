@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.loaders.LINLoader;
+import com.NortrupDevelopment.PropertyBook.view.LINBrowser;
 
 import java.util.ArrayList;
 

@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.model.NSN;
-import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetailPresenter;
 
 import it.gmariotti.cardslib.library.internal.Card;

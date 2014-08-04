@@ -15,7 +15,8 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,6 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
 import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
-import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class ImportActivity extends Activity
 
   private static final int FILE_SELECT_CODE = 1;
 
-  private Button mImportButton, mFileSelectButton;
+  private ImageButton mImportButton, mFileSelectButton;
   private ListView mPBICSelectList;
   private ArrayAdapter<String> mPBICListAdapter;
   private ArrayList<String> mPBICs;
@@ -66,10 +66,10 @@ public class ImportActivity extends Activity
     mPresenter = new ImportPresenter(this);
     setContentView(R.layout.activity_import);
 
-    mFileSelectButton = (Button)findViewById(R.id.import_file_select_button);
+    mFileSelectButton = (ImageButton)findViewById(R.id.import_file_select_button);
     mFileSelectButton.setOnClickListener(this);
 
-    mImportButton = (Button)findViewById(R.id.import_button);
+    mImportButton = (ImageButton)findViewById(R.id.import_button);
     mImportButton.setOnClickListener(this);
     mImportButton.setEnabled(false);
 
@@ -189,12 +189,19 @@ public class ImportActivity extends Activity
     TextView filePathDisplay = (TextView)findViewById(R.id.import_file_path);
     filePathDisplay.setText(value);
 
+    ImageView fileImportStatus =
+        (ImageView)findViewById(R.id.import_file_status);
+
     if(!good) {
       filePathDisplay.setTextColor(
           getResources().getColor(android.R.color.holo_red_dark));
+      fileImportStatus.setImageDrawable(
+          getResources().getDrawable(R.drawable.ic_action_navigation_cancel));
     } else {
       filePathDisplay.setTextColor(
           getResources().getColor(R.color.property_app_dark_green));
+      fileImportStatus.setImageDrawable(
+          getResources().getDrawable(R.drawable.ic_action_navigation_accept));
     }
   }
 

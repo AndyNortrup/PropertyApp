@@ -14,6 +14,7 @@ import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.model.NSN;
 import com.NortrupDevelopment.PropertyBook.loaders.NSNLoader;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
+import com.NortrupDevelopment.PropertyBook.view.LINDetail;
 
 import java.util.ArrayList;
 

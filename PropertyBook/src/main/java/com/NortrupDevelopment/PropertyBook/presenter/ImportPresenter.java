@@ -7,6 +7,7 @@ import android.util.SparseBooleanArray;
 import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.loaders.PBICLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.PBICLoaderCallbacks;
+import com.NortrupDevelopment.PropertyBook.view.ImportView;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import java.util.ArrayList;

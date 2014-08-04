@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
-import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 
 import java.util.ArrayList;

@@ -43,12 +43,6 @@
     <dimen name="card_base_empty_height">50dp</dimen>
 
     <style name="PropertyApp" parent="android:style/Theme.Holo.Light">
-        <item name="android:actionBarTabStyle">@style/PropertyApp.ActionBarTab</item>
-    </style>
-
-    <style name="PropertyApp.ActionBarTab">
-        <item name="android:background">@drawable/tab_bar_background</item>
-        <item name="android:gravity">center</item>
     </style>
 
 

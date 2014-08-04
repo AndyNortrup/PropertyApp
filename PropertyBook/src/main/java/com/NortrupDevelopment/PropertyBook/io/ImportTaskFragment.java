@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
-import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
+import com.NortrupDevelopment.PropertyBook.view.ImportView;
 import com.NortrupDevelopment.PropertyBook.view.PrimaryHandReceiptReader;
 import com.google.common.io.Closer;
 
