@@ -1,14 +1,15 @@
 package com.NortrupDevelopment.PropertyBook.loaders;
 
 import android.content.AsyncTaskLoader;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
+import com.NortrupDevelopment.PropertyBook.model.DatabaseOpenHelper;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
 import com.NortrupDevelopment.PropertyBook.model.TableContractLIN;
@@ -22,22 +23,23 @@ import java.util.ArrayList;
 public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   private static final String PROJECTION[] = {
-    TableContractLIN._ID,
-        TableContractLIN.columnNomenclature,
-        TableContractLIN.columnSubLIN,
-        TableContractLIN.columnLIN,
-        TableContractLIN.columnAuthDoc,
-        TableContractLIN.columnAuthorized,
-        TableContractLIN.columnDI,
-        TableContractLIN.columnERC,
-        TableContractLIN.columnPropertyBookId,
-        TableContractLIN.columnRequired,
-        TableContractLIN.columnSRI
+      TableContractLIN._ID,
+      TableContractLIN.NOMENCLATURE,
+      TableContractLIN.SUB_LIN,
+      TableContractLIN.LIN,
+      TableContractLIN.AUTH_DOC,
+      TableContractLIN.AUTHORIZED,
+      TableContractLIN.DI,
+      TableContractLIN.ERC,
+      TableContractLIN.PROPERTY_BOOK_ID,
+      TableContractLIN.REQUIRED,
+      TableContractLIN.SRI
   };
 
-  private static final String SORT_ORDER = TableContractLIN.columnLIN + " ASC";
+  private static final String SORT_ORDER = TableContractLIN.LIN + " ASC";
 
   private boolean mIncludeSubLINs = false;
+  private boolean mGroupByLIN = false;
   private long mLinID = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
@@ -57,6 +59,10 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     mIncludeSubLINs = includeSubLINs;
   }
 
+  public void setGroupByLIN(boolean groupByLIN) {
+    mGroupByLIN = groupByLIN;
+  }
+
   //<editor-fold desc="Async Task Methods">
   /**
    * Loads data in the background based on arguments in the constructor.
@@ -64,7 +70,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   @Override
   public ArrayList<LIN> loadInBackground() {
-        return queryLINs();
+    return queryLINs();
   }
 
   @Override
@@ -92,9 +98,9 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
       mObserver = new LINContentObserver(new LINChangeHandler(this));
 
       mContext.getContentResolver().registerContentObserver(
-        PropertyBookContentProvider.CONTENT_URI_LIN,
-        true,
-        mObserver);
+          PropertyBookContentProvider.CONTENT_URI_LIN,
+          true,
+          mObserver);
     }
 
     if(takeContentChanged() || mLoaderData == null) {
@@ -150,18 +156,26 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    */
   private ArrayList<LIN> queryLINs() {
 
+    SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+    queryBuilder.setTables(TableContractLIN.TABLE_NAME);
+
     StringBuilder selectionBuilder = new StringBuilder();
     String selectionString = null;
     String[] selectionArgs = null;
+    String groupBy = "";
+
+    if(mGroupByLIN) {
+      groupBy = TableContractLIN.LIN;
+    }
 
     if(mIncludeSubLINs && mLinID != -1) {
       //Use a subquery to select all of the LINs that share a Line Number
       //with the LIN with the given _ID (mLinID).
-      selectionBuilder.append(TableContractLIN.columnLIN)
+      selectionBuilder.append(TableContractLIN.LIN)
           .append(" IN (SELECT ")
-          .append(TableContractLIN.columnLIN)
+          .append(TableContractLIN.LIN)
           .append(" FROM ")
-          .append(TableContractLIN.tableName)
+          .append(TableContractLIN.TABLE_NAME)
           .append(" WHERE ")
           .append(TableContractLIN._ID)
           .append(" = ?)");
@@ -177,21 +191,26 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
       selectionArgs = new String[]{String.valueOf(mLinID)};
 
-    } else if(!mIncludeSubLINs && mLinID == -1) {
+    } else if(!mIncludeSubLINs) {
       //Select all primary LINs in the property book.  Any LIN with a value in
       //SubLIN field is excluded.
-      selectionBuilder.append(TableContractLIN.columnSubLIN + " = ''");
+      selectionBuilder.append(TableContractLIN.SUB_LIN + " = ''");
       selectionString = selectionBuilder.toString();
     }
     //The fourth case in this set is to select everything from the database
     //this requires no else because the query has no where clause and
     //selectionString remains equal to null
 
-    ContentResolver resolver = mContext.getContentResolver();
-    Cursor data = resolver.query(PropertyBookContentProvider.CONTENT_URI_LIN,
+
+    DatabaseOpenHelper dbHelp = new DatabaseOpenHelper(getContext());
+
+    Cursor data = queryBuilder.query(
+        dbHelp.getReadableDatabase(),
         PROJECTION,
         selectionString,
         selectionArgs,
+        groupBy,
+        "",
         SORT_ORDER);
 
     if(data.getCount() == 0) {
@@ -216,15 +235,16 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
   private LIN createLINFromCursor(Cursor data) {
     return  new LIN(
         data.getInt(data.getColumnIndex(TableContractLIN._ID)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnLIN)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnSubLIN)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnSRI)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnERC)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnNomenclature)),
-        data.getString(data.getColumnIndex(TableContractLIN.columnAuthDoc)),
-        data.getInt(data.getColumnIndex(TableContractLIN.columnRequired)),
-        data.getInt(data.getColumnIndex(TableContractLIN.columnAuthorized)),
-        data.getInt(data.getColumnIndex(TableContractLIN.columnDI)));
+        data.getString(data.getColumnIndex(TableContractLIN.LIN)),
+        data.getString(data.getColumnIndex(TableContractLIN.SUB_LIN)),
+        data.getString(data.getColumnIndex(TableContractLIN.SRI)),
+        data.getString(data.getColumnIndex(TableContractLIN.ERC)),
+        data.getString(data.getColumnIndex(TableContractLIN.NOMENCLATURE)),
+        data.getString(data.getColumnIndex(TableContractLIN.AUTH_DOC)),
+        data.getInt(data.getColumnIndex(TableContractLIN.REQUIRED)),
+        data.getInt(data.getColumnIndex(TableContractLIN.AUTHORIZED)),
+        data.getInt(data.getColumnIndex(TableContractLIN.DI)),
+        data.getInt(data.getColumnIndex(TableContractLIN.PROPERTY_BOOK_ID)));
   }
 }
 
@@ -236,7 +256,7 @@ class LINContentObserver extends ContentObserver {
 
   @Override
   public void onChange(boolean selfChange) {
-     this.onChange(selfChange, null);
+    this.onChange(selfChange, null);
   }
 
   @Override

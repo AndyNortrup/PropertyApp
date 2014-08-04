@@ -80,7 +80,7 @@ public class PropertyBookContentProvider extends ContentProvider {
   public static final String ALIAS_TOTAL_LINS = "total_lins";
   private static final String GET_TOTAL_LINS =
       "SELECT COUNT(*) as " + ALIAS_TOTAL_LINS + " FROM " +
-          TableContractLIN.tableName;
+          TableContractLIN.TABLE_NAME;
 
   /**
    * Alias for the column name for the total number of Items on the PB
@@ -124,7 +124,7 @@ public class PropertyBookContentProvider extends ContentProvider {
 
       case URI_CODE_LIN:
         deletedRows = mDatabaseHelper.getWritableDatabase().delete(
-            TableContractLIN.tableName, selection, selectionArgs);
+            TableContractLIN.TABLE_NAME, selection, selectionArgs);
         break;
       case URI_CODE_NSN:
         deletedRows = mDatabaseHelper.getWritableDatabase().delete(
@@ -166,12 +166,12 @@ public class PropertyBookContentProvider extends ContentProvider {
     switch (uriMatcher.match(uri)) {
       case URI_CODE_LIN:
         //must have a LIN number
-        if (values.containsKey(TableContractLIN.columnLIN) &&
-            !values.getAsString(TableContractLIN.columnLIN)
+        if (values.containsKey(TableContractLIN.LIN) &&
+            !values.getAsString(TableContractLIN.LIN)
                 .equals("")) {
 
           id = mDatabaseHelper.getWritableDatabase().insert(
-              TableContractLIN.tableName, "", values);
+              TableContractLIN.TABLE_NAME, "", values);
           path = PATH_LIN;
         }
         break;
@@ -228,10 +228,12 @@ public class PropertyBookContentProvider extends ContentProvider {
       throws NullPointerException {
     Cursor result = null;
 
+    SQLiteQueryBuilder queryBuilder;
+
     switch (uriMatcher.match(uri)) {
       case URI_CODE_LIN:
         result = mDatabaseHelper.getReadableDatabase().query(
-            TableContractLIN.tableName,
+            TableContractLIN.TABLE_NAME,
             projection,
             selection,
             selectionArgs,
@@ -271,7 +273,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
       case URI_CODE_ITEM_DATA:
         SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setDistinct(true);
         queryBuilder.setTables(ViewContractItemData.VIEW_NAME);
 
@@ -316,7 +318,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
       case URI_CODE_LIN:
         result = mDatabaseHelper.getReadableDatabase().update(
-            TableContractLIN.tableName,
+            TableContractLIN.TABLE_NAME,
             values,
             selection,
             selectionArgs);
@@ -387,7 +389,8 @@ public class PropertyBookContentProvider extends ContentProvider {
   /**
    * Returns the total number of LINs recorded in the property book
    *
-   * @return Cursor containting the total number of LINs in the property book.
+   * @return A cursor with a count of the total number of LINs in the property
+   * book.
    * @throws NullPointerException
    */
   public Cursor getTotalLINs() throws NullPointerException {

@@ -12,6 +12,8 @@ import com.NortrupDevelopment.PropertyBook.model.LIN;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
+ * LINDetailHeader is a card header that provides all of the detailed
+ * information about a LIN to the user.
  * Created by andy on 6/8/14.
  */
 public class LINDetailHeader extends CardHeader {
@@ -33,9 +35,9 @@ public class LINDetailHeader extends CardHeader {
     TextView linTextView = (TextView)view.findViewById(R.id.lin);
     linTextView.setText(mLIN.getLin());
 
-      TextView textView = (TextView)view.findViewById(
-          R.id.lin_nomenclature);
-      textView.setText(mLIN.getNomencalture());
+    TextView textView = (TextView)view.findViewById(
+        R.id.lin_nomenclature);
+    textView.setText(mLIN.getNomencalture());
 
     TextView subLinView = (TextView)view.findViewById(R.id.sub_lin);
     if(!TextUtils.isEmpty(mLIN.getSubLin())) {
@@ -68,5 +70,10 @@ public class LINDetailHeader extends CardHeader {
     TextView authDocTV = (TextView)view.findViewById(
         R.id.lin_card_auth_doc_value);
     authDocTV.setText(mLIN.getAuthDoc());
+
+    if(mLIN.getPropertyBook() != null) {
+      TextView PBIC = (TextView)view.findViewById(R.id.lin_card_pbic_value);
+      PBIC.setText(mLIN.getPropertyBook().getPBIC().replace("PBIC ", ""));
+    }
   }
 }

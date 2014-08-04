@@ -64,6 +64,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
     LINLoader loader = new LINLoader((Context)mActivity);
     loader.includeSubLINs(false);
+    loader.setGroupByLIN(true);
     return loader;
   }
 
@@ -80,7 +81,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
 
   @Override
   public void onLoaderReset(Loader<ArrayList<LIN>> loader) {
-    mActivity.setCardList(null);
+    //Nothing required, we are not retaining a link to the cursor.
   }
   //endregion
 }

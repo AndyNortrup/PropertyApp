@@ -70,6 +70,8 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
       result.add(NSN.NSNFromCursor(data));
     }
 
+    data.close();
+
     return result;
   }
 

@@ -40,12 +40,4 @@ public class LINDetailActivity extends Activity {
         TAG_DISPLAY_FRAGMENT);
     ft.commit();
   }
-
-
-
-
-
-
-
-
 }

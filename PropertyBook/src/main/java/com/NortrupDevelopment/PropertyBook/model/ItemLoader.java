@@ -27,8 +27,8 @@ public class ItemLoader extends AsyncTaskLoader<ArrayList<Item>> {
 
   private Context mContext;
 
-  private long mNSNId;
-  private long mLINId;
+  private int mNSNId;
+  private int mLINId;
   private ArrayList<Item> mData;
   private ItemChangeHandler mObserver;
 
@@ -111,7 +111,7 @@ public class ItemLoader extends AsyncTaskLoader<ArrayList<Item>> {
    * Sets the NSN Id as a parameter for search.
    * @param nsnId The database id of the NSN that all Items belong too.
    */
-  public void setNSN(long nsnId) {
+  public void setNSN(int nsnId) {
     mNSNId = nsnId;
   }
 
@@ -119,11 +119,11 @@ public class ItemLoader extends AsyncTaskLoader<ArrayList<Item>> {
     return mNSNId;
   }
 
-  public void setLIN(long linId) {
+  public void setLIN(int linId) {
     mLINId = linId;
   }
 
-  public long getLIN() {
+  public int getLIN() {
     return mLINId;
   }
 
