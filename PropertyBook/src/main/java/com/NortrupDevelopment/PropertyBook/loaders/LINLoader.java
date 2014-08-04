@@ -4,6 +4,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Handler;
@@ -203,9 +204,10 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
 
     DatabaseOpenHelper dbHelp = new DatabaseOpenHelper(getContext());
+    SQLiteDatabase database = dbHelp.getReadableDatabase();
 
     Cursor data = queryBuilder.query(
-        dbHelp.getReadableDatabase(),
+        database,
         PROJECTION,
         selectionString,
         selectionArgs,
@@ -222,6 +224,10 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     while(data.moveToNext()) {
       result.add(createLINFromCursor(data));
     }
+    data.close();
+    database.close();
+    dbHelp.close();
+
     return result;
   }
 

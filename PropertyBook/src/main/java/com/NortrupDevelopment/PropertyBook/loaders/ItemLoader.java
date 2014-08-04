@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.model;
+package com.NortrupDevelopment.PropertyBook.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
@@ -6,6 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
+
+import com.NortrupDevelopment.PropertyBook.model.Item;
+import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
+import com.NortrupDevelopment.PropertyBook.model.TableContractItem;
 
 import java.util.ArrayList;
 
@@ -62,6 +66,7 @@ public class ItemLoader extends AsyncTaskLoader<ArrayList<Item>> {
     while(data.moveToNext()) {
       result.add(Item.itemFromCursor(data));
     }
+    data.close();
 
     return result;
   }

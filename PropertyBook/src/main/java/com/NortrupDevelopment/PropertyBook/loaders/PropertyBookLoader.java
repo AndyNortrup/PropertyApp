@@ -176,6 +176,7 @@ public class PropertyBookLoader
     while(cursor.moveToNext()) {
       result.add(propertyBookFromCursor(cursor));
     }
+    cursor.close();
     return result;
   }
 

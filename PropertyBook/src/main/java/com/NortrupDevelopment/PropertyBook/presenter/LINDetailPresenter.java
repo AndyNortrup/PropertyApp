@@ -9,10 +9,10 @@ import android.util.SparseIntArray;
 import com.NortrupDevelopment.PropertyBook.loaders.LINLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.PropertyBookLoader;
 import com.NortrupDevelopment.PropertyBook.model.Item;
-import com.NortrupDevelopment.PropertyBook.model.ItemLoader;
+import com.NortrupDevelopment.PropertyBook.loaders.ItemLoader;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.model.NSN;
-import com.NortrupDevelopment.PropertyBook.model.NSNLoader;
+import com.NortrupDevelopment.PropertyBook.loaders.NSNLoader;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class LINDetailPresenter {
           args.putInt(NSN_ID_KEY, nsn.getNsnId());
           args.putInt(LIN_ID_KEY, loader.getId());
 
-          mDetailView.getViewLoaderManager().initLoader((int) nsn.getNsnId(),
+          mDetailView.getViewLoaderManager().initLoader(nsn.getNsnId(),
               args,
               new ItemLoaderCallback());
         }
@@ -241,7 +241,7 @@ public class LINDetailPresenter {
 
       if (data.size() > 0) {
         //Find the NSN in the list of LINs.
-        LIN lin = mLINs.get((int)((ItemLoader)loader).getLIN());
+        LIN lin = mLINs.get(((ItemLoader)loader).getLIN());
         NSN nsn = lin.getNSNById(loader.getId());
 
         //Add the item to the NSN
