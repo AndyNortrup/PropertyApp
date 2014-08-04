@@ -1,0 +1,93 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="lin_card_label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:paddingLeft">14dp</item>
+        <!--<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>-->
+    </style>
+    <style name="lin_card_value">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:paddingLeft">10dp</item>
+        <!--<item name="android:textAppearance">?android:attr/textAppearanceMedium</item>-->
+    </style>
+
+
+
+    <style name="search_result_label">
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingRight">5sp</item>
+    </style>
+
+    <dimen name="card_base_empty_height">50dp</dimen>
+
+    <style name="PropertyApp" parent="android:style/Theme.Holo.Light">
+
+    </style>
+
+    <style name="ButtonFullWidth">
+        <item name="android:textColor">@color/app_primary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="ButtonFullWidth.WithMargin">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
+
+
+    <style name="PropertyApp.HeaderText">
+        <item name="android:textColor">@color/app_primary_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="PropertyApp.ImportFileName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:layout_margin">14dp</item>
+    </style>
+
+    <style name="PropertyApp.ImportProgressText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">14dp</item>
+    </style>
+
+    <style name="PropertyApp.RightSideIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">32dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+
+
+</resources>

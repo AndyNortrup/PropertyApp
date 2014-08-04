@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_primary_color">#259b24</color>
+    <color name="card_base_cardwithlist_divider_color">
+        @color/app_primary_color
+    </color>
+
+</resources>

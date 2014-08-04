@@ -1,0 +1,15 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/search_property_book"
+            android:icon="@drawable/ic_action_search"
+            android:title="@string/search_label"
+            android:showAsAction="always"
+            android:visible="true"/>
+        <item android:id="@+id/import_property_book"
+            android:icon="@drawable/ic_action_import_export"
+            android:title="@string/import_label"
+            android:visible="true"/>
+        <item android:id="@+id/property_book_statistics"
+            android:title="@string/statistics"
+            android:visible="true"/>
+    </menu>
