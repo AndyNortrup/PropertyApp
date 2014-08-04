@@ -53,7 +53,7 @@ public class NoSearchResultsFragment extends Fragment {
 
         spannable.setSpan(
                 new ForegroundColorSpan(
-                  getResources().getColor(R.color.property_app_dark_green)),
+                  getResources().getColor(R.color.app_primary_color)),
                 textPrefixLength,
                 textPrefixLength + searchQuery.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE

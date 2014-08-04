@@ -8,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
@@ -17,14 +19,12 @@ import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.view.CardListView;
 
 public class LINBrowserActivity extends Activity
     implements View.OnClickListener, LINBrowser, Card.OnCardClickListener {
 
   private LINBrowserPresenter mPresenter;
-  private CardListView mCardList;
+  private ListView mListView;
   private LinearLayout mLoadingLayout;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class LINBrowserActivity extends Activity
     getActionBar();
 
     //Grab our view elements
-    mCardList = (CardListView)findViewById(R.id.lin_list);
+    mListView = (ListView)findViewById(R.id.lin_list);
     mLoadingLayout = (LinearLayout)findViewById(R.id.lin_loading_progress);
 
     //Connect our presenter
@@ -100,7 +100,7 @@ public class LINBrowserActivity extends Activity
    */
   @Override
   public void showLoadingProgressBar() {
-    mCardList.setVisibility(View.GONE);
+    mListView.setVisibility(View.GONE);
     mLoadingLayout.setVisibility(View.VISIBLE);
   }
 
@@ -111,7 +111,7 @@ public class LINBrowserActivity extends Activity
   @Override
   public void showList() {
     mLoadingLayout.setVisibility(View.GONE);
-    mCardList.setVisibility(View.VISIBLE);
+    mListView.setVisibility(View.VISIBLE);
   }
 
   @Override
@@ -153,18 +153,25 @@ public class LINBrowserActivity extends Activity
    */
   public void setCardList(ArrayList<LIN> lins) {
 
-    ArrayList<Card> cards = new ArrayList<Card>();
     if(lins != null) {
-      for (LIN lin : lins) {
-        LinCard card = new LinCard(this);
-        card.setLIN(lin);
-        cards.add(card);
+      LINArrayAdapter adapter = new LINArrayAdapter(this,
+          R.layout.card_lin_browser,
+          lins);
 
-        //Have this class listen for clicks on this card
-        card.setOnClickListener(this);
-      }
+      mListView.setAdapter(adapter);
+      mListView.setFastScrollEnabled(true);
 
-      mCardList.setAdapter(new CardArrayAdapter(this, cards));
+      mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent,
+                                View view,
+                                int position,
+                                long id) {
+
+          mPresenter.listItemSelected(
+              ((LINArrayAdapter)mListView.getAdapter()).getItem(position));
+        }
+      });
     } else {
       mPresenter.importRequested();
     }

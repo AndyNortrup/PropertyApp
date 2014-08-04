@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:textStyle="bold"
-        android:textColor="@color/property_app_dark_green"
+        android:textColor="@color/primary_color"
         android:text="@string/label_nomenclature"
         />
 

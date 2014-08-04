@@ -12,7 +12,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/import_header"
         android:id="@+id/import_header"
-        android:textColor="@color/property_app_dark_green"
+        android:textColor="@color/primary_color"
         android:singleLine="true"
         android:layout_marginLeft="16dp"
         android:gravity="center_vertical"/>
@@ -62,7 +62,7 @@
         android:layout_height="0dp"
         android:id="@+id/pbic_select_list"
         android:layout_weight="1"
-        android:divider="@color/property_app_dark_green"
+        android:divider="@color/primary_color"
         android:headerDividersEnabled="true"
         android:footerDividersEnabled="true"
         android:dividerHeight="1sp"

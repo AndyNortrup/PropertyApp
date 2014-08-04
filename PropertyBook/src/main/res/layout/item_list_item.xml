@@ -12,7 +12,7 @@
             android:layout_marginBottom="8dp"
             android:id="@+id/item_ends_in"
             android:textColor="@android:color/white"
-            android:background="@color/property_app_dark_green"
+            android:background="@color/primary_color"
             android:textSize="14sp"
             android:textAlignment="center"
             android:text="BZGZ"
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="@color/property_app_dark_green"
+                android:textColor="@color/primary_color"
                 android:text="FCH1131BZG2"/>
             <TextView
                 android:id="@+id/system_number_value"

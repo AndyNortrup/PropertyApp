@@ -1,6 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -53,6 +52,7 @@ public class ImportActivity extends Activity
   private ArrayAdapter<String> mPBICListAdapter;
   private ArrayList<String> mPBICs;
   private ProgressDialog mImportProgressDialog;
+  private ImageView mImageFileStatus;
 
   private String mImportMessage;
   private ImportPresenter mPresenter;
@@ -188,19 +188,17 @@ public class ImportActivity extends Activity
 
     TextView filePathDisplay = (TextView)findViewById(R.id.import_file_path);
     filePathDisplay.setText(value);
-
-    ImageView fileImportStatus =
-        (ImageView)findViewById(R.id.import_file_status);
+    mImageFileStatus = (ImageView)findViewById(R.id.import_file_status);
 
     if(!good) {
       filePathDisplay.setTextColor(
           getResources().getColor(android.R.color.holo_red_dark));
-      fileImportStatus.setImageDrawable(
+      mImageFileStatus.setImageDrawable(
           getResources().getDrawable(R.drawable.ic_action_navigation_cancel));
     } else {
       filePathDisplay.setTextColor(
-          getResources().getColor(R.color.property_app_dark_green));
-      fileImportStatus.setImageDrawable(
+          getResources().getColor(R.color.primary_color));
+      mImageFileStatus.setImageDrawable(
           getResources().getDrawable(R.drawable.ic_action_navigation_accept));
     }
   }
@@ -224,7 +222,11 @@ public class ImportActivity extends Activity
    */
   @Override
   public void setImportButtonEnabled(boolean state) {
-    mImportButton.setEnabled(state);
+    if(state) {
+      mImportButton.setVisibility(View.VISIBLE);
+    } else {
+      mImportButton.setVisibility(View.GONE);
+    }
   }
 
   /**

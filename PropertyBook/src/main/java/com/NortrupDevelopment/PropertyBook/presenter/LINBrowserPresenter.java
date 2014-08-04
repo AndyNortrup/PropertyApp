@@ -39,7 +39,6 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   }
 
   //region UI Click events
-
   public void listItemSelected(LIN selected) {
     mActivity.startLINDetailActivity(selected.getLinId());
   }
