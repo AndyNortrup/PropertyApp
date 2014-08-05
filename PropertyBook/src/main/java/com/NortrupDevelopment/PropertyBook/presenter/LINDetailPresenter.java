@@ -4,15 +4,14 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.SparseArray;
-import android.util.SparseIntArray;
 
+import com.NortrupDevelopment.PropertyBook.loaders.ItemLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.LINLoader;
+import com.NortrupDevelopment.PropertyBook.loaders.NSNLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.PropertyBookLoader;
 import com.NortrupDevelopment.PropertyBook.model.Item;
-import com.NortrupDevelopment.PropertyBook.loaders.ItemLoader;
 import com.NortrupDevelopment.PropertyBook.model.LIN;
 import com.NortrupDevelopment.PropertyBook.model.NSN;
-import com.NortrupDevelopment.PropertyBook.loaders.NSNLoader;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 import com.NortrupDevelopment.PropertyBook.view.LINDetail;
 
@@ -33,7 +32,6 @@ public class LINDetailPresenter {
   LINDetail mDetailView;
   long mLINID;
   SparseArray<LIN> mLINs;
-  SparseIntArray mLINtoPropertyBook;
 
   public LINDetailPresenter(LINDetail detailView) {
     mDetailView = detailView;
@@ -108,17 +106,27 @@ public class LINDetailPresenter {
     @Override
     public void onLoadFinished(Loader<ArrayList<PropertyBook>> loader,
                                ArrayList<PropertyBook> data) {
-      if(data.size() == 1) {
-        LIN lin = mLINs.get(mLINtoPropertyBook.get(loader.getId()));
-        lin.setPropertyBook(data.get(0));
+      LIN requiredLIN = null;
+      for(int x = 0; x<mLINs.size(); x++) {
+        LIN lin = mLINs.get(mLINs.keyAt(x));
+        if (lin.getPropertyBookID() == loader.getId()) {
+          requiredLIN = lin;
+          if(data.size() == 1) {
+            requiredLIN.setPropertyBook(data.get(0));
+          }
+        }
+      }
+
+      if(requiredLIN == null) {
+        return;
       }
 
       //Add the LIN to the view now that we have the PB information.
-      mDetailView.addLIN(mLINs.get(mLINtoPropertyBook.get(loader.getId())));
+      mDetailView.addLIN(requiredLIN);
 
       //Start the search for the NSNs
       mDetailView.getViewLoaderManager().initLoader(
-          mLINtoPropertyBook.get(loader.getId()),
+          requiredLIN.getLinId(),
           null,
           new NSNLoaderCallback());
     }
@@ -156,7 +164,6 @@ public class LINDetailPresenter {
       if (data.size() > 0) {
         if(mLINs == null) {
           mLINs = new SparseArray<LIN>();
-          mLINtoPropertyBook = new SparseIntArray();
         }
         for (LIN lin : data) {
           if(mLINs.indexOfKey(lin.getLinId()) < 0) {
@@ -168,7 +175,6 @@ public class LINDetailPresenter {
                 lin.getPropertyBookID(),
                 null,
                 new PropertyBookLoaderCallback());
-            mLINtoPropertyBook.put(lin.getPropertyBookID(), lin.getLinId());
           }
         }
       }

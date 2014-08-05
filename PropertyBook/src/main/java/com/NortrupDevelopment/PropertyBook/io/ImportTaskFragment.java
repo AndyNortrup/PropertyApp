@@ -10,11 +10,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
+import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
+import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
-import com.NortrupDevelopment.PropertyBook.view.ImportView;
 import com.NortrupDevelopment.PropertyBook.view.PrimaryHandReceiptReader;
 import com.google.common.io.Closer;
+import com.squareup.otto.Bus;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,24 +35,12 @@ public class ImportTaskFragment extends Fragment {
 
   public static final String ARGUMENTS_KEY = "ARGUMENTS_KEY";
 
-
-  TaskCallbacks callbacks;
-
-  /**
-   * Callback interface through which the fragment will report the
-   * task's progress and results back to the Activity.
-   */
-  public static interface TaskCallbacks {
-    void onPreExecute();
-    void onProgressUpdate(String message);
-    void onCancelled();
-    void onPostExecute(int code);
-  }
+  private Bus bus;
 
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
-    callbacks = ((ImportView)activity).getPresenter();
+    bus = BusProvider.getBus();
   }
 
   @Override
@@ -66,7 +58,6 @@ public class ImportTaskFragment extends Fragment {
   @Override
   public void onDetach() {
     super.onDetach();
-    callbacks = null;
   }
 
 
@@ -226,23 +217,17 @@ public class ImportTaskFragment extends Fragment {
 
     @Override
     protected void onProgressUpdate(String... message) {
-      if(callbacks != null) {
-        callbacks.onProgressUpdate(message[0]);
-      }
+      bus.post(new ImportMessageEvent(message[0]));
     }
 
     @Override
     protected void onCancelled() {
-      if(callbacks != null) {
-        callbacks.onCancelled();
-      }
+      bus.post(new ImportCanceledEvent());
     }
 
     @Override
     protected void onPostExecute(Integer statusCode) {
-      if(callbacks != null) {
-        callbacks.onPostExecute(statusCode);
-      }
+      bus.post(new ImportFinishedEvent(statusCode));
     }
   }
 

@@ -81,14 +81,18 @@ public class LINDetailFragment extends Fragment
     if(mLINCards == null) {
       mLINCards = new SparseArray<LINCardWithNSNs>();
     }
-    LINCardWithNSNs cardWithNSNs = createCard(lin);
-    mLINCards.put(lin.getLinId(), cardWithNSNs);
 
-    //Create the CardView and add it to the Layout
-    CardView cardView = createCardView(cardWithNSNs);
-    LinearLayout linearLayout =
-        (LinearLayout)getView().findViewById(R.id.lin_detail_layout);
-    linearLayout.addView(cardView);
+    //only add the card if it doesn't exist.
+    if(mLINCards.indexOfKey(lin.getLinId()) < 0) {
+      LINCardWithNSNs cardWithNSNs = createCard(lin);
+      mLINCards.put(lin.getLinId(), cardWithNSNs);
+
+      //Create the CardView and add it to the Layout
+      CardView cardView = createCardView(cardWithNSNs);
+      LinearLayout linearLayout =
+          (LinearLayout) getView().findViewById(R.id.lin_detail_layout);
+      linearLayout.addView(cardView);
+    }
   }
 
   /**

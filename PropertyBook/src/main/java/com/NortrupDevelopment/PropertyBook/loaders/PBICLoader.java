@@ -64,12 +64,12 @@ public class PBICLoader extends AsyncTask<Uri, Void, String[]> {
     } catch (IOException ex) {
       Toast.makeText(mContext,
           R.string.error_selecting_file,
-          Toast.LENGTH_SHORT);
+          Toast.LENGTH_SHORT).show();
       return null;
     } catch (BiffException biff) {
       Toast.makeText(mContext,
           R.string.error_reading_excel_file,
-          Toast.LENGTH_SHORT);
+          Toast.LENGTH_SHORT).show();
       return null;
     }
 

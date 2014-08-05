@@ -29,10 +29,6 @@
                 "com.NortrupDevelopment.PropertyBook.SuggestionProvider"
             />
 
-        <service
-            android:name=".services.PBICImportService"
-            android:exported="false" />
-
         <activity android:name=".view.LINDetailActivity"/>
         <activity android:name=".view.LINBrowserActivity" >
             <intent-filter>

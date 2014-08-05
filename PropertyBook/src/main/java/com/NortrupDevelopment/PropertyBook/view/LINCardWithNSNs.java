@@ -109,7 +109,7 @@ public class LINCardWithNSNs extends CardWithList
               } else {
                 Toast.makeText(getContext(),
                     R.string.no_serial_numbers,
-                    Toast.LENGTH_SHORT);
+                    Toast.LENGTH_SHORT).show();
               }
             }
 

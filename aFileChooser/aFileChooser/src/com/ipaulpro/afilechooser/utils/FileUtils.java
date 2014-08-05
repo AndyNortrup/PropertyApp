@@ -154,9 +154,14 @@ public class FileUtils {
     /**
      * @return The MIME type for the give Uri.
      */
-    public static String getMimeType(Context context, Uri uri) {
-        File file = new File(getPath(context, uri));
-        return getMimeType(file);
+    public static String getMimeType(Context context, Uri uri)
+    {
+      // Google Drive
+      if (isGoogleDriveDocument(uri)) {
+        return context.getContentResolver().getType(uri);
+      }
+      File file = new File(getPath(context, uri));
+      return getMimeType(file);
     }
 
     /**
@@ -184,6 +189,15 @@ public class FileUtils {
      */
     public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+  /**
+   * True if the document is from Google Drive
+   * @param uri The Uri to check.
+   * @return Whether the Uri authority is Google Drive.
+   */
+    public static boolean isGoogleDriveDocument(Uri uri) {
+      return "com.google.android.apps.docs.storage".equals(uri.getAuthority());
     }
 
     /**
@@ -271,55 +285,57 @@ public class FileUtils {
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // LocalStorageProvider
-            if (isLocalStorageDocument(uri)) {
-                // The path is the id
-                return DocumentsContract.getDocumentId(uri);
+          // LocalStorageProvider
+          if (isLocalStorageDocument(uri)) {
+            // The path is the id
+            return DocumentsContract.getDocumentId(uri);
+          }
+          // ExternalStorageProvider
+          else if (isExternalStorageDocument(uri)) {
+            final String docId = DocumentsContract.getDocumentId(uri);
+            final String[] split = docId.split(":");
+            final String type = split[0];
+
+            if ("primary".equalsIgnoreCase(type)) {
+              return Environment.getExternalStorageDirectory() + "/" + split[1];
             }
-            // ExternalStorageProvider
-            else if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
 
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
+            // TODO handle non-primary volumes
+          }
+          // DownloadsProvider
+          else if (isDownloadsDocument(uri)) {
 
-                // TODO handle non-primary volumes
+            final String id = DocumentsContract.getDocumentId(uri);
+            final Uri contentUri = ContentUris.withAppendedId(
+                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+            return getDataColumn(context, contentUri, null, null);
+          }
+          // MediaProvider
+          else if (isMediaDocument(uri)) {
+            final String docId = DocumentsContract.getDocumentId(uri);
+            final String[] split = docId.split(":");
+            final String type = split[0];
+
+            Uri contentUri = null;
+            if ("image".equals(type)) {
+              contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            } else if ("video".equals(type)) {
+              contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+            } else if ("audio".equals(type)) {
+              contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
 
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            final String selection = "_id=?";
+            final String[] selectionArgs = new String[]{
+                split[1]
+            };
 
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
+            return getDataColumn(context, contentUri, selection, selectionArgs);
+          }
 
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
         }
+
         // MediaStore (and general)
         else if ("content".equalsIgnoreCase(uri.getScheme())) {
 

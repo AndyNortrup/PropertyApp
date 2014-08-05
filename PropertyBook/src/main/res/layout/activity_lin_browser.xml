@@ -5,12 +5,13 @@
     android:orientation="vertical"
     >
 
-    <it.gmariotti.cardslib.library.view.CardListView
+    <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/lin_list"
-        android:dividerHeight="1dp"
-        android:divider="@color/primary_color"/>
+        android:dividerHeight="1sp"
+        android:divider="@color/primary_color"
+        android:drawSelectorOnTop="true"/>
 
     <LinearLayout
 

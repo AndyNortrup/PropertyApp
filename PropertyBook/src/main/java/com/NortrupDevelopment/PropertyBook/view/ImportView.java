@@ -45,24 +45,6 @@ public interface ImportView {
   public void showImportProgress();
 
   /**
-   * Directs the view to update the progress of the import with the provided
-   * message.
-   * @param progressUpdate Message to be displayed.
-   */
-  public void updateImportProgress(String progressUpdate);
-
-  /**
-   * Directs the view to stop showing the import progress reports and report to
-   * the user that the import is complete.
-   */
-  public void importComplete();
-
-  /**
-   * Directs the view to inform the user that the import has failed.
-   */
-  public void importFailed();
-
-  /**
    * Provide the presenter with a current copy of the context.
    */
   public Context getContext();
@@ -79,4 +61,5 @@ public interface ImportView {
   public void startImportFragment(Uri file,
                                   int[] sheets,
                                   boolean emptyDatabase);
+
 }

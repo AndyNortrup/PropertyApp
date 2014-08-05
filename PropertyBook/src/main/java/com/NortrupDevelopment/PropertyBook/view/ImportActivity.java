@@ -21,9 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
+import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
+import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
 import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -111,6 +116,20 @@ public class ImportActivity extends Activity
     mImportFragment = (ImportTaskFragment)getFragmentManager()
         .findFragmentByTag(TAG_IMPORT_FRAGMENT);
   }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    BusProvider.getBus().register(this);
+  }
+
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    BusProvider.getBus().unregister(this);
+  }
+
 
   @Override
   /**
@@ -250,7 +269,6 @@ public class ImportActivity extends Activity
    *
    * @param progressUpdate Message to be displayed.
    */
-  @Override
   public void updateImportProgress(String progressUpdate) {
     mImportMessage = progressUpdate;
     mImportProgressDialog.setMessage(mImportMessage);
@@ -260,7 +278,6 @@ public class ImportActivity extends Activity
    * Directs the view to stop showing the import progress reports and report to
    * the user that the import is complete.
    */
-  @Override
   public void importComplete() {
 
     mImportProgressDialog.dismiss();
@@ -276,7 +293,6 @@ public class ImportActivity extends Activity
   /**
    * Directs the view to inform the user that the import has failed.
    */
-  @Override
   public void importFailed() {
 
     mImportProgressDialog.dismiss();
@@ -389,6 +405,23 @@ public class ImportActivity extends Activity
       mPresenter.importRequested();
     } else if(v == mFileSelectButton) {
       mPresenter.fileSelectRequested();
+    }
+  }
+
+  @Subscribe
+  public void onImportMessage(ImportMessageEvent event) {
+    updateImportProgress(event.getMessage());
+  }
+
+  @Subscribe public void onImportCanceled(ImportCanceledEvent event) {
+    importFailed();
+  }
+
+  @Subscribe public void onImportFinished(ImportFinishedEvent event) {
+    if(event.getStatus() == ImportTaskFragment.PropertyBookImporter.RESULT_OK) {
+      importComplete();
+    } else {
+      importFailed();
     }
   }
 }

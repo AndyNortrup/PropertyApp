@@ -1,10 +1,11 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.SparseBooleanArray;
 
-import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.loaders.PBICLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.PBICLoaderCallbacks;
 import com.NortrupDevelopment.PropertyBook.view.ImportView;
@@ -16,8 +17,7 @@ import java.util.ArrayList;
  * Presentation class to control the import of a file into the property book.
  * Created by andy on 7/23/14.
  */
-public class ImportPresenter implements PBICLoaderCallbacks,
-    ImportTaskFragment.TaskCallbacks
+public class ImportPresenter implements PBICLoaderCallbacks
 {
 
   ImportView mView;
@@ -119,8 +119,19 @@ public class ImportPresenter implements PBICLoaderCallbacks,
         fileAccepted = true;
       }
 
-      mView.setFileNameView(
-          FileUtils.getFile((Context) mView, fileUri).getName(), fileAccepted);
+      String fileName;
+      if(FileUtils.isGoogleDriveDocument(fileUri)) {
+        Cursor cursor = ((Context) mView).getContentResolver()
+            .query(fileUri, null, null, null, null);
+        cursor.moveToFirst();
+        fileName = cursor.getString(
+            cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+        cursor.close();
+      } else {
+        fileName = FileUtils.getFile((Context) mView, fileUri).getName();
+      }
+
+      mView.setFileNameView(fileName, fileAccepted);
     }
   }
 
@@ -168,27 +179,4 @@ public class ImportPresenter implements PBICLoaderCallbacks,
     //Todo: handle canceling the import.
   }
 
-  @Override
-  public void onPreExecute() {
-    mView.showImportProgress();
-  }
-
-  @Override
-  public void onProgressUpdate(String message) {
-    mView.updateImportProgress(message);
-  }
-
-  @Override
-  public void onCancelled() {
-
-  }
-
-  @Override
-  public void onPostExecute(int code) {
-    if(code == ImportTaskFragment.PropertyBookImporter.RESULT_OK) {
-      mView.importComplete();
-    } else {
-      mView.importFailed();
-    }
-  }
 }
