@@ -16,7 +16,6 @@ import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
-import com.NortrupDevelopment.PropertyBook.view.PrimaryHandReceiptReader;
 import com.google.common.io.Closer;
 import com.squareup.otto.Bus;
 

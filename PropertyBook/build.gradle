@@ -10,10 +10,10 @@ android {
     signingConfigs {
 
         releaseConfig {
-            storeFile file('release-keystore')
-            storePassword 'j@M1kFSbD`3zgg3+@+MZf]QaqcU\'V1]q'
-            keyAlias 'PropertyBook'
-            keyPassword 'j@M1kFSbD`3zgg3+@+MZf]QaqcU\'V1]q'
+            storeFile file('propertybook.release.keystore')
+            storePassword 'be2e0391b081ed163ef6f03e5adadcd746f904d11e1d1eee9a9561e94d2fc46c'
+            keyPassword 'be2e0391b081ed163ef6f03e5adadcd746f904d11e1d1eee9a9561e94d2fc46c'
+            keyAlias 'property'
         }
     }
     buildTypes {

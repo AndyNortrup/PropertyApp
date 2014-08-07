@@ -11,32 +11,8 @@
         android:id="@+id/lin_list"
         android:dividerHeight="1sp"
         android:divider="@color/primary_color"
-        android:drawSelectorOnTop="true"/>
-
-    <LinearLayout
-
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:divider="@color/primary_color"
-        android:showDividers="beginning|middle|end">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Import a property book to get started."/>
-        <Button
-            android:id="@+id/btn_import_property_book"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Import"
-            android:onClick="onClick"/>
-
-    </LinearLayout>
+        android:drawSelectorOnTop="true"
+        android:background="@android:color/white"/>
 
     <LinearLayout
         android:layout_width="fill_parent"

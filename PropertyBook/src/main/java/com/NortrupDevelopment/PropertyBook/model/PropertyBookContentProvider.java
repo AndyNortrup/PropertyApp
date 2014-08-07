@@ -230,9 +230,12 @@ public class PropertyBookContentProvider extends ContentProvider {
 
     SQLiteQueryBuilder queryBuilder;
 
+
+    SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
+
     switch (uriMatcher.match(uri)) {
       case URI_CODE_LIN:
-        result = mDatabaseHelper.getReadableDatabase().query(
+        result = database.query(
             TableContractLIN.TABLE_NAME,
             projection,
             selection,
@@ -240,9 +243,11 @@ public class PropertyBookContentProvider extends ContentProvider {
             "",
             "",
             sortOrder);
+        database.close();
         break;
       case URI_CODE_NSN:
-        result = mDatabaseHelper.getReadableDatabase().query(
+
+        result = database.query(
             TableContractNSN.tableName,
             projection,
             selection,
@@ -252,7 +257,7 @@ public class PropertyBookContentProvider extends ContentProvider {
             sortOrder);
         break;
       case URI_CODE_ITEM:
-        result = mDatabaseHelper.getReadableDatabase().query(
+        result = database.query(
             TableContractItem.tableName,
             projection,
             selection,
@@ -262,7 +267,7 @@ public class PropertyBookContentProvider extends ContentProvider {
             sortOrder);
         break;
       case URI_CODE_PROPERTY_BOOK:
-        result = mDatabaseHelper.getReadableDatabase().query(
+        result = database.query(
             TableContractPropertyBook.TABLE_NAME,
             projection,
             selection,
@@ -272,7 +277,6 @@ public class PropertyBookContentProvider extends ContentProvider {
             sortOrder);
         break;
       case URI_CODE_ITEM_DATA:
-        SQLiteDatabase database = mDatabaseHelper.getReadableDatabase();
         queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setDistinct(true);
         queryBuilder.setTables(ViewContractItemData.VIEW_NAME);
@@ -287,6 +291,8 @@ public class PropertyBookContentProvider extends ContentProvider {
             sortOrder,
             null
         );
+
+        database.close();
         break;
       case URI_CODE_NUM_LINS:
         result = getTotalLINs();
@@ -299,6 +305,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
     }
 
+    database.close();
     return result;
   }
 
@@ -308,30 +315,33 @@ public class PropertyBookContentProvider extends ContentProvider {
       throws NullPointerException {
     int result = 0;
 
+
+    SQLiteDatabase database = mDatabaseHelper.getWritableDatabase();
+
     switch (uriMatcher.match(uri)) {
       case URI_CODE_NSN:
-        result = mDatabaseHelper.getReadableDatabase().update(
+        result = database.update(
             TableContractNSN.tableName,
             values,
             selection,
             selectionArgs);
         break;
       case URI_CODE_LIN:
-        result = mDatabaseHelper.getReadableDatabase().update(
+        result = database.update(
             TableContractLIN.TABLE_NAME,
             values,
             selection,
             selectionArgs);
         break;
       case URI_CODE_ITEM:
-        result = mDatabaseHelper.getReadableDatabase().update(
+        result = database.update(
             TableContractItem.tableName,
             values,
             selection,
             selectionArgs);
         break;
       case URI_CODE_PROPERTY_BOOK:
-        result = mDatabaseHelper.getReadableDatabase().update(
+        result = database.update(
             TableContractPropertyBook.TABLE_NAME,
             values,
             selection,
@@ -346,6 +356,7 @@ public class PropertyBookContentProvider extends ContentProvider {
         mBatchChangeNotifyList.add(uri);
       }
     }
+    database.close();
     return result;
   }
 
@@ -370,7 +381,9 @@ public class PropertyBookContentProvider extends ContentProvider {
     } finally {
       batchMode = false;
       database.endTransaction();
+      database.close();
     }
+
   }
 
   /**
@@ -382,7 +395,9 @@ public class PropertyBookContentProvider extends ContentProvider {
   public Cursor getPropertyBookValue() throws NullPointerException {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
-    return db.rawQuery(GET_TOTAL_VALUE, null);
+    Cursor cursor = db.rawQuery(GET_TOTAL_VALUE, null);
+    db.close();
+    return cursor;
 
   }
 
@@ -395,13 +410,17 @@ public class PropertyBookContentProvider extends ContentProvider {
    */
   public Cursor getTotalLINs() throws NullPointerException {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
-    return db.rawQuery(GET_TOTAL_LINS, null);
+    Cursor cursor = db.rawQuery(GET_TOTAL_LINS, null);
+    db.close();
+    return cursor;
   }
 
   public Cursor getTotalItems() {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
-    return db.rawQuery(GET_TOTAL_ITEMS, null);
+    Cursor cursor = db.rawQuery(GET_TOTAL_ITEMS, null);
+    db.close();
+    return cursor;
   }
 
 }

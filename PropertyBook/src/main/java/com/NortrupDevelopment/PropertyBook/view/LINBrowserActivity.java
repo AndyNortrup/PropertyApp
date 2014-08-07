@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import it.gmariotti.cardslib.library.internal.Card;
 
 public class LINBrowserActivity extends Activity
-    implements View.OnClickListener, LINBrowser, Card.OnCardClickListener {
+    implements LINBrowser, Card.OnCardClickListener {
 
   private LINBrowserPresenter mPresenter;
   private ListView mListView;
@@ -81,19 +81,6 @@ public class LINBrowserActivity extends Activity
 	
 	  return true;
 	}
-
-
-  /**
-   * Respond to button clicks in the interface
-   * @param v View sending the onClick event.
-   */
-  @Override
-  public void onClick(View v) {
-    if(v.getId() == R.id.btn_import_property_book) {
-      mPresenter.importRequested();
-    }
-  }
-
 
   /**
    * Shows the Loading progress bar and hides mCardLista and mEmptyLayout.
