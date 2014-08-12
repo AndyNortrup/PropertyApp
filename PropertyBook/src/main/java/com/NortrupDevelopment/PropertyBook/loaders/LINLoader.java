@@ -41,7 +41,8 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
 
   private boolean mIncludeSubLINs = false;
   private boolean mGroupByLIN = false;
-  private long mLinID = -1;
+  private int mLinID = -1;
+  private int mPBICId = -1;
   private Context mContext;
   private ArrayList<LIN> mLoaderData;
   private LINContentObserver mObserver;
@@ -52,8 +53,12 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
     mContext = context;
   }
 
-  public void setLinID(long linID) {
+  public void setLinID(int linID) {
     mLinID = linID;
+  }
+
+  public void setPBICId(int pbicId) {
+    mPBICId = pbicId;
   }
 
   public void includeSubLINs(boolean includeSubLINs) {
@@ -180,7 +185,6 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
           .append(" WHERE ")
           .append(TableContractLIN._ID)
           .append(" = ?)");
-      selectionString = selectionBuilder.toString();
 
       selectionArgs = new String[]{String.valueOf(mLinID)};
 
@@ -188,7 +192,6 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
       //Query for just the specified LIN, don't grab any SubLINs that share the
       //same Line Number (A12345)
       selectionBuilder.append(TableContractLIN._ID + " = ?");
-      selectionString = selectionBuilder.toString();
 
       selectionArgs = new String[]{String.valueOf(mLinID)};
 
@@ -196,15 +199,21 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
       //Select all primary LINs in the property book.  Any LIN with a value in
       //SubLIN field is excluded.
       selectionBuilder.append(TableContractLIN.SUB_LIN + " = ''");
-      selectionString = selectionBuilder.toString();
     }
     //The fourth case in this set is to select everything from the database
     //this requires no else because the query has no where clause and
     //selectionString remains equal to null
 
+    if(mPBICId >= 0) {
+      selectionBuilder.append(" AND " + TableContractLIN.PROPERTY_BOOK_ID +
+          " = ?");
+    }
+
 
     DatabaseOpenHelper dbHelp = new DatabaseOpenHelper(getContext());
     SQLiteDatabase database = dbHelp.getReadableDatabase();
+
+    selectionString  = selectionBuilder.toString();
 
     Cursor data = queryBuilder.query(
         database,

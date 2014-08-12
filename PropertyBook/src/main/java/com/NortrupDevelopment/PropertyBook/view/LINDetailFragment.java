@@ -37,7 +37,7 @@ public class LINDetailFragment extends Fragment
     presenter = new LINDetailPresenter(this);
 
     presenter.linSearchRequested(
-        getArguments().getLong(LINDetailActivity.LIN_ID_KEY));
+        getArguments().getInt(LINDetailActivity.LIN_ID_KEY));
 
   }
 

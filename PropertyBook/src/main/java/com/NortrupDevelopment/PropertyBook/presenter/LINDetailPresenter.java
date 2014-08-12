@@ -30,14 +30,14 @@ public class LINDetailPresenter {
   private static final int LIN_QUERY = 0;
 
   LINDetail mDetailView;
-  long mLINID;
+  int mLINID;
   SparseArray<LIN> mLINs;
 
   public LINDetailPresenter(LINDetail detailView) {
     mDetailView = detailView;
   }
 
-  public void linSearchRequested(long linID) {
+  public void linSearchRequested(int linID) {
     mLINID = linID;
 
     //Start our search for the LIN

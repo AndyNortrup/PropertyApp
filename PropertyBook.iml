@@ -61,7 +61,25 @@
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/rs" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/assets" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/bundles" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/coverage-instrumented-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/dependency-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/dex" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/dex-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/incremental" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/jacoco" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/javaResources" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/libs" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/lint" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/manifests" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/ndk" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/pre-dexed" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/proguard" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/res" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/rs" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/outputs" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
