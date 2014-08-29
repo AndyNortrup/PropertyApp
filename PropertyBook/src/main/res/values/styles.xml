@@ -43,6 +43,7 @@
     <dimen name="card_base_empty_height">50dp</dimen>
 
     <style name="PropertyApp" parent="android:style/Theme.Holo.Light">
+
     </style>
 
 
@@ -87,6 +88,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">32dp</item>
         <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="PropertyApp.LinkText">
+        <item name="android:textColorLink">@color/primary_color</item>
     </style>
 
 

@@ -45,7 +45,7 @@ public interface LINBrowser {
    * @param linId Database _id number of the LIN to be displayed by the
    *              LinDetailActivity.
    */
-  public void startLINDetailActivity(long linId);
+  public void startLINDetailActivity(int linId);
 
   /**
    * Directs the activity to start the Import Activity.

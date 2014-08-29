@@ -77,6 +77,9 @@ public class LINBrowserActivity extends Activity
           //Open statistics activity
             mPresenter.statisticsRequested();
             break;
+      case R.id.about_us:
+          startActivity(new Intent(this, AboutActivity.class));
+        break;
     }
 	
 	  return true;
@@ -111,10 +114,13 @@ public class LINBrowserActivity extends Activity
    * @param linId Database _id number of the LIN to be displayed by the
    *              LINDetailActivity
    */
-  public void startLINDetailActivity(long linId) {
+  public void startLINDetailActivity(int linId) {
     Intent intent = new Intent(this, LINDetailActivity.class);
 
-    intent.putExtra(LINDetailActivity.LIN_ID_KEY, linId);
+    Bundle bundle = new Bundle();
+    bundle.putInt(LINDetailActivity.LIN_ID_KEY, linId);
+
+    intent.putExtras(bundle);
 
     startActivity(intent);
   }

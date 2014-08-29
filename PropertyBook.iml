@@ -42,22 +42,22 @@
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/res/rs/test/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/assets" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/debug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/aidl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/assets" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/main/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/assets" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/assets" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/src/androidTest/rs" isTestSource="true" />

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="About Us"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        style="@style/PropertyApp.HeaderText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PropertyBook was written by a company commander to help make property accountability easier.  Leaders should have information about your property with you all the time, you should be able to find what you are looking for with a search, and you should be able to share that information with the people who need it, all without paper copies."
+        android:id="@+id/textView2"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get in touch"
+        android:id="@+id/textView3"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12sp"
+        style="@style/PropertyApp.HeaderText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We want to know how to make PropertyBook better."
+        android:id="@+id/textView4"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        style="@style/PropertyApp.LinkText"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/web_site_link"
+        android:id="@+id/textView5"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:autoLink="web"/>
+
+    <TextView
+        style="@style/PropertyApp.LinkText"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/facebook_link"
+        android:id="@+id/textView6"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:autoLink="web"/>
+
+    <TextView
+        style="@style/PropertyApp.LinkText"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/google_plus_link"
+        android:id="@+id/textView7"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:autoLink="web"/>
+
+
+</LinearLayout>

@@ -56,4 +56,14 @@
         Import failed, check your file and try again.
     </string>
 
+    <string name="web_site_link">
+        <a href="www.propertybookapp.com">www.propertybookapp.com</a>
+    </string>
+    <string name="facebook_link">
+        <a href="www.facebook.com/PropertyBookApp">www.facebook.com/PropertyBookApp</a>
+    </string>
+    <string name="google_plus_link">
+        <a href="www.google.com/+Propertybookapp">www.google.com/+Propertybookapp</a>
+    </string>
+
 </resources>

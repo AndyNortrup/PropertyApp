@@ -243,7 +243,6 @@ public class PropertyBookContentProvider extends ContentProvider {
             "",
             "",
             sortOrder);
-        database.close();
         break;
       case URI_CODE_NSN:
 
@@ -292,7 +291,6 @@ public class PropertyBookContentProvider extends ContentProvider {
             null
         );
 
-        database.close();
         break;
       case URI_CODE_NUM_LINS:
         result = getTotalLINs();
@@ -305,7 +303,6 @@ public class PropertyBookContentProvider extends ContentProvider {
         break;
     }
 
-    database.close();
     return result;
   }
 
@@ -356,7 +353,6 @@ public class PropertyBookContentProvider extends ContentProvider {
         mBatchChangeNotifyList.add(uri);
       }
     }
-    database.close();
     return result;
   }
 
@@ -381,7 +377,6 @@ public class PropertyBookContentProvider extends ContentProvider {
     } finally {
       batchMode = false;
       database.endTransaction();
-      database.close();
     }
 
   }
@@ -396,7 +391,6 @@ public class PropertyBookContentProvider extends ContentProvider {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
     Cursor cursor = db.rawQuery(GET_TOTAL_VALUE, null);
-    db.close();
     return cursor;
 
   }
@@ -411,7 +405,6 @@ public class PropertyBookContentProvider extends ContentProvider {
   public Cursor getTotalLINs() throws NullPointerException {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
     Cursor cursor = db.rawQuery(GET_TOTAL_LINS, null);
-    db.close();
     return cursor;
   }
 
@@ -419,7 +412,6 @@ public class PropertyBookContentProvider extends ContentProvider {
     SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
 
     Cursor cursor = db.rawQuery(GET_TOTAL_ITEMS, null);
-    db.close();
     return cursor;
   }
 

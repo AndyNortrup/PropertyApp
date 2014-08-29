@@ -3,6 +3,7 @@ package com.NortrupDevelopment.PropertyBook.view;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.NortrupDevelopment.PropertyBook.R;
@@ -29,9 +30,13 @@ public class LINDetailActivity extends Activity {
     detailFragment =
         (LINDetailFragment)fm.findFragmentByTag(TAG_DISPLAY_FRAGMENT);
 
+    Intent intent = getIntent();
+
     if(detailFragment == null) {
       detailFragment = new LINDetailFragment();
-      detailFragment.setArguments(getIntent().getExtras());
+      Bundle arguments = new Bundle();
+      arguments.putInt(LIN_ID_KEY, intent.getIntExtra(LIN_ID_KEY, -1));
+      detailFragment.setArguments(arguments);
     }
 
     FragmentTransaction ft = getFragmentManager().beginTransaction();
