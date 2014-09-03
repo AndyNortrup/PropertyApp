@@ -146,7 +146,8 @@ public class LINDetailPresenter {
 
   //region LIN Loader
   class LINLoaderCallback
-      implements LoaderManager.LoaderCallbacks<ArrayList<LIN>> {
+      implements LoaderManager.LoaderCallbacks<ArrayList<LIN>>
+  {
     @Override
     public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
       LINLoader loader = new LINLoader(mDetailView.getContext());

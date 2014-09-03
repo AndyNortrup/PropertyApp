@@ -64,7 +64,7 @@ public class SearchResultsFragment extends ListFragment
                 Intent startNSNBrowser = new Intent(getActivity(),
                         LINDetailActivity.class);
                 startNSNBrowser.putExtra(LINDetailActivity.LIN_ID_KEY,
-                        mCursor.getLong(mCursor.getColumnIndex(
+                        mCursor.getInt(mCursor.getColumnIndex(
                                 ViewContractItemData.ALIAS_LIN_ID)));
 
                 getActivity().startActivity(startNSNBrowser);
