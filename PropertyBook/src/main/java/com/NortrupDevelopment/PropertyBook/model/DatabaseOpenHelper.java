@@ -7,15 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.NortrupDevelopment.PropertyBook.model.TableContractItem;
-import com.NortrupDevelopment.PropertyBook.model.TableContractLIN;
-import com.NortrupDevelopment.PropertyBook.model.TableContractNSN;
-import com.NortrupDevelopment.PropertyBook.model.TableContractPropertyBook;
-import com.NortrupDevelopment.PropertyBook.model.ViewContractItemData;
-
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
-  private static final int databaseVersion = 11;
+  private static final int databaseVersion = 12;
   private static final String foreignKeyOn = "PRAGMA foreign_keys=ON;";
 
   public static final String DATABASE_NAME = "PropertyBook.db";
@@ -52,6 +46,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     db.beginTransaction();
 
     try{
+
+      if(oldVersion == 11) {
+        db.execSQL("DROP TABLE " + ViewContractItemData.VIEW_NAME);
+        db.execSQL(ViewContractItemData.CREATE_VIEW);
+      }
 
       if(oldVersion == 10) {
         db.execSQL(ViewContractItemData.CREATE_VIEW);
