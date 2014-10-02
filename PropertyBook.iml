@@ -18,6 +18,7 @@
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugJava" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
+        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -34,6 +35,7 @@
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/aidl/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/rs/debug" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/apt/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/res/rs/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/r/test/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/PropertyBook/build/generated/source/aidl/test/debug" isTestSource="true" generated="true" />
@@ -87,6 +89,7 @@
     <orderEntry type="library" exported="" name="support-v13-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="guava-16.0.1" level="project" />
     <orderEntry type="library" exported="" name="jxl" level="project" />
+    <orderEntry type="library" exported="" name="realm-0.70.1" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="library-1.8.0" level="project" />
