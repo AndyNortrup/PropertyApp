@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
 
-import com.NortrupDevelopment.PropertyBook.model.NSN;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
 import com.NortrupDevelopment.PropertyBook.model.TableContractNSN;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * NSNLoader loads NSNs from the database
  * Created by andy on 6/13/14.
  */
-public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
+public class NSNLoader extends AsyncTaskLoader<ArrayList<StockNumber>> {
 
   public String LIN_PROJECTION[] = {
       TableContractNSN._ID,
@@ -40,7 +40,7 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
   private Context mContext;
 
   private long mLINId;
-  private ArrayList<NSN> mData;
+  private ArrayList<StockNumber> mData;
   private NSNChangeHandler mObserver;
 
   public NSNLoader(Context context) {
@@ -50,15 +50,15 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
   }
 
   @Override
-  public ArrayList<NSN> loadInBackground() {
+  public ArrayList<StockNumber> loadInBackground() {
     if(mLINId != -1) {
       return NSNFromId();
     }
     return null;
   }
 
-  private ArrayList<NSN> NSNFromId() {
-    ArrayList<NSN> result = new ArrayList<NSN>();
+  private ArrayList<StockNumber> NSNFromId() {
+    ArrayList<StockNumber> result = new ArrayList<StockNumber>();
 
     String selectionString = TableContractNSN.linID + " = ?";
     String selectionArgs[] = { Long.toString(mLINId) };
@@ -71,7 +71,7 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
         SORT_ORDER);
 
     while(data.moveToNext()) {
-      result.add(NSN.NSNFromCursor(data));
+      result.add(StockNumber.NSNFromCursor(data));
     }
 
     data.close();
@@ -80,7 +80,7 @@ public class NSNLoader extends AsyncTaskLoader<ArrayList<NSN>> {
   }
 
   @Override
-  public void deliverResult(ArrayList<NSN> data) {
+  public void deliverResult(ArrayList<StockNumber> data) {
     if(isReset()) {
       return;
     }

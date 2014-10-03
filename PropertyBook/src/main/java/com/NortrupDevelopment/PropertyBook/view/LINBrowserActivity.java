@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 
 import java.util.ArrayList;
@@ -142,14 +142,14 @@ public class LINBrowserActivity extends Activity
   /**
    * Takes a list of LINs, converts them into UI cards then creates and array
    * adapter for display in the CardList.
-   * @param lins List of LINs to be displayed.
+   * @param lineNumbers List of LINs to be displayed.
    */
-  public void setCardList(ArrayList<LIN> lins) {
+  public void setCardList(ArrayList<LineNumber> lineNumbers) {
 
-    if(lins != null) {
+    if(lineNumbers != null) {
       LINArrayAdapter adapter = new LINArrayAdapter(this,
           R.layout.card_lin_browser,
-          lins);
+          lineNumbers);
 
       mListView.setAdapter(adapter);
       mListView.setFastScrollEnabled(true);
@@ -179,7 +179,7 @@ public class LINBrowserActivity extends Activity
    */
   @Override
   public void onClick(Card card, View view) {
-    LIN selected = ((LinCard)card).getLIN();
+    LineNumber selected = ((LinCard)card).getLIN();
     mPresenter.listItemSelected(selected);
   }
 }

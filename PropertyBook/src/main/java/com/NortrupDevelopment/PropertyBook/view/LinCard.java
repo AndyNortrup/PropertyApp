@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import it.gmariotti.cardslib.library.internal.Card;
 
@@ -17,7 +17,7 @@ import it.gmariotti.cardslib.library.internal.Card;
  */
 public class LinCard extends Card {
 
-  private LIN mLIN;
+  private LineNumber mLIN;
 
   public LinCard(Context context) {
       super(context, R.layout.card_lin_browser);
@@ -31,10 +31,10 @@ public class LinCard extends Card {
       linTextView.setText(mLIN.getLin());
     }
 
-    if(!TextUtils.isEmpty(mLIN.getNomencalture())) {
+    if(!TextUtils.isEmpty(mLIN.getNomenclature())) {
         TextView textView = (TextView)view.findViewById(
                 R.id.lin_nomenclature);
-        textView.setText(mLIN.getNomencalture());
+        textView.setText(mLIN.getNomenclature());
     }
 
     TextView subLinView = (TextView)view.findViewById(R.id.sub_lin);
@@ -47,11 +47,11 @@ public class LinCard extends Card {
 
   }
 
-  public void setLIN(LIN lin) {
-    mLIN = lin;
+  public void setLIN(LineNumber lineNumber) {
+    mLIN = lineNumber;
   }
 
-  public LIN getLIN() {
+  public LineNumber getLIN() {
     return mLIN;
   }
 

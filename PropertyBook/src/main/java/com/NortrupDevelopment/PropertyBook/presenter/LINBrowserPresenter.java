@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.loaders.LINLoader;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowser;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Provides presentation layer processing for the LINBrowserActivity.
  * Created by andy on 7/12/14.
  */
-public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayList<LIN>> {
+public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayList<LineNumber>> {
 
   private LINBrowser mActivity;
 
@@ -39,7 +39,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   }
 
   //region UI Click events
-  public void listItemSelected(LIN selected) {
+  public void listItemSelected(LineNumber selected) {
     mActivity.startLINDetailActivity(selected.getLinId());
   }
 
@@ -61,7 +61,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
 
   //region LoaderCallbacks
   @Override
-  public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
+  public Loader<ArrayList<LineNumber>> onCreateLoader(int id, Bundle args) {
     LINLoader loader = new LINLoader((Context)mActivity);
     loader.includeSubLINs(false);
     loader.setGroupByLIN(true);
@@ -69,7 +69,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   }
 
   @Override
-  public void onLoadFinished(Loader<ArrayList<LIN>> loader, ArrayList<LIN> data) {
+  public void onLoadFinished(Loader<ArrayList<LineNumber>> loader, ArrayList<LineNumber> data) {
     if(data == null || data.size() == 0) {
       mActivity.startImportActivity();
     } else {
@@ -80,7 +80,7 @@ public class LINBrowserPresenter implements LoaderManager.LoaderCallbacks<ArrayL
   }
 
   @Override
-  public void onLoaderReset(Loader<ArrayList<LIN>> loader) {
+  public void onLoaderReset(Loader<ArrayList<LineNumber>> loader) {
     //Nothing required, we are not retaining a link to the cursor.
   }
   //endregion

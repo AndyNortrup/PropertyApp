@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
-import com.NortrupDevelopment.PropertyBook.model.NSN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetailPresenter;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -75,17 +75,17 @@ public class LINDetailFragment extends Fragment
 
   /**
    * Directs the view to take the provided LIN object and add it to the view
-   * @param lin LIN to be added to the view.
+   * @param lineNumber LIN to be added to the view.
    */
-  public void addLIN(LIN lin) {
+  public void addLIN(LineNumber lineNumber) {
     if(mLINCards == null) {
       mLINCards = new SparseArray<LINCardWithNSNs>();
     }
 
     //only add the card if it doesn't exist.
-    if(mLINCards.indexOfKey(lin.getLinId()) < 0) {
-      LINCardWithNSNs cardWithNSNs = createCard(lin);
-      mLINCards.put(lin.getLinId(), cardWithNSNs);
+    if(mLINCards.indexOfKey(lineNumber.getLinId()) < 0) {
+      LINCardWithNSNs cardWithNSNs = createCard(lineNumber);
+      mLINCards.put(lineNumber.getLinId(), cardWithNSNs);
 
       //Create the CardView and add it to the Layout
       CardView cardView = createCardView(cardWithNSNs);
@@ -98,24 +98,24 @@ public class LINDetailFragment extends Fragment
   /**
    * Directs the view to add the give NSN to the given LIN.
    *
-   * @param nsn NSN to add.
-   * @param lin LIN which it belongs to,
+   * @param stockNumber NSN to add.
+   * @param lineNumber LIN which it belongs to,
    */
   @Override
-  public void addNSNtoLIN(NSN nsn, LIN lin) {
-    LINCardWithNSNs linCard = mLINCards.get(lin.getLinId());
-    linCard.getLIN().addNSN(nsn);
+  public void addNSNtoLIN(StockNumber stockNumber, LineNumber lineNumber) {
+    LINCardWithNSNs linCard = mLINCards.get(lineNumber.getLinId());
+    linCard.getLIN().addNSN(stockNumber);
     linCard.setNSN();
   }
 
   /**
    * Creates a card model based on the provided LIN
-   * @param lin Information to be presented by the model.
+   * @param lineNumber Information to be presented by the model.
    * @return A LINCardWithNSN object to be added to a card.
    */
-  public LINCardWithNSNs createCard(LIN lin) {
+  public LINCardWithNSNs createCard(LineNumber lineNumber) {
     //Create our card model
-    LINCardWithNSNs cardWithNSNs = new LINCardWithNSNs(getActivity(), lin);
+    LINCardWithNSNs cardWithNSNs = new LINCardWithNSNs(getActivity(), lineNumber);
     cardWithNSNs.updateProgressBar(false, false);
     return cardWithNSNs;
   }

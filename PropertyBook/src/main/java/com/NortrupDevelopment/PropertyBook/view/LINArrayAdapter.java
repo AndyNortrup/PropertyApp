@@ -10,7 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * Created by andy on 8/4/14.
  */
-public class LINArrayAdapter extends ArrayAdapter<LIN>
+public class LINArrayAdapter extends ArrayAdapter<LineNumber>
   implements SectionIndexer
 {
 
@@ -33,13 +33,13 @@ public class LINArrayAdapter extends ArrayAdapter<LIN>
    * @param resource The resource ID for a layout file containing a TextView to
    *                 use when
    */
-  public LINArrayAdapter(Context context, int resource, ArrayList<LIN> lins) {
-    super(context, resource, lins);
+  public LINArrayAdapter(Context context, int resource, ArrayList<LineNumber> lineNumbers) {
+    super(context, resource, lineNumbers);
 
     //Mark where our mSectionMap are.
     HashMap<String, Integer> map = new HashMap<String, Integer>();
-    for(int x=0; x<lins.size(); x++) {
-      String sectionName = lins.get(x).getLin().substring(0,1);
+    for(int x=0; x< lineNumbers.size(); x++) {
+      String sectionName = lineNumbers.get(x).getLin().substring(0,1);
       if(!map.containsKey(sectionName)) {
         map.put(sectionName, x);
       }
@@ -61,7 +61,7 @@ public class LINArrayAdapter extends ArrayAdapter<LIN>
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    LIN lin = getItem(position);
+    LineNumber lineNumber = getItem(position);
     if(convertView == null) {
       convertView = LayoutInflater.from(getContext())
           .inflate(R.layout.card_lin_browser, parent, false);
@@ -71,10 +71,10 @@ public class LINArrayAdapter extends ArrayAdapter<LIN>
     TextView tvNomenclature = (TextView)convertView.findViewById(R.id.lin_nomenclature);
     TextView tvSubLin = (TextView)convertView.findViewById(R.id.sub_lin);
 
-    tvLIN.setText(lin.getLin());
-    tvNomenclature.setText(lin.getNomencalture());
-    if(!TextUtils.isEmpty(lin.getSubLin())) {
-      tvSubLin.setText(lin.getSubLin());
+    tvLIN.setText(lineNumber.getLin());
+    tvNomenclature.setText(lineNumber.getNomenclature());
+    if(!TextUtils.isEmpty(lineNumber.getSubLin())) {
+      tvSubLin.setText(lineNumber.getSubLin());
     } else {
       tvSubLin.setVisibility(View.GONE);
     }

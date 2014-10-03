@@ -11,8 +11,8 @@ import android.widget.Toast;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.ItemArrayAdapter;
 import com.NortrupDevelopment.PropertyBook.model.Item;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
-import com.NortrupDevelopment.PropertyBook.model.NSN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -30,11 +30,11 @@ import it.gmariotti.cardslib.library.prototypes.LinearListView;
 public class LINCardWithNSNs extends CardWithList
 {
 
-  private LIN mLIN;
+  private LineNumber mLIN;
 
-  public LINCardWithNSNs(Context context, LIN lin) {
+  public LINCardWithNSNs(Context context, LineNumber lineNumber) {
     super(context);
-    mLIN = lin;
+    mLIN = lineNumber;
     init();
   }
 
@@ -50,8 +50,8 @@ public class LINCardWithNSNs extends CardWithList
     setUseEmptyView(true);
   }
 
-  public void setLIN(LIN lin) {
-    mLIN = lin;
+  public void setLIN(LineNumber lineNumber) {
+    mLIN = lineNumber;
   }
 
   /**
@@ -64,13 +64,13 @@ public class LINCardWithNSNs extends CardWithList
     ArrayList<ListObject> nsnObjects =
         new ArrayList<ListObject>();
 
-    SparseArray<NSN> nsns = mLIN.getNSNs();
+    SparseArray<StockNumber> nsns = mLIN.getNSNs();
 
     if(nsns.size() > 0) {
       for (int x=0; x<nsns.size(); x++) {
-        NSN nsn = nsns.valueAt(x);
+        StockNumber stockNumber = nsns.valueAt(x);
 
-        NSNListObject object = new NSNListObject(this, nsn);
+        NSNListObject object = new NSNListObject(this, stockNumber);
         nsnObjects.add(object);
 
         object.setOnItemClickListener(new OnItemClickListener() {
@@ -127,34 +127,34 @@ public class LINCardWithNSNs extends CardWithList
                              View view,
                              ViewGroup viewGroup)
   {
-    NSN nsn = ((NSNListObject)listObject).getNSN();
+    StockNumber stockNumber = ((NSNListObject)listObject).getNSN();
 
     //Set the NSN
-    if(!TextUtils.isEmpty(nsn.getFormatedNSN())) {
+    if(!TextUtils.isEmpty(stockNumber.getFormatedNSN())) {
       ((TextView)view.findViewById(R.id.nsn_list_item_nsn_value))
-          .setText(nsn.getFormatedNSN());
+          .setText(stockNumber.getFormatedNSN());
     }
 
     //Set the nomenclature
-    if(!TextUtils.isEmpty(nsn.getNomencalture())) {
+    if(!TextUtils.isEmpty(stockNumber.getNomencalture())) {
       ((TextView)view.findViewById(R.id.nsn_list_item_nomenclature_value))
-          .setText(nsn.getNomencalture());
+          .setText(stockNumber.getNomencalture());
     }
 
     //Set the Unit of Issue
-    if(!TextUtils.isEmpty(nsn.getUi())) {
+    if(!TextUtils.isEmpty(stockNumber.getUi())) {
       ((TextView)view.findViewById(R.id.nsn_list_item_ui_value))
-          .setText(nsn.getUi());
+          .setText(stockNumber.getUi());
     }
 
 
     //Set the on hand quantity
     ((TextView)view.findViewById(R.id.nsn_list_item_on_hand_value))
-        .setText(Integer.toString(nsn.getOnHand()));
+        .setText(Integer.toString(stockNumber.getOnHand()));
 
     //Set the Unit Price
     ((TextView)view.findViewById(R.id.nsn_list_item_unit_price_value)).setText(
-        NumberFormat.getCurrencyInstance().format(nsn.getUnitPrice()));
+        NumberFormat.getCurrencyInstance().format(stockNumber.getUnitPrice()));
 
     return view;
 
@@ -171,7 +171,7 @@ public class LINCardWithNSNs extends CardWithList
     getLinearListAdapter().notifyDataSetChanged();
   }
 
-  public LIN getLIN() {
+  public LineNumber getLIN() {
     return mLIN;
   }
 
@@ -181,11 +181,11 @@ public class LINCardWithNSNs extends CardWithList
    */
   public class NSNListObject extends CardWithList.DefaultListObject {
 
-    private NSN mNSN;
+    private StockNumber mNSN;
 
-    public NSNListObject(Card parent, NSN nsn) {
+    public NSNListObject(Card parent, StockNumber stockNumber) {
       super(parent);
-      mNSN = nsn;
+      mNSN = stockNumber;
 
     }
 
@@ -194,7 +194,7 @@ public class LINCardWithNSNs extends CardWithList
       return String.valueOf(mNSN.getNsnId());
     }
 
-    public NSN getNSN() {
+    public StockNumber getNSN() {
       return mNSN;
     }
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -18,15 +18,15 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class LINDetailHeader extends CardHeader {
 
-  LIN mLIN;
+  LineNumber mLIN;
 
   /**
    * Create an instance of the LINDetailHeader
    * @param context Context that the card will exist in
    */
-  public LINDetailHeader(Context context, LIN lin) {
+  public LINDetailHeader(Context context, LineNumber lineNumber) {
     super(context, R.layout.card_lin_detail);
-    mLIN = lin;
+    mLIN = lineNumber;
   }
 
   @Override
@@ -37,7 +37,7 @@ public class LINDetailHeader extends CardHeader {
 
     TextView textView = (TextView)view.findViewById(
         R.id.lin_nomenclature);
-    textView.setText(mLIN.getNomencalture());
+    textView.setText(mLIN.getNomenclature());
 
     TextView subLinView = (TextView)view.findViewById(R.id.sub_lin);
     if(!TextUtils.isEmpty(mLIN.getSubLin())) {

@@ -10,8 +10,8 @@ import com.NortrupDevelopment.PropertyBook.loaders.LINLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.NSNLoader;
 import com.NortrupDevelopment.PropertyBook.loaders.PropertyBookLoader;
 import com.NortrupDevelopment.PropertyBook.model.Item;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
-import com.NortrupDevelopment.PropertyBook.model.NSN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 import com.NortrupDevelopment.PropertyBook.view.LINDetail;
 
@@ -31,7 +31,7 @@ public class LINDetailPresenter {
 
   LINDetail mDetailView;
   int mLINID;
-  SparseArray<LIN> mLINs;
+  SparseArray<LineNumber> mLINs;
 
   public LINDetailPresenter(LINDetail detailView) {
     mDetailView = detailView;
@@ -106,27 +106,27 @@ public class LINDetailPresenter {
     @Override
     public void onLoadFinished(Loader<ArrayList<PropertyBook>> loader,
                                ArrayList<PropertyBook> data) {
-      LIN requiredLIN = null;
+      LineNumber requiredLineNumber = null;
       for(int x = 0; x<mLINs.size(); x++) {
-        LIN lin = mLINs.get(mLINs.keyAt(x));
-        if (lin.getPropertyBookID() == loader.getId()) {
-          requiredLIN = lin;
+        LineNumber lineNumber = mLINs.get(mLINs.keyAt(x));
+        if (lineNumber.getPropertyBookID() == loader.getId()) {
+          requiredLineNumber = lineNumber;
           if(data.size() == 1) {
-            requiredLIN.setPropertyBook(data.get(0));
+            requiredLineNumber.setPropertyBook(data.get(0));
           }
         }
       }
 
-      if(requiredLIN == null) {
+      if(requiredLineNumber == null) {
         return;
       }
 
       //Add the LIN to the view now that we have the PB information.
-      mDetailView.addLIN(requiredLIN);
+      mDetailView.addLIN(requiredLineNumber);
 
       //Start the search for the NSNs
       mDetailView.getViewLoaderManager().initLoader(
-          requiredLIN.getLinId(),
+          requiredLineNumber.getLinId(),
           null,
           new NSNLoaderCallback());
     }
@@ -146,10 +146,10 @@ public class LINDetailPresenter {
 
   //region LIN Loader
   class LINLoaderCallback
-      implements LoaderManager.LoaderCallbacks<ArrayList<LIN>>
+      implements LoaderManager.LoaderCallbacks<ArrayList<LineNumber>>
   {
     @Override
-    public Loader<ArrayList<LIN>> onCreateLoader(int id, Bundle args) {
+    public Loader<ArrayList<LineNumber>> onCreateLoader(int id, Bundle args) {
       LINLoader loader = new LINLoader(mDetailView.getContext());
       loader.setLinID(mLINID);
       loader.includeSubLINs(true);
@@ -158,22 +158,22 @@ public class LINDetailPresenter {
 
     @Override
     public void onLoadFinished(
-        Loader<ArrayList<LIN>> loader,
-        ArrayList<LIN> data) {
+        Loader<ArrayList<LineNumber>> loader,
+        ArrayList<LineNumber> data) {
 
       //we got a result, display the card
       if (data.size() > 0) {
         if(mLINs == null) {
-          mLINs = new SparseArray<LIN>();
+          mLINs = new SparseArray<LineNumber>();
         }
-        for (LIN lin : data) {
-          if(mLINs.indexOfKey(lin.getLinId()) < 0) {
+        for (LineNumber lineNumber : data) {
+          if(mLINs.indexOfKey(lineNumber.getLinId()) < 0) {
 
-            mLINs.put(lin.getLinId(), lin);
+            mLINs.put(lineNumber.getLinId(), lineNumber);
 
             //Start the search for the Property Book Information
             mDetailView.getViewLoaderManager().initLoader(
-                lin.getPropertyBookID(),
+                lineNumber.getPropertyBookID(),
                 null,
                 new PropertyBookLoaderCallback());
           }
@@ -183,7 +183,7 @@ public class LINDetailPresenter {
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<LIN>> loader) {
+    public void onLoaderReset(Loader<ArrayList<LineNumber>> loader) {
       //Nothing to do...no cursor;
     }
   }
@@ -193,29 +193,29 @@ public class LINDetailPresenter {
    * Loads NSNs that match the LIN
    */
   class NSNLoaderCallback
-      implements LoaderManager.LoaderCallbacks<ArrayList<NSN>> {
+      implements LoaderManager.LoaderCallbacks<ArrayList<StockNumber>> {
 
     @Override
-    public Loader<ArrayList<NSN>> onCreateLoader(int id, Bundle args) {
+    public Loader<ArrayList<StockNumber>> onCreateLoader(int id, Bundle args) {
       NSNLoader loader = new NSNLoader(mDetailView.getContext());
       loader.setLIN(id);
       return loader;
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayList<NSN>> loader, ArrayList<NSN> data) {
+    public void onLoadFinished(Loader<ArrayList<StockNumber>> loader, ArrayList<StockNumber> data) {
       if (data.size() > 0) {
         //Add the NSN to mNSNs & Query for serial numbers under this NSN.
-        for (NSN nsn : data) {
+        for (StockNumber stockNumber : data) {
 
           //Add the NSN to the LIN
-          mLINs.get(loader.getId()).addNSN(nsn);
+          mLINs.get(loader.getId()).addNSN(stockNumber);
 
           Bundle args = new Bundle();
-          args.putInt(NSN_ID_KEY, nsn.getNsnId());
+          args.putInt(NSN_ID_KEY, stockNumber.getNsnId());
           args.putInt(LIN_ID_KEY, loader.getId());
 
-          mDetailView.getViewLoaderManager().initLoader(nsn.getNsnId(),
+          mDetailView.getViewLoaderManager().initLoader(stockNumber.getNsnId(),
               args,
               new ItemLoaderCallback());
         }
@@ -224,7 +224,7 @@ public class LINDetailPresenter {
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<NSN>> loader) {
+    public void onLoaderReset(Loader<ArrayList<StockNumber>> loader) {
       //Nothing needed in this instance
     }
   }
@@ -248,20 +248,20 @@ public class LINDetailPresenter {
     public void onLoadFinished(Loader<ArrayList<Item>> loader, ArrayList<Item> data) {
 
       //Find the NSN in the list of LINs.
-      LIN lin = mLINs.get(((ItemLoader)loader).getLIN());
-      NSN nsn = lin.getNSNById(loader.getId());
+      LineNumber lineNumber = mLINs.get(((ItemLoader)loader).getLIN());
+      StockNumber stockNumber = lineNumber.getNSNById(loader.getId());
 
       if (data.size() > 0) {
 
         //Add the item to the NSN
         for (Item item : data) {
-          if(!nsn.containsItem(item)) {
-            nsn.addItem(item);
+          if(!stockNumber.containsItem(item)) {
+            stockNumber.addItem(item);
           }
         }
       }
 
-      mDetailView.addNSNtoLIN(nsn, lin);
+      mDetailView.addNSNtoLIN(stockNumber, lineNumber);
     }
 
     @Override

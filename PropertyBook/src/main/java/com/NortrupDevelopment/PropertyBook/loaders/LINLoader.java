@@ -11,7 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.NortrupDevelopment.PropertyBook.model.DatabaseOpenHelper;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBookContentProvider;
 import com.NortrupDevelopment.PropertyBook.model.TableContractLIN;
 
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Class used to create LIN objects from the content provider
  * Created by andy on 6/7/14.
  */
-public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
+public class LINLoader extends AsyncTaskLoader<ArrayList<LineNumber>> {
 
   private static final String PROJECTION[] = {
       TableContractLIN._ID,
@@ -44,7 +44,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
   private int mLinID = -1;
   private int mPBICId = -1;
   private Context mContext;
-  private ArrayList<LIN> mLoaderData;
+  private ArrayList<LineNumber> mLoaderData;
   private LINContentObserver mObserver;
 
   public LINLoader(Context context) {
@@ -75,12 +75,12 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    * @return An ArrayList of LIN objects
    */
   @Override
-  public ArrayList<LIN> loadInBackground() {
+  public ArrayList<LineNumber> loadInBackground() {
     return queryLINs();
   }
 
   @Override
-  public void deliverResult(ArrayList<LIN> data) {
+  public void deliverResult(ArrayList<LineNumber> data) {
     if(isReset()) {
       //Nothing to do now.
       return;
@@ -137,7 +137,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
   }
 
   @Override
-  public void onCanceled(ArrayList<LIN> data) {
+  public void onCanceled(ArrayList<LineNumber> data) {
     super.onCanceled(data);
   }
   //</editor-fold>
@@ -160,7 +160,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    * @return LIN object with all information from the database. Null if no LIN
    * is found for the ID.
    */
-  private ArrayList<LIN> queryLINs() {
+  private ArrayList<LineNumber> queryLINs() {
 
     SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
     queryBuilder.setTables(TableContractLIN.TABLE_NAME);
@@ -228,7 +228,7 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
       return null;
     }
 
-    ArrayList<LIN> result = new ArrayList<LIN>();
+    ArrayList<LineNumber> result = new ArrayList<LineNumber>();
 
     while(data.moveToNext()) {
       result.add(createLINFromCursor(data));
@@ -247,8 +247,8 @@ public class LINLoader extends AsyncTaskLoader<ArrayList<LIN>> {
    * @param data Cursor with data to be converted.
    * @return a LIN object filled with data from the current cursor row.
    */
-  private LIN createLINFromCursor(Cursor data) {
-    return  new LIN(
+  private LineNumber createLINFromCursor(Cursor data) {
+    return  new LineNumber(
         data.getInt(data.getColumnIndex(TableContractLIN._ID)),
         data.getString(data.getColumnIndex(TableContractLIN.LIN)),
         data.getString(data.getColumnIndex(TableContractLIN.SUB_LIN)),

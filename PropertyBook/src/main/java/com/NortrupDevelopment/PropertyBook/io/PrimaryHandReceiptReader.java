@@ -4,9 +4,9 @@ package com.NortrupDevelopment.PropertyBook.io;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.NortrupDevelopment.PropertyBook.model.Item;
-import com.NortrupDevelopment.PropertyBook.model.LIN;
-import com.NortrupDevelopment.PropertyBook.model.NSN;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
 
 import java.io.FileOutputStream;
@@ -106,8 +106,8 @@ public class PrimaryHandReceiptReader {
             WritableSheet sheet = copy.getSheet(sheets[sheetIndex]);
 
             //create some markers
-            LIN currentLIN = new LIN("","","","","","",0,0,0); //empty LIN until superseded by data
-            NSN currentNSN = new NSN("", "", new BigDecimal(0), "", "","", "", "", "", "", "", 0, currentLIN);
+            LineNumber currentLineNumber = new LineNumber("","","","","","",0,0,0); //empty LIN until superseded by data
+            StockNumber currentStockNumber = new StockNumber("", "", new BigDecimal(0), "", "","", "", "", "", "", "", 0, currentLineNumber);
             boolean checkForSerialNumbers = false;
 
             //Pull property book description information
@@ -169,7 +169,7 @@ public class PrimaryHandReceiptReader {
                                         .getContents());
                     }
 
-                    currentLIN = new LIN(
+                    currentLineNumber = new LineNumber(
                             sheet.getCell(columnNumberLIN, currentRowNumber)
                                     .getContents(),
                             sheet.getCell(columnNumberLinSubLin, currentRowNumber)
@@ -186,25 +186,25 @@ public class PrimaryHandReceiptReader {
                             required,
                             dueIn
                     );
-                    result.addLIN(currentLIN);
+                    result.addLIN(currentLineNumber);
 
                 }
                 //Sub LIN has a LIN number in the second column and has a grey background like a LIN.
                 else if (columnOne.getContents().matches(regexLIN) &&
                         columnOne.getCellFormat().getBackgroundColour().
                             getDefaultRGB().getBlue() == GREY_QUANTITY) {
-                    currentLIN = new LIN(
-                            currentLIN.getLin(),
+                    currentLineNumber = new LineNumber(
+                            currentLineNumber.getLin(),
                             columnOne.getContents(),
-                            currentLIN.getSri(),
-                            currentLIN.getErc(),
-                            currentLIN.getNomencalture(),
-                            currentLIN.getAuthDoc(),
-                            currentLIN.getAuthorized(),
-                            currentLIN.getRequired(),
-                            currentLIN.getDi());
+                            currentLineNumber.getSri(),
+                            currentLineNumber.getErc(),
+                            currentLineNumber.getNomenclature(),
+                            currentLineNumber.getAuthDoc(),
+                            currentLineNumber.getAuthorized(),
+                            currentLineNumber.getRequired(),
+                            currentLineNumber.getDi());
 
-                    result.addLIN(currentLIN);
+                    result.addLIN(currentLineNumber);
                 }
                 /**
                  * NSNs lines are defined by having an NSN (13 digit alpha numeric
@@ -225,7 +225,7 @@ public class PrimaryHandReceiptReader {
                                 .getContents());
                     }
 
-                    currentNSN = new NSN(
+                    currentStockNumber = new StockNumber(
                             sheet.getCell(columnNumberNSN, currentRowNumber).getContents(),
                             sheet.getCell(columnNumberNsnUi, currentRowNumber).getContents(),
                             new BigDecimal(sheet.getCell(columnNumberNsnUp, currentRowNumber).getContents()),
@@ -238,10 +238,10 @@ public class PrimaryHandReceiptReader {
                             sheet.getCell(columnNumberNsnDLA, currentRowNumber).getContents(),
                             sheet.getCell(columnNumberNsnPubData, currentRowNumber).getContents(),
                             onHand,
-                            currentLIN
+                        currentLineNumber
                     );
 
-                    currentLIN.addNSN(currentNSN);
+                    currentLineNumber.addNSN(currentStockNumber);
                     checkForSerialNumbers = true;
 
 
@@ -272,8 +272,8 @@ public class PrimaryHandReceiptReader {
                                             columnNumberSerialNumbers[x] -1,
                                             currentRowNumber)
                                             .getContents(),
-                                    currentNSN);
-                            currentNSN.addItem(sn);
+                                currentStockNumber);
+                            currentStockNumber.addItem(sn);
                         } else {
                             /**
                              * Serial numbers always populate full rows from

@@ -2,7 +2,7 @@ package com.NortrupDevelopment.PropertyBook.view;
 
 import android.app.LoaderManager;
 
-import com.NortrupDevelopment.PropertyBook.model.LIN;
+import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import java.util.ArrayList;
 
@@ -35,9 +35,9 @@ public interface LINBrowser {
   /**
    * Implementing class should set the CardListView adapter to the
    * provided adapter.
-   * @param LINs Array of LINs to be used in the list.
+   * @param LineNumbers Array of LINs to be used in the list.
    */
-  public void setCardList(ArrayList<LIN> LINs);
+  public void setCardList(ArrayList<LineNumber> LineNumbers);
 
   /**
    * Implementing class should start the LinDetailActivity and pass that activity
