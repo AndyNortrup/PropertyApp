@@ -18,19 +18,19 @@ public class PropertyBook extends RealmObject {
     this.description = description;
   }
 
-  public String getUIC() {
+  public String getUic() {
     return uic;
   }
 
-  public void setUIC(String uic) {
+  public void setUic(String uic) {
     this.uic = uic;
   }
 
-  public String getPBIC() {
+  public String getPbic() {
     return pbic;
   }
 
-  public void setPBIC(String pbic) {
+  public void setPbic(String pbic) {
     this.pbic = pbic;
   }
 

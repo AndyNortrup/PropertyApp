@@ -32,7 +32,7 @@ public class ViewContractItemData {
   public static final String CREATE_VIEW = "CREATE VIEW IF NOT EXISTS " +
       VIEW_NAME + " AS SELECT " +
       //Lin
-      TableContractLIN.TABLE_NAME + "." +
+      TableContractLIN.TABLE_NAME + "" +
       TableContractLIN.LIN +
       " AS " + ALIAS_LIN + ", " +
       //LIN nomenclature

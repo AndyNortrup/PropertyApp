@@ -13,15 +13,10 @@ public class LineNumber extends RealmObject {
   private String authDoc;
   private int required;
   private int authorized;
-  private int di;
-  private int mPropertyBookID;
+  private int dueIn;
 
   private PropertyBook propertyBook;
   private RealmList<StockNumber> stockNumbers;
-
-  //Default ID value
-  public static final int DEFAULT_ID = -1;
-
 
   /**
    * @return the lin
@@ -151,25 +146,17 @@ public class LineNumber extends RealmObject {
   }
 
   /**
-   * @return the di
+   * @return the dueIn
    */
-  public int getDi() {
-    return di;
+  public int getDueIn() {
+    return dueIn;
   }
 
   /**
-   * @param di the di to set
+   * @param dueIn the dueIn to set
    */
-  public void setDi(int di) {
-    this.di = di;
-  }
-
-  public void setPropertyBookID(int propertyBookID) {
-    mPropertyBookID = propertyBookID;
-  }
-
-  public int getPropertyBookID() {
-    return mPropertyBookID;
+  public void setDueIn(int dueIn) {
+    this.dueIn = dueIn;
   }
 
   public PropertyBook getPropertyBook() {
@@ -186,11 +173,6 @@ public class LineNumber extends RealmObject {
 
   public void setStockNumbers(RealmList<StockNumber> stockNumbers) {
     this.stockNumbers = stockNumbers;
-  }
-
-  @Override
-  public String toString() {
-    return getLin() + " " + getNomenclature();
   }
 
 }

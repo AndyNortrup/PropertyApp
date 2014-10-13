@@ -1,2 +1,2 @@
 include 'PropertyBook'
-include ':aFileChooser', ':aFileChooser:aFileChooser',  ':realm'
+include ':aFileChooser', ':aFileChooser:aFileChooser'
