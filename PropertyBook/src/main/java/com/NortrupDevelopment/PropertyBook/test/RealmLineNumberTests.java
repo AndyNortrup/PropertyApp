@@ -3,10 +3,10 @@ package com.NortrupDevelopment.PropertyBook.test;
 import android.test.AndroidTestCase;
 
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
+import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
-import io.realm.RealmResults;
 
 /**
  * Test cases for realm LineNumbers
@@ -14,9 +14,11 @@ import io.realm.RealmResults;
  */
 public class RealmLineNumberTests extends AndroidTestCase {
 
+
   public void testCreatePropertyBook() throws Exception
   {
-    Realm realm = Realm.getInstance(getContext());
+    Realm realm = RealmDefinition.getRealm(getContext(),
+        RealmDefinition.TEASTING_REALM);
 
     realm.beginTransaction();
 
@@ -39,14 +41,4 @@ public class RealmLineNumberTests extends AndroidTestCase {
     assertEquals(propertyBook.getUic(), result.getUic());
   }
 
-  public void testDeleteAllPropertyBooks() throws Exception {
-    ModelUtils.deleteAllPropertyBooks();
-
-    Realm realm = Realm.getInstance(getContext());
-    RealmQuery<PropertyBook> query = realm.where(PropertyBook.class);
-
-    RealmResults<PropertyBook> results = query.findAll();
-
-    assertEquals(results.size(), (int)0);
-  }
 }

@@ -19,15 +19,6 @@
             android:name="android.app.default_searchable"
             android:value=".view.SearchActivity"/>
 
-        <provider
-            android:name=".model.PropertyBookContentProvider"
-            android:authorities="com.NortrupDevelopment.PropertyBook.provider"
-            android:exported="false" />
-        <provider
-            android:name=".model.SearchSuggestionProvider"
-            android:authorities=
-                "com.NortrupDevelopment.PropertyBook.SuggestionProvider"
-            />
 
         <activity android:name=".view.LINDetailActivity"/>
         <activity android:name=".view.LINBrowserActivity" >
@@ -37,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.SearchActivity"
+        <activity android:name=".view.search.SearchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
 

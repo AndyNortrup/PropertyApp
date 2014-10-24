@@ -20,6 +20,7 @@ public class PropertyBook extends Application {
                             Thread.getDefaultUncaughtExceptionHandler();
                     @Override
                     public void uncaughtException(Thread thread, Throwable ex) {
+
                         Log.e(LOG_TAG, "Uncaught exception in thread: " + thread.getId());
                         //Log.e(LOG_TAG, ex.getMessage());
                         ex.printStackTrace();

@@ -1,5 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class StockNumber extends RealmObject {
@@ -19,6 +20,8 @@ public class StockNumber extends RealmObject {
 
   //reference to the LIN id to which this NSN belongs.
   private LineNumber parentLineNumber;
+
+  private RealmList<SerialNumber> serialNumbers;
 
   public String getNsn() {
     return nsn;
@@ -122,5 +125,13 @@ public class StockNumber extends RealmObject {
 
   public void setParentLineNumber(LineNumber parentLineNumber) {
     this.parentLineNumber = parentLineNumber;
+  }
+
+  public RealmList<SerialNumber> getSerialNumbers() {
+    return serialNumbers;
+  }
+
+  public void setSerialNumbers(RealmList<SerialNumber> serialNumbers) {
+    this.serialNumbers = serialNumbers;
   }
 }
