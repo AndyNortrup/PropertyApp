@@ -8,7 +8,7 @@ public class StockNumber extends RealmObject {
   private String nsn; //NSN
   private String ui; //Unit of Issue
   private long unitPrice; //Unit Price
-  private String nomencalture; //NSN Nomenclature
+  private String nomenclature; //NSN Nomenclature
   private String llc; //LLC code
   private String ecs; //ECS code
   private String srrc; //SRRC code
@@ -47,12 +47,12 @@ public class StockNumber extends RealmObject {
     this.unitPrice = unitPrice;
   }
 
-  public String getNomencalture() {
-    return nomencalture;
+  public String getNomenclature() {
+    return nomenclature;
   }
 
-  public void setNomencalture(String nomencalture) {
-    this.nomencalture = nomencalture;
+  public void setNomenclature(String nomenclature) {
+    this.nomenclature = nomenclature;
   }
 
   public String getLlc() {
