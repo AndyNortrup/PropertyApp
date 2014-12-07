@@ -171,7 +171,8 @@ public class SearchActivity extends FragmentActivity {
     }
 
     if(mFragmentArray.size() == 0) {
-      mFragmentArray.add(new NoSearchResultsFragment());
+      mFragmentArray.add(NoSearchResultsFragment.getInstance(mSearchQuery));
+      mPageAdapter.notifyDataSetChanged();
     }
 
   }
@@ -219,10 +220,21 @@ public class SearchActivity extends FragmentActivity {
    * @return Fragment to display the data
    */
   private Fragment makeNSNSearchFragment(Realm realm) {
+
+    StringBuilder dashesRemoved = new StringBuilder(mSearchQuery);
+    while(dashesRemoved.indexOf("-") > 0) {
+      dashesRemoved.replace(
+          dashesRemoved.indexOf("-"),
+          dashesRemoved.indexOf("-") + 1,
+          "");
+    }
+
     RealmResults<StockNumber> stockNumbers = realm.where(StockNumber.class)
         .contains("nomenclature", mSearchQuery)
         .or()
         .contains("nsn", mSearchQuery)
+        .or()
+        .contains("nsn", dashesRemoved.toString())
         .findAll();
 
     if(stockNumbers.size() > 0) {
@@ -262,7 +274,8 @@ class SearchResultPageAdapter extends FragmentPagerAdapter {
     super(fm);
   }
 
-  public void setFragments(ArrayList<android.support.v4.app.Fragment> fragments) {
+  public void setFragments(ArrayList<android.support.v4.app.Fragment> fragments)
+  {
     mFragments = fragments;
   }
 
