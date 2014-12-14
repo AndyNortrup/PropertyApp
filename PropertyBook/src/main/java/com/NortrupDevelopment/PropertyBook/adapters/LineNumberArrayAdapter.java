@@ -66,7 +66,7 @@ public class LineNumberArrayAdapter extends RealmBaseAdapter<LineNumber>
   public View getView(int position, View convertView, ViewGroup parent) {
     LineNumber lineNumber = getItem(position);
     if(convertView == null) {
-      convertView = inflater.inflate(R.layout.card_lin_browser, parent, false);
+      convertView = inflater.inflate(R.layout.list_item_lin_browser, parent, false);
     }
 
     TextView tvLIN = (TextView)convertView.findViewById(R.id.lin);

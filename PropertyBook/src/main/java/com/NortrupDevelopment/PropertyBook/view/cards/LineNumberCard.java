@@ -20,7 +20,7 @@ public class LineNumberCard extends Card {
   private LineNumber mLIN;
 
   public LineNumberCard(Context context) {
-      super(context, R.layout.card_lin_browser);
+      super(context, R.layout.list_item_lin_browser);
   }
 
   @Override

@@ -1,9 +1,9 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import com.NortrupDevelopment.PropertyBook.view.cards.LineNumberCard;
 import io.realm.RealmResults;
 import it.gmariotti.cardslib.library.internal.Card;
 
-public class LINBrowserActivity extends Activity
+public class LINBrowserActivity extends ActionBarActivity
     implements LINBrowser, Card.OnCardClickListener {
 
   private LINBrowserPresenter mPresenter;
@@ -95,7 +95,6 @@ public class LINBrowserActivity extends Activity
     mListView.setVisibility(View.GONE);
     mLoadingLayout.setVisibility(View.VISIBLE);
   }
-
 
   /**
    * Shows the mCardList and hides the progress bar and empty list view.

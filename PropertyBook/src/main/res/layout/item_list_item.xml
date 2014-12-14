@@ -18,6 +18,7 @@
             android:text="BZGZ"
             android:textIsSelectable="false"
             android:gravity="center_vertical|center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
 
         <LinearLayout
@@ -32,13 +33,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:textColor="@color/primary_color"
-                android:text="FCH1131BZG2"/>
+                android:text="FCH1131BZG2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
             <TextView
                 android:id="@+id/system_number_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/darker_gray"
                 android:text="asdf"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 />
 
             </LinearLayout>

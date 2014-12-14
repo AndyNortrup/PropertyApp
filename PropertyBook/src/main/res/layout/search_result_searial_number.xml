@@ -10,19 +10,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/lin_label"
         android:text="@string/lin_label"
-        style="@style/search_result_label"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
         android:id="@+id/lin_search_lin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/nsn_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lin_nomenclature_label"
         android:text="@string/lin_nomenclature_label"
-        style="@style/search_result_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_below="@+id/lin_label"
         />
     <TextView
@@ -30,7 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_label"
-        android:layout_toRightOf="@+id/nsn_nomenclature_label"/>
+        android:layout_toRightOf="@+id/nsn_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,37 +40,39 @@
         android:id="@+id/nsn_nomenclature_label"
         android:text="@string/nsn_nomenclature_label"
         android:layout_below="@+id/lin_search_nomenclature"
-        style="@style/search_result_label"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nsn_search_nomenclature"
         android:layout_below="@+id/lin_search_nomenclature"
         android:layout_toRightOf="@+id/nsn_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nsn_label"
         android:text="@string/nsn_label"
-        style="@style/search_result_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:layout_below="@+id/nsn_search_nomenclature"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nsn_search_nsn"
         android:layout_toRightOf="@+id/nsn_nomenclature_label"
-        android:layout_below="@+id/nsn_search_nomenclature"/>
+        android:layout_below="@+id/nsn_search_nomenclature"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/serial_number"
+        android:text="@string/serial_number_label"
         android:id="@+id/sn_label"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/nsn_label"
         android:layout_alignLeft="@+id/nsn_label"
-        style="@style/search_result_label"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 
     <TextView
@@ -76,7 +80,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/serial_number_search_sn"
         android:layout_below="@+id/nsn_label"
-        android:layout_toRightOf="@+id/nsn_nomenclature_label"/>
+        android:layout_toRightOf="@+id/nsn_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
     <!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"

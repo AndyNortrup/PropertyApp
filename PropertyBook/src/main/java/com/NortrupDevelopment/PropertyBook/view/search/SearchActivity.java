@@ -1,16 +1,14 @@
 package com.NortrupDevelopment.PropertyBook.view.search;
 
-import android.app.ActionBar;
-import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
+import android.support.v7.app.ActionBarActivity;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
@@ -30,7 +28,7 @@ import io.realm.RealmResults;
  * Activity used to recieve and display search results
  * Created by andy on 3/14/14.
  */
-public class SearchActivity extends FragmentActivity {
+public class SearchActivity extends ActionBarActivity {
 
   private static final String LOG_TAG = "SearchActivity";
   private static final String KEY_QUERY = "mSearchTerm";
@@ -40,10 +38,6 @@ public class SearchActivity extends FragmentActivity {
   private ArrayList<Fragment> mFragmentArray;
   private ViewPager mViewPager;
   private SearchResultPageAdapter mPageAdapter;
-  private ActionBar.TabListener mTabListener;
-  private int mCursorsReturned = 0;
-  private int mCursorswithResults = 0;
-
 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -60,28 +54,6 @@ public class SearchActivity extends FragmentActivity {
 
     mFragmentArray = new ArrayList<Fragment>();
 
-    //Enable Tabs
-    getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-    mTabListener = new ActionBar.TabListener() {
-
-      public void onTabSelected(ActionBar.Tab tab,
-                                android.app.FragmentTransaction fm) {
-        mViewPager.setCurrentItem(tab.getPosition());
-
-      }
-
-      public void onTabUnselected(ActionBar.Tab tab,
-                                  android.app.FragmentTransaction fm) {
-
-      }
-
-      public void onTabReselected(ActionBar.Tab tab,
-                                  android.app.FragmentTransaction fm) {
-        //Ignore
-      }
-    };
-
     //setup our pager
     mPageAdapter = new SearchResultPageAdapter(getSupportFragmentManager());
     mPageAdapter.setFragments(mFragmentArray);
@@ -89,21 +61,7 @@ public class SearchActivity extends FragmentActivity {
     mViewPager = (ViewPager) findViewById(R.id.search_result_pager);
     mViewPager.setAdapter(mPageAdapter);
 
-    mViewPager.setOnPageChangeListener(
-        new ViewPager.SimpleOnPageChangeListener() {
-          @Override
-          public void onPageSelected(int pageNum) {
-            getActionBar().setSelectedNavigationItem(pageNum);
-          }
-        }
-    );
-
-    //Handle the search intent
-    if (Intent.ACTION_SEARCH.equals((getIntent().getAction()))) {
-      handleIntent(getIntent());
-    } else if (!TextUtils.isEmpty(mSearchQuery)) {
-      doSearch();
-    }
+    handleIntent(getIntent());
   }
 
   /**
@@ -150,7 +108,7 @@ public class SearchActivity extends FragmentActivity {
     Fragment lineNumberFragment = makeLineNumberFragment(realm);
     if(lineNumberFragment != null) {
       mFragmentArray.add(lineNumberFragment);
-      getActionBar().addTab(makeTab(R.string.lin));
+      //getActionBar().addTab(makeTab(R.string.lin));
       mPageAdapter.notifyDataSetChanged();
     }
 
@@ -158,7 +116,6 @@ public class SearchActivity extends FragmentActivity {
         makeNSNSearchFragment(realm);
     if(nsnFragment != null) {
       mFragmentArray.add(nsnFragment);
-      getActionBar().addTab(makeTab(R.string.nsn));
       mPageAdapter.notifyDataSetChanged();
     }
 
@@ -166,28 +123,28 @@ public class SearchActivity extends FragmentActivity {
         makeSerialNumberFragment(realm);
     if(serialNumberFragment != null) {
       mFragmentArray.add(serialNumberFragment);
-      getActionBar().addTab(makeTab(R.string.serial_number));
       mPageAdapter.notifyDataSetChanged();
     }
 
     if(mFragmentArray.size() == 0) {
-      mFragmentArray.add(new NoSearchResultsFragment());
+      mFragmentArray.add(NoSearchResultsFragment.getInstance(mSearchQuery));
+      mPageAdapter.notifyDataSetChanged();
     }
 
   }
-
   /**
    * Makes an action bar and adds it to the listener
    *
    * @param resource Reference to the R.string resource for the tab text
    * @return
    */
+/*
   private ActionBar.Tab makeTab(int resource) {
     return getActionBar().newTab()
         .setText(getResources().getString(resource))
         .setTabListener(mTabListener);
   }
-
+*/
   /**
    * Search for any matches in the line numbers.
    *
@@ -268,6 +225,11 @@ class SearchResultPageAdapter extends FragmentPagerAdapter {
 
   public android.support.v4.app.Fragment getItem(int i) {
     return mFragments.get(i);
+  }
+
+  @Override
+  public CharSequence getPageTitle(int index) {
+    return ((TitledFragment) mFragments.get(index)).getTitle();
   }
 
   public int getCount() {

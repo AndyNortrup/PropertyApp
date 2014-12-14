@@ -28,15 +28,12 @@ import io.realm.RealmResults;
  * Created by andy on 3/8/14.
  */
 public class SearchResultsFragment<T> extends ListFragment
+  implements TitledFragment
 
 {
   private SearchResultAdapter mArrayAdapter;
 
-  public static final int TYPE_LIN = 0;
-  public static final int TYPE_NSN = 1;
-  public static final int TYPE_SN = 2;
-  public static final int TYPE_NOMENCLATURE = 3;
-
+  String mTitle;
 
   public View onCreateView(LayoutInflater inflater,
                            ViewGroup container,
@@ -82,6 +79,7 @@ public class SearchResultsFragment<T> extends ListFragment
                    String searchTerm)
   {
     mArrayAdapter = new SearchLineNumberArrayAdapter(context, data, searchTerm);
+    mTitle="LIN";
   }
 
   /**
@@ -95,6 +93,7 @@ public class SearchResultsFragment<T> extends ListFragment
   {
     mArrayAdapter =
         new SearchStockNumberArrayAdapter(context, data, searchTerm);
+    mTitle="NSN";
   }
 
   /**
@@ -108,6 +107,12 @@ public class SearchResultsFragment<T> extends ListFragment
   {
     mArrayAdapter =
         new SearchSerialNumberArrayAdapter(context, data, searchTerm);
+    mTitle="SerialNumber";
+
+  }
+
+  public CharSequence getTitle() {
+    return mTitle;
   }
 
 }

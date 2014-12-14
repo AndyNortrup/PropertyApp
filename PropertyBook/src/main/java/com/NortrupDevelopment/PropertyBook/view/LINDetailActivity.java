@@ -1,10 +1,10 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.NortrupDevelopment.PropertyBook.R;
 
@@ -14,7 +14,7 @@ import com.NortrupDevelopment.PropertyBook.R;
  * activity.
  * Created by andy on 2/16/14.
  */
-public class LINDetailActivity extends Activity {
+public class LINDetailActivity extends ActionBarActivity {
 
   public static final String LIN_ID_KEY = "LIN_ID";
   private static final String TAG_DISPLAY_FRAGMENT = "display_fragment";

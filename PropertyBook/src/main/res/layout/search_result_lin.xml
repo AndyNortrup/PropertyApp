@@ -10,26 +10,28 @@
         android:layout_height="wrap_content"
         android:id="@+id/lin_label"
         android:text="@string/lin_label"
-        style="@style/search_result_label"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     <TextView
         android:id="@+id/lin_search_lin"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/lin_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lin_nomenclature_label"
         android:text="@string/lin_nomenclature_label"
-        style="@style/search_result_label"
         android:layout_below="@+id/lin_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         />
     <TextView
         android:id="@+id/lin_search_nomenclature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lin_label"
-        android:layout_toRightOf="@+id/lin_nomenclature_label"/>
+        android:layout_toRightOf="@+id/lin_nomenclature_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
     
 </RelativeLayout>

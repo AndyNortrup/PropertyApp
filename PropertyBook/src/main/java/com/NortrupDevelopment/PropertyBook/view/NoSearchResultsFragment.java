@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.view.search.TitledFragment;
 
 /**
  * This class is used to display a simple fragment when no search results are
@@ -19,7 +20,9 @@ import com.NortrupDevelopment.PropertyBook.R;
  * Created by andy on 4/25/14.
  */
 
-public class NoSearchResultsFragment extends Fragment {
+public class NoSearchResultsFragment extends Fragment
+    implements TitledFragment
+{
 
     private static final String ARG = "searchTerm";
 
@@ -65,4 +68,8 @@ public class NoSearchResultsFragment extends Fragment {
 
     }
 
+  @Override
+  public CharSequence getTitle() {
+    return "No Search Results";
+  }
 }

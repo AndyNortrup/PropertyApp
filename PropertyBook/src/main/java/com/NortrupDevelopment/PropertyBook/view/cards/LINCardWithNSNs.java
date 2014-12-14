@@ -1,6 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.view.cards;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
 import com.NortrupDevelopment.PropertyBook.view.LINDetailHeader;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -151,12 +151,13 @@ public class LINCardWithNSNs extends CardWithList
     }
 
     if(items.size() > 0) {
-      AlertDialog.Builder builder =
-          new AlertDialog.Builder(getCardView().getContext());
+      MaterialDialog.Builder builder =
+          new MaterialDialog.Builder(getCardView().getContext());
 
-      builder.setTitle(mLIN.getStockNumbers().get(i).getNomenclature())
-          .setItems(serialNumbers, null);
-      builder.create().show();
+      builder.title(mLIN.getStockNumbers().get(i).getNomenclature())
+          .items(serialNumbers)
+          .titleColorRes(R.color.primary_color)
+          .show();
     } else {
       Toast.makeText(getContext(),
           R.string.no_serial_numbers,

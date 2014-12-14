@@ -37,6 +37,7 @@
     <string name="nsn_label">NSN: </string>
     <string name="nomenclature">Nomenclature</string>
     <string name="serial_number">Serial Number</string>
+    <string name="serial_number_label">Serial Number: </string>
     <string name="property_book_value">Property Book Value</string>
     <string name="property_book_total_lins">Total LINs</string>
     <string name="property_book_total_items">Total Items</string>

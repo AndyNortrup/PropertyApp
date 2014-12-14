@@ -10,6 +10,6 @@ android:padding="18sp">
 <TextView style="@style/lin_card_value"
     android:id="@+id/card_main_inner_simple_title"
     android:text="Test"
-    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
     />
 </LinearLayout>

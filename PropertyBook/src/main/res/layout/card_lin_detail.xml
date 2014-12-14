@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:text="A12345"
             android:id="@+id/lin"
             android:paddingLeft="16dp"
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="CONTAINER ISU 90"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:id="@+id/lin_nomenclature"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/sub_lin"
@@ -49,12 +50,12 @@
                 android:layout_weight="1"
                 android:text="Sub LIN: A12345"
                 android:id="@+id/sub_lin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/sub_lin"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:textColor="@android:color/darker_gray"/>
+                android:paddingRight="14dp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -66,56 +67,69 @@
         <TextView
             style="@style/lin_card_label"
             android:text="@string/label_authorized"
-            android:id="@+id/lin_card_authorized"/>
+            android:id="@+id/lin_card_authorized"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
         <TextView style="@style/lin_card_value"
                   android:id="@+id/lin_card_authorized_value"
                   android:layout_toRightOf="@+id/lin_card_authorized"
                   android:text="5"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             />
         <TextView
             style="@style/lin_card_label"
             android:id="@+id/lin_card_required_label"
             android:text="@string/label_required"
             android:layout_below="@+id/lin_card_authorized"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
         <TextView style="@style/lin_card_value"
                   android:id="@+id/lin_card_required_value"
                   android:layout_toRightOf="@+id/lin_card_authorized"
                   android:layout_below="@+id/lin_card_authorized"
                   android:text="5"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             />
 
         <TextView
             style="@style/lin_card_label"
             android:id="@+id/lin_card_sri_label"
             android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"
-            android:text="@string/label_sri"/>
+            android:text="@string/label_sri"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <TextView style="@style/lin_card_value"
                   android:id="@+id/lin_card_sri_value"
-                  android:layout_toRightOf="@+id/lin_card_sri_label"/>
+                  android:layout_toRightOf="@+id/lin_card_sri_label"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
 
         <TextView
             style="@style/lin_card_label"
             android:text="@string/label_erc"
             android:id="@+id/lin_card_erc_label"
             android:layout_below="@+id/lin_card_sri_label"
-            android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"/>
+            android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <TextView style="@style/lin_card_value"
                   android:id="@+id/lin_card_erc_value"
                   android:layout_toRightOf="@+id/lin_card_erc_label"
                   android:layout_below="@+id/lin_card_sri_label"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             />
 
         <TextView
             style="@style/lin_card_label"
             android:text="@string/label_di"
             android:id="@+id/lin_card_due_in_label"
-            android:layout_below="@+id/lin_card_required_label"/>
+            android:layout_below="@+id/lin_card_required_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <TextView style="@style/lin_card_value"
                   android:id="@+id/lin_card_due_in_value"
                   android:layout_below="@+id/lin_card_required_label"
                   android:layout_toRightOf="@+id/lin_card_authorized"
                   android:text="0"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             />
 
         <TextView
@@ -123,11 +137,15 @@
             android:text="@string/label_auth_doc"
             android:id="@+id/lin_card_expand_auth_doc_label"
             android:layout_below="@+id/lin_card_due_in_label"
-            android:paddingBottom="15sp"/>
-        <TextView style="@style/lin_card_value"
-                  android:id="@+id/lin_card_auth_doc_value"
-                  android:layout_below="@+id/lin_card_due_in_label"
-                  android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"/>
+            android:paddingBottom="15sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        <TextView
+          android:id="@+id/lin_card_auth_doc_value"
+          android:layout_below="@+id/lin_card_due_in_label"
+          android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"
+          android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
         <TextView
             style="@style/lin_card_label"
             android:id="@+id/lin_card_pbic_label"
@@ -136,11 +154,14 @@
             android:layout_below="@+id/lin_card_erc_label"
             android:layout_toRightOf="@+id/lin_card_expand_auth_doc_label"
             android:text="PBIC: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
         <TextView style="@style/lin_card_value"
-                  android:id="@+id/lin_card_pbic_value"
-                  android:layout_below="@+id/lin_card_erc_label"
-                  android:layout_toRightOf="@+id/lin_card_pbic_label"
-                  android:text="PBIC ##"/>
+              android:id="@+id/lin_card_pbic_value"
+              android:layout_below="@+id/lin_card_erc_label"
+              android:layout_toRightOf="@+id/lin_card_pbic_label"
+              android:text="PBIC ##"
+              android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
     </RelativeLayout>
 </LinearLayout>

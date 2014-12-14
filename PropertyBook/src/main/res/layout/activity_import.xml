@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:text="@string/import_header"
         android:id="@+id/import_header"
         android:textColor="@color/primary_color"
@@ -26,7 +26,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical"
-        android:visibility="visible"/>
+        android:visibility="visible"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <ImageButton
         android:src="@drawable/ic_action_folder_open"
@@ -48,7 +49,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="16dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
 
         <ImageView
             android:layout_width="wrap_content"
