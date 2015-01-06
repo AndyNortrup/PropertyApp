@@ -1,6 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
@@ -105,7 +104,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
       boolean fileAccepted = false;
 
       //Check if the file is of the right data type
-      if (FileUtils.getMimeType((Context) mView, fileUri)
+      if (FileUtils.getMimeType(mView.getContext(), fileUri)
           .equals(REQUIRED_FILE_TYPE)) {
         mFileUri = fileUri;
 
@@ -113,7 +112,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
 
         if(lookup) {
           //Get list of PBICs
-          new PBICLoader(mFileUri, this, (Context) mView);
+          new PBICLoader(mFileUri, this, mView.getContext());
         }
 
         fileAccepted = true;
@@ -121,14 +120,14 @@ public class ImportPresenter implements PBICLoaderCallbacks
 
       String fileName;
       if(FileUtils.isGoogleDriveDocument(fileUri)) {
-        Cursor cursor = ((Context) mView).getContentResolver()
+        Cursor cursor = (mView.getContext()).getContentResolver()
             .query(fileUri, null, null, null, null);
         cursor.moveToFirst();
         fileName = cursor.getString(
             cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
         cursor.close();
       } else {
-        fileName = FileUtils.getFile((Context) mView, fileUri).getName();
+        fileName = FileUtils.getFile(mView.getContext(), fileUri).getName();
       }
 
       mView.setFileNameView(fileName, fileAccepted);

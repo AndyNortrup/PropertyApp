@@ -9,7 +9,7 @@
     >
 
     <TextView
-        android:id="@+id/nsn_list_item_nomenclature_value"
+        android:id="@+id/nomenclature_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
@@ -19,49 +19,49 @@
         />
 
     <TextView
-        android:id="@+id/nsn_list_item_nsn_value"
+        android:id="@+id/nsn_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:paddingLeft="16dp"
-        android:layout_below="@+id/nsn_list_item_nomenclature_value"
+        android:layout_below="@+id/nomenclature_value"
         android:text="1234-56-789-0123"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/nsn_list_item_on_hand_value"
+        android:id="@+id/on_hand_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
-        android:layout_below="@+id/nsn_list_item_nsn_value"
+        android:layout_below="@+id/nsn_value"
         android:text="45"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/nsn_list_item_at"
+        android:id="@+id/at_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/nsn_list_item_on_hand_value"
-        android:layout_alignTop="@id/nsn_list_item_on_hand_value"
+        android:layout_toRightOf="@id/on_hand_value"
+        android:layout_alignTop="@id/on_hand_value"
         android:text=" at "
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/nsn_list_item_unit_price_value"
+        android:id="@+id/unit_price_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="5sp"
-        android:layout_toRightOf="@id/nsn_list_item_at"
-        android:layout_alignTop="@id/nsn_list_item_on_hand_value"
+        android:layout_toRightOf="@id/at_label"
+        android:layout_alignTop="@id/on_hand_value"
         android:text="$1,000.00"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         />
 
-    <TextView android:id="@+id/nsn_list_item_ui_value"
+    <TextView android:id="@+id/unit_of_issue_value"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_toRightOf="@id/nsn_list_item_unit_price_value"
-          android:layout_alignTop="@id/nsn_list_item_on_hand_value"
+          android:layout_toRightOf="@id/unit_price_value"
+          android:layout_alignTop="@id/on_hand_value"
           android:text="EA"
           android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 

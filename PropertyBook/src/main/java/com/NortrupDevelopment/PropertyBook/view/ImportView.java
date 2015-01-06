@@ -19,7 +19,7 @@ public interface ImportView {
   public void showFileSelectIntent();
 
   /**
-   * Displays the PBIC List.
+   * Displays the pbicTV List.
    */
   public void showPBICSelect();
 
@@ -29,7 +29,7 @@ public interface ImportView {
   public void setFileNameView(String fileNameView, boolean goodFile);
 
   /**
-   * Directs the view to add a PBIC to the list
+   * Directs the view to add a pbicTV to the list
    */
   public void addPBIC(int index, String pbicName);
 

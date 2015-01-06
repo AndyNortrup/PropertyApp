@@ -45,7 +45,7 @@ public class LINDetailFragment extends Fragment
                            ViewGroup container,
                            Bundle savedInstanceState)
   {
-    return inflater.inflate(R.layout.fragment_lin_detail, container, false);
+    return inflater.inflate(R.layout.tabbed_lin_detail, container, false);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class LINDetailFragment extends Fragment
     //Create the CardView and add it to the Layout
     CardView cardView = createCardView(cardWithNSNs);
     LinearLayout linearLayout =
-        (LinearLayout) getView().findViewById(R.id.lin_detail_layout);
+        (LinearLayout) getView().findViewById(R.id.lin_detail_activity_layout);
     linearLayout.addView(cardView);
   }
 

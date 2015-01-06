@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="CONTAINER ISU 90"
-            android:id="@+id/lin_nomenclature"
+            android:id="@+id/nomenclature"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/sub_lin"
             android:layout_gravity="center_vertical"

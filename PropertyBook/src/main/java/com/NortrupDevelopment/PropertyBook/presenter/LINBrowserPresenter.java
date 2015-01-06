@@ -1,7 +1,9 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.content.Context;
-
+import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
+import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowser;
@@ -15,10 +17,10 @@ import io.realm.RealmResults;
  */
 public class LINBrowserPresenter{
 
-  private LINBrowser mActivity;
+  private LINBrowser mInstance;
 
   public LINBrowserPresenter(LINBrowser activity) {
-    mActivity = activity;
+    mInstance = activity;
   }
 
   /**
@@ -30,9 +32,9 @@ public class LINBrowserPresenter{
 
   private void loadListContents() {
     //Show the loading progress bar.
-    mActivity.showLoadingProgressBar();
+    mInstance.showLoadingProgressBar();
 
-    Realm realm = RealmDefinition.getRealm((Context)mActivity,
+    Realm realm = RealmDefinition.getRealm(mInstance.getContex(),
         RealmDefinition.PRODUCTION_REALM);
     RealmResults<LineNumber> lineNumbers =
         realm.where(LineNumber.class)
@@ -41,23 +43,23 @@ public class LINBrowserPresenter{
     if(lineNumbers.size() > 0) {
       lineNumbers.sort("lin");
 
-      mActivity.setCardList(lineNumbers);
-      mActivity.showList();
+      mInstance.setList(lineNumbers);
+      mInstance.showList();
     } else {
-      mActivity.startImportActivity();
+      BusProvider.getBus().post(new ImportRequestedEvent());
     }
   }
 
   //region UI Click events
   public void listItemSelected(LineNumber selected) {
-    mActivity.startLINDetailActivity(selected.getLin());
+    BusProvider.getBus().post(new LINDetailRequestedEvent(selected));
   }
 
   /**
    * Called by the Activity when the user requests the import activity.
    */
   public void importRequested() {
-    mActivity.startImportActivity();
+    BusProvider.getBus().post(new ImportRequestedEvent());
   }
 
 
@@ -65,7 +67,7 @@ public class LINBrowserPresenter{
    * Called by the Activity when the user request the import activity.
    */
   public void statisticsRequested() {
-    mActivity.startStatisticsActivity();
+    BusProvider.getBus().post(new StatisticsRequestedEvent());
   }
   //endregion
 }

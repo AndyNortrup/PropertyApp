@@ -12,7 +12,6 @@ import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
-import com.NortrupDevelopment.PropertyBook.view.LINDetailHeader;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.text.NumberFormat;
@@ -91,29 +90,29 @@ public class LINCardWithNSNs extends CardWithList
 
     //Set the NSN
     if(!TextUtils.isEmpty(stockNumber.getNsn())) {
-      ((TextView)view.findViewById(R.id.nsn_list_item_nsn_value))
+      ((TextView)view.findViewById(R.id.nsn_value))
           .setText(NSNFormatter.getFormattedNSN(stockNumber.getNsn()));
     }
 
     //Set the nomenclature
     if(!TextUtils.isEmpty(stockNumber.getNomenclature())) {
-      ((TextView)view.findViewById(R.id.nsn_list_item_nomenclature_value))
+      ((TextView)view.findViewById(R.id.nomenclature_value))
           .setText(stockNumber.getNomenclature());
     }
 
     //Set the Unit of Issue
     if(!TextUtils.isEmpty(stockNumber.getUi())) {
-      ((TextView)view.findViewById(R.id.nsn_list_item_ui_value))
+      ((TextView)view.findViewById(R.id.unit_of_issue_value))
           .setText(stockNumber.getUi());
     }
 
 
     //Set the on hand quantity
-    ((TextView)view.findViewById(R.id.nsn_list_item_on_hand_value))
+    ((TextView)view.findViewById(R.id.on_hand_value))
         .setText(Integer.toString(stockNumber.getOnHand()));
 
     //Set the Unit Price
-    ((TextView)view.findViewById(R.id.nsn_list_item_unit_price_value)).setText(
+    ((TextView)view.findViewById(R.id.unit_price_value)).setText(
         NumberFormat.getCurrencyInstance()
             .format(stockNumber.getUnitPrice()/100));
 

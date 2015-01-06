@@ -71,7 +71,7 @@ public class LineNumberArrayAdapter extends RealmBaseAdapter<LineNumber>
 
     TextView tvLIN = (TextView)convertView.findViewById(R.id.lin);
     TextView tvNomenclature =
-        (TextView)convertView.findViewById(R.id.lin_nomenclature);
+        (TextView)convertView.findViewById(R.id.nomenclature);
     TextView tvSubLin = (TextView)convertView.findViewById(R.id.sub_lin);
 
     tvLIN.setText(lineNumber.getLin());

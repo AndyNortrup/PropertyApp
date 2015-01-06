@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:background="@color/primary_color_dark"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:text="A12345"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@android:color/white"
+            />
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nomenclature"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/sub_lin"
+                android:layout_weight="1"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="CONTAINER ISU 90"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/sub_lin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/sub_lin"
+                android:layout_weight="1"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="Sub LIN: A12345"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/lin_card_expander"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/authorized_label"
+            style="@style/due_in_label"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_authorized"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/authorized_value"
+            style="@style/erc_value"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/authorized_label"
+            android:text="5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:id="@+id/required_label"
+            style="@style/due_in_label"
+            android:layout_below="@+id/authorized_label"
+            android:text="@string/label_required"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+        <TextView
+            android:id="@+id/required_value"
+            style="@style/erc_value"
+            android:layout_below="@+id/authorized_label"
+            android:layout_toRightOf="@+id/authorized_label"
+            android:text="5"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:id="@+id/sri_label"
+            style="@style/due_in_label"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/auth_doc_label"
+
+            android:text="@string/label_sri"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/sri_value"
+            style="@style/erc_value"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/sri_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:id="@+id/erc_label"
+            style="@style/due_in_label"
+            android:layout_below="@+id/sri_label"
+            android:layout_toRightOf="@+id/auth_doc_label"
+            android:text="@string/label_erc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/erc_value"
+            style="@style/erc_value"
+            android:layout_below="@+id/sri_label"
+            android:layout_toRightOf="@+id/erc_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:id="@+id/due_in_label"
+            style="@style/due_in_label"
+            android:layout_below="@+id/required_label"
+            android:text="@string/label_di"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/due_in_value"
+            style="@style/erc_value"
+            android:layout_below="@+id/required_label"
+            android:layout_toRightOf="@+id/authorized_label"
+            android:text="0"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+
+        <TextView
+            android:id="@+id/auth_doc_label"
+            style="@style/due_in_label"
+            android:layout_below="@+id/due_in_label"
+            android:paddingBottom="15sp"
+            android:text="@string/label_auth_doc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <TextView
+            android:id="@+id/auth_doc_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/due_in_label"
+            android:layout_toRightOf="@+id/auth_doc_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+        <TextView
+            android:id="@+id/pbic_label"
+            style="@style/due_in_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/erc_label"
+            android:layout_toRightOf="@+id/auth_doc_label"
+            android:text="PBIC: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+        <TextView
+            android:id="@+id/pbic_value"
+            style="@style/erc_value"
+            android:layout_below="@+id/erc_label"
+            android:layout_toRightOf="@+id/pbic_label"
+            android:text="PBIC ##"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            />
+    </RelativeLayout>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/nsn_detail_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.view.PagerTabStrip
+            android:name="@+id/tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_color_dark"/>
+
+    </android.support.v4.view.ViewPager>
+
+    <TextView
+        android:id="@+id/no_nsn_label"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/no_nsn"
+        android:visibility="gone"/>
+</LinearLayout>

@@ -7,7 +7,7 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:padding="18sp">
 
-<TextView style="@style/lin_card_value"
+<TextView style="@style/erc_value"
     android:id="@+id/card_main_inner_simple_title"
     android:text="Test"
     android:textAppearance="@style/TextAppearance.AppCompat.Headline"

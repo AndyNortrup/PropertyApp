@@ -9,7 +9,7 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.ViewHolders.SerialNumberViewHolder;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 
-import io.realm.RealmResults;
+import io.realm.RealmList;
 
 /**
  * Created by andy on 12/9/14.
@@ -17,9 +17,9 @@ import io.realm.RealmResults;
 public class SerialNumberAdapter
     extends RecyclerView.Adapter<SerialNumberViewHolder> {
 
-  private RealmResults<SerialNumber> mItems;
+  private RealmList<SerialNumber> mItems;
 
-  public SerialNumberAdapter(RealmResults<SerialNumber> data) {
+  public SerialNumberAdapter(RealmList<SerialNumber> data) {
     mItems = data;
   }
 

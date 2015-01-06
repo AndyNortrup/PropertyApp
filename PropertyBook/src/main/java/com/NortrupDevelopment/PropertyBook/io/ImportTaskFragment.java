@@ -1,7 +1,7 @@
 package com.NortrupDevelopment.PropertyBook.io;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.control.ModelUtils;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.google.common.io.Closer;
 import com.squareup.otto.Bus;
 
 import java.io.FileNotFoundException;
@@ -60,7 +59,8 @@ public class ImportTaskFragment extends Fragment {
   /**
    * Created by andy on 8/1/14.
    */
-  public class PropertyBookImporter extends AsyncTask<ImportParameters, String, Integer> {
+  public class PropertyBookImporter
+      extends AsyncTask<ImportParameters, String, Integer> {
 
     public static final int RESULT_ERROR = -1;
     public static final int RESULT_OK = 0;
@@ -93,18 +93,14 @@ public class ImportTaskFragment extends Fragment {
           params[0].getSheets();
 
       InputStream inStream;
-      Closer closer = Closer.create();
       String results = "";
 
-      try {
         try {
 
           Looper.prepare();
 
           inStream =
               mContext.getContentResolver().openInputStream(params[0].getFile());
-
-          closer.register(inStream);
 
 				/*
 				 * If we have set the EMPTY_DATABASE_KEY in the extras then
@@ -160,13 +156,7 @@ public class ImportTaskFragment extends Fragment {
           return RESULT_ERROR;
         } finally {
           publishProgress(results);
-          //Looper.loop();
-          closer.close();
         }
-      } catch (IOException ioe) {
-        //Eat it.
-        return RESULT_ERROR;
-      }
       return RESULT_OK;
     }
 

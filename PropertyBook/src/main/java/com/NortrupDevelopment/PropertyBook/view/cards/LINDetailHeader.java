@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.view;
+package com.NortrupDevelopment.PropertyBook.view.cards;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -36,7 +36,7 @@ public class LINDetailHeader extends CardHeader {
     linTextView.setText(mLIN.getLin());
 
     TextView textView = (TextView)view.findViewById(
-        R.id.lin_nomenclature);
+        R.id.nomenclature);
     textView.setText(mLIN.getNomenclature());
 
     TextView subLinView = (TextView)view.findViewById(R.id.sub_lin);
@@ -48,31 +48,31 @@ public class LINDetailHeader extends CardHeader {
     }
 
     TextView authorizedTV = (TextView)view.findViewById(
-        R.id.lin_card_authorized_value);
+        R.id.authorized_value);
     authorizedTV.setText(String.valueOf(mLIN.getAuthorized()));
 
     TextView requiredTV = (TextView)view.findViewById(
-        R.id.lin_card_required_value);
+        R.id.required_value);
     requiredTV.setText(String.valueOf(mLIN.getRequired()));
 
     TextView sriTV = (TextView)view.findViewById(
-        R.id.lin_card_sri_value);
+        R.id.sri_value);
     sriTV.setText(mLIN.getSri());
 
     TextView mDueInTV = (TextView)view.findViewById(
-        R.id.lin_card_due_in_value);
+        R.id.due_in_value);
     mDueInTV.setText(Integer.toString(mLIN.getDueIn()));
 
     TextView ercTV = (TextView)view.findViewById(
-        R.id.lin_card_erc_value);
+        R.id.erc_value);
     ercTV.setText(mLIN.getErc());
 
     TextView authDocTV = (TextView)view.findViewById(
-        R.id.lin_card_auth_doc_value);
+        R.id.auth_doc_value);
     authDocTV.setText(mLIN.getAuthDoc());
 
     if(mLIN.getPropertyBook() != null) {
-      TextView PBIC = (TextView)view.findViewById(R.id.lin_card_pbic_value);
+      TextView PBIC = (TextView)view.findViewById(R.id.pbic_value);
       PBIC.setText(mLIN.getPropertyBook().getPbic().replace("PBIC ", ""));
     }
   }

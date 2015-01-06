@@ -1,44 +1,61 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.LoaderManager;
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.LineNumberArrayAdapter;
+import com.NortrupDevelopment.PropertyBook.bus.AboutUsRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
+import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.SearchRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
-import com.NortrupDevelopment.PropertyBook.view.cards.LineNumberCard;
 
 import io.realm.RealmResults;
-import it.gmariotti.cardslib.library.internal.Card;
 
-public class LINBrowserActivity extends ActionBarActivity
-    implements LINBrowser, Card.OnCardClickListener {
+public class LINBrowserFragment extends Fragment implements LINBrowser
+{
 
   private LINBrowserPresenter mPresenter;
   private ListView mListView;
   private LinearLayout mLoadingLayout;
 
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_lin_browser);
-    getActionBar();
+  @Override
+  public View onCreateView(LayoutInflater inflater,
+                           @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState)
+  {
+    View result = inflater.inflate(R.layout.lin_browser,
+        container, false);
 
     //Grab our view elements
-    mListView = (ListView) findViewById(R.id.lin_list);
-    mLoadingLayout = (LinearLayout) findViewById(R.id.lin_loading_progress);
+    mListView = (ListView) result.findViewById(R.id.lin_list);
+    mLoadingLayout =
+        (LinearLayout)result.findViewById(R.id.lin_loading_progress);
+
+    return result;
+  }
+
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
     //Connect our presenter
     mPresenter = new LINBrowserPresenter(this);
+
+    setHasOptionsMenu(true);
   }
 
   @Override
@@ -50,11 +67,9 @@ public class LINBrowserActivity extends ActionBarActivity
   /**
    * Load up the Action Bar
    */
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
     inflater.inflate(R.menu.menu_lin_list, menu);
-
-    return super.onCreateOptionsMenu(menu);
   }
 
 
@@ -73,14 +88,14 @@ public class LINBrowserActivity extends ActionBarActivity
         break;
       case R.id.search_property_book:
         //Open search activity
-        onSearchRequested();
+        BusProvider.getBus().post(new SearchRequestedEvent());
         break;
       case R.id.property_book_statistics:
         //Open statistics activity
         mPresenter.statisticsRequested();
         break;
       case R.id.about_us:
-        startActivity(new Intent(this, AboutActivity.class));
+        BusProvider.getBus().post(new AboutUsRequestedEvent());
         break;
     }
 
@@ -88,7 +103,7 @@ public class LINBrowserActivity extends ActionBarActivity
   }
 
   /**
-   * Shows the Loading progress bar and hides mCardLista and mEmptyLayout.
+   * Shows the Loading progress bar and hides mCardList and mEmptyLayout.
    */
   @Override
   public void showLoadingProgressBar() {
@@ -105,54 +120,16 @@ public class LINBrowserActivity extends ActionBarActivity
     mListView.setVisibility(View.VISIBLE);
   }
 
-  @Override
-  public LoaderManager getActivityLoaderManager() {
-    return getLoaderManager();
-  }
-
-
-  /**
-   * Starts the LINDetailActivity
-   *
-   * @param lin Lin String selected by the user.
-   */
-  public void startLINDetailActivity(String lin) {
-    Intent intent = new Intent(this, LINDetailActivity.class);
-
-    Bundle bundle = new Bundle();
-    bundle.putString(LINDetailActivity.LIN_ID_KEY, lin);
-
-    intent.putExtras(bundle);
-
-    startActivity(intent);
-
-  }
-
-  /**
-   * Called when the user wants to start the import activity.
-   */
-  public void startImportActivity() {
-    startActivity(new Intent(this, ImportActivity.class));
-  }
-
-  /**
-   * Called when the user wants to start the property book statistics activity.
-   */
-  public void startStatisticsActivity() {
-
-    startActivity(new Intent(this, PropertyBookStatisticsActivity.class));
-  }
-
   /**
    * Takes a list of LINs, converts them into UI cards then creates and array
    * adapter for display in the CardList.
    *
    * @param lineNumbers List of LINs to be displayed.
    */
-  public void setCardList(RealmResults<LineNumber> lineNumbers) {
+  public void setList(RealmResults<LineNumber> lineNumbers) {
 
     if (lineNumbers != null) {
-      LineNumberArrayAdapter adapter = new LineNumberArrayAdapter(this,
+      LineNumberArrayAdapter adapter = new LineNumberArrayAdapter(getActivity(),
           lineNumbers,
           true); //AutoUpdate
 
@@ -166,9 +143,14 @@ public class LINBrowserActivity extends ActionBarActivity
                                 int position,
                                 long id) {
 
-          mPresenter.listItemSelected(
-              ((LineNumberArrayAdapter) mListView.getAdapter())
-                  .getItem(position));
+          try {
+
+            LineNumber lin =  ((LineNumberArrayAdapter)mListView.getAdapter())
+                .getItem(position);
+            BusProvider.getBus().post(new LINDetailRequestedEvent(lin));
+          } catch (Exception e) {
+            Log.e("WTF", e.getMessage());
+          }
         }
       });
     } else {
@@ -177,16 +159,8 @@ public class LINBrowserActivity extends ActionBarActivity
 
   }
 
-  /**
-   * Implements onCardClickListener interface.  Captures card clicks from
-   * mCardList.
-   *
-   * @param card Card Model associated with the view which generated the call.
-   * @param view View that generated the call.
-   */
   @Override
-  public void onClick(Card card, View view) {
-    LineNumber selected = ((LineNumberCard) card).getLIN();
-    mPresenter.listItemSelected(selected);
+  public Context getContex() {
+    return getActivity();
   }
 }

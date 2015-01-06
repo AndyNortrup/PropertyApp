@@ -18,25 +18,33 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.releaseConfig
         }
     }
     productFlavors {
     }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
+
 
 dependencies {
     compile files('libs/jxl.jar')
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.0.1'
-    compile 'com.google.guava:guava:16.0.+'
+    //compile 'com.google.guava:guava:16.0.+'
     compile 'com.android.support:support-v4:21.0.2'
     compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.android.support:support-v13:21.0.2'
     compile 'com.android.support:recyclerview-v7:21.0.2'
     compile project(':aFileChooser:aFileChooser')
-    compile 'com.squareup:otto:1.3.+'
+    compile 'com.squareup:otto:1.3.5'
     compile 'io.realm:realm-android:0.75.1'
     compile 'com.afollestad:material-dialogs:0.4.3'
+    compile 'com.jakewharton:butterknife:6.0.0'
+    compile 'org.lucasr.twowayview:twowayview:0.1.4'
+    //compile 'com.getbase:floatingactionbutton:1.3.0'
 }
