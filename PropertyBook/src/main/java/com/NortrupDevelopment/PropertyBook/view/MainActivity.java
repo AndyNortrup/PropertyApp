@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
@@ -49,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
 
   }
 
+
   @Override
   protected void onDestroy() {
     super.onDestroy();
@@ -84,8 +86,16 @@ public class MainActivity extends ActionBarActivity {
    * @param requestedLIN Line Number to be displayed by the fragment.
    */
   public void replaceWithLINDetail(LineNumber requestedLIN) {
+
     TabbedLINDetailFragment linDetailFragment = new TabbedLINDetailFragment();
     linDetailFragment.setRetainInstance(true);
+
+    Bundle arguments = new Bundle();
+    arguments.putString(
+        TabbedLINDetailFragment.KEY_LIN_UUID,
+        requestedLIN.getUuid());
+
+    linDetailFragment.setArguments(arguments);
 
     FragmentTransaction fragmentTransaction =
         mFragmentManager.beginTransaction();
@@ -97,8 +107,7 @@ public class MainActivity extends ActionBarActivity {
 
     fragmentTransaction.commit();
 
-    linDetailFragment.addLIN(requestedLIN);
-
+    printBackStackDebug();
   }
 
   /**
@@ -117,6 +126,8 @@ public class MainActivity extends ActionBarActivity {
         currentFragmentTag)
         .addToBackStack("import")
         .commit();
+
+    printBackStackDebug();
   }
 
   /**
@@ -134,5 +145,16 @@ public class MainActivity extends ActionBarActivity {
         currentFragmentTag)
         .addToBackStack("browser")
         .commit();
+
+    printBackStackDebug();
+
+  }
+
+  private void printBackStackDebug() {
+    FragmentManager fm = getSupportFragmentManager();
+    int count = fm.getBackStackEntryCount();
+    for(int x=0; x<count; x++) {
+      Log.i("Backstack", fm.getBackStackEntryAt(x).getName());
+    }
   }
 }

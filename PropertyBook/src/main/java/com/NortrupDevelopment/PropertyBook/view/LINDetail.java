@@ -13,6 +13,7 @@ import com.NortrupDevelopment.PropertyBook.model.LineNumber;
  */
 public interface LINDetail {
 
+
   /**
    * Get a copy of the view's Context
    * @return The view's context

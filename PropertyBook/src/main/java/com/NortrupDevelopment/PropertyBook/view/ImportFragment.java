@@ -75,49 +75,6 @@ public class ImportFragment extends Fragment
 
   private ImportTaskFragment mImportFragment;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    mPresenter = new ImportPresenter(this);
-
-    //Restore instance state if it exists
-    if(savedInstanceState != null) {
-
-      if(savedInstanceState.containsKey(FILE_URI_KEY)) {
-        if(savedInstanceState.containsKey(PBIC_LIST_KEY)) {
-          mPresenter.restoreFileInformation(
-              Uri.parse(savedInstanceState.getString(FILE_URI_KEY)),
-              savedInstanceState.getStringArray(PBIC_LIST_KEY));
-
-          //Restore checked items
-          if(savedInstanceState.containsKey(SELECTED_ITEMS_KEY)) {
-            ArrayList<Integer> checkedItems =
-                savedInstanceState.getIntegerArrayList(SELECTED_ITEMS_KEY);
-
-            for(Integer index : checkedItems) {
-              mPBICSelectList.setItemChecked(index, true);
-            }
-            mPresenter.pbicSelectionChanged(
-                mPBICSelectList.getCheckedItemPositions());
-          }
-        } else {
-          mPresenter.fileSelected(
-              Uri.parse(savedInstanceState.getString(FILE_URI_KEY)));
-        }
-
-        if(savedInstanceState.containsKey(PROGRESS_DIALOG_KEY)) {
-          mImportMessage = savedInstanceState.getString(PROGRESS_DIALOG_KEY);
-          showImportProgress();
-          mImportProgressDialog.setMessage(mImportMessage);
-        }
-      }
-    }
-
-    mImportFragment = (ImportTaskFragment)getFragmentManager()
-        .findFragmentByTag(TAG_IMPORT_FRAGMENT);
-  }
-
   /**
    * Inflate the fragment view.
    * @param inflater Inflater service to do the inflating
@@ -138,7 +95,48 @@ public class ImportFragment extends Fragment
     mImportButton.setOnClickListener(this);
     mImportButton.setEnabled(false);
 
+    mPresenter = new ImportPresenter(this);
+
+    if(savedInstanceState != null) {
+      restoreInstanceState(savedInstanceState);
+    }
+
+    mImportFragment = (ImportTaskFragment)getFragmentManager()
+        .findFragmentByTag(TAG_IMPORT_FRAGMENT);
+
     return result;
+  }
+
+  private void restoreInstanceState(Bundle savedInstanceState) {
+
+    if(savedInstanceState.containsKey(FILE_URI_KEY)) {
+      if(savedInstanceState.containsKey(PBIC_LIST_KEY)) {
+        mPresenter.restoreFileInformation(
+            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)),
+            savedInstanceState.getStringArray(PBIC_LIST_KEY));
+
+        //Restore checked items
+        if(savedInstanceState.containsKey(SELECTED_ITEMS_KEY)) {
+          ArrayList<Integer> checkedItems =
+              savedInstanceState.getIntegerArrayList(SELECTED_ITEMS_KEY);
+
+          for(Integer index : checkedItems) {
+            mPBICSelectList.setItemChecked(index, true);
+          }
+          mPresenter.pbicSelectionChanged(
+              mPBICSelectList.getCheckedItemPositions());
+        }
+      } else {
+        mPresenter.fileSelected(
+            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)));
+      }
+
+      if(savedInstanceState.containsKey(PROGRESS_DIALOG_KEY)) {
+        mImportMessage = savedInstanceState.getString(PROGRESS_DIALOG_KEY);
+        showImportProgress();
+        mImportProgressDialog.setMessage(mImportMessage);
+      }
+    }
   }
 
   @Override
@@ -161,6 +159,7 @@ public class ImportFragment extends Fragment
    */
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
+
     if(mPresenter.getFileUri() != null) {
       outState.putString(FILE_URI_KEY, mPresenter.getFileUri().toString());
     }

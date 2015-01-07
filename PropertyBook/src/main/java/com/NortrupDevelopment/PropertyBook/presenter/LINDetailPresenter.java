@@ -20,11 +20,11 @@ public class LINDetailPresenter {
     mDetailView = detailView;
   }
 
-  public void linSearchRequested(String searchLIN) {
+  public void linSearchRequested(String uuid) {
     Realm realm = RealmDefinition.getRealm(mDetailView.getContext(),
         RealmDefinition.PRODUCTION_REALM);
     RealmResults<LineNumber> lineNumbers = realm.where(LineNumber.class)
-        .equalTo("lin", searchLIN)
+        .equalTo("uuid", uuid)
         .findAll();
 
     for(LineNumber lin : lineNumbers) {

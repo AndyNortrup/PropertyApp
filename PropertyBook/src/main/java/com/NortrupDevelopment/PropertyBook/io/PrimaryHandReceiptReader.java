@@ -13,6 +13,7 @@ import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 import io.realm.Realm;
 import jxl.Sheet;
@@ -306,6 +307,8 @@ public class PrimaryHandReceiptReader {
     lineNumber.setRequired(required);
     lineNumber.setDueIn(dueIn);
 
+    lineNumber.setUuid(UUID.randomUUID().toString());
+
     return lineNumber;
   }
 
@@ -325,6 +328,7 @@ public class PrimaryHandReceiptReader {
     subLIN.setDueIn(primaryLIN.getDueIn());
     subLIN.setSubLin(sheet.getCell(
         columnNumberLinSubLin, currentRowNumber).getContents());
+    subLIN.setUuid(UUID.randomUUID().toString());
 
     return subLIN;
   }
@@ -384,6 +388,8 @@ public class PrimaryHandReceiptReader {
       stockNumber.setOnHand(Integer.parseInt(onHandString));
     }
 
+    stockNumber.setUuid(UUID.randomUUID().toString());
+
     return stockNumber;
   }
 
@@ -400,6 +406,8 @@ public class PrimaryHandReceiptReader {
     //System number is in the cell one to the left of the serial number
     serialNumber.setSysNo(
         sheet.getCell(columnIndex - 1, currentRowNumber).getContents());
+
+    serialNumber.setUuid(UUID.randomUUID().toString());
 
     return serialNumber;
   }

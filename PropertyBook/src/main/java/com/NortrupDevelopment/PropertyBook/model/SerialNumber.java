@@ -14,6 +14,7 @@ public class SerialNumber extends RealmObject {
   private String serialNumber;
   private String sysNo;
   private StockNumber stockNumber;
+  private String uuid;
 
   public String getSerialNumber() {
     return serialNumber;
@@ -39,4 +40,11 @@ public class SerialNumber extends RealmObject {
     this.stockNumber = stockNumber;
   }
 
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 }

@@ -24,6 +24,7 @@ import it.gmariotti.cardslib.library.view.CardView;
 public class LINDetailFragment extends Fragment
     implements LINDetail {
 
+
   LINDetailPresenter presenter;
 
   @Override

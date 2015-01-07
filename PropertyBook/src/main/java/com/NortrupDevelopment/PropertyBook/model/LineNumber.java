@@ -14,6 +14,7 @@ public class LineNumber extends RealmObject {
   private int required;
   private int authorized;
   private int dueIn;
+  private String uuid;
 
   private PropertyBook propertyBook;
   private RealmList<StockNumber> stockNumbers;
@@ -175,4 +176,11 @@ public class LineNumber extends RealmObject {
     this.stockNumbers = stockNumbers;
   }
 
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
 }

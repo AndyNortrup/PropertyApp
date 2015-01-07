@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
+import com.NortrupDevelopment.PropertyBook.presenter.LINDetailPresenter;
 import com.NortrupDevelopment.PropertyBook.view.search.TitledFragment;
 
 import java.util.ArrayList;
@@ -28,9 +29,12 @@ import butterknife.InjectView;
  */
 public class TabbedLINDetailFragment extends Fragment  implements LINDetail {
 
+  public static final String KEY_LIN_UUID = "LIN_UUID";
+
   private LineNumber mLIN;
   private NSNPagerAdapter mPagerAdapter;
   private ArrayList<NSNDetailFragment> mNSNFragments;
+  private LINDetailPresenter mPresenter;
 
   @InjectView(R.id.nsn_detail_pager) ViewPager mViewPager;
   @InjectView(R.id.lin) TextView linTV;
@@ -55,21 +59,34 @@ public class TabbedLINDetailFragment extends Fragment  implements LINDetail {
 
     ButterKnife.inject(this, result);
 
+
     mNSNFragments = new ArrayList<NSNDetailFragment>();
     mViewPager = (ViewPager)result.findViewById(R.id.nsn_detail_pager);
     mPagerAdapter = new NSNPagerAdapter(
         getActivity().getSupportFragmentManager());
     mViewPager.setAdapter(mPagerAdapter);
 
+    mPresenter = new LINDetailPresenter(this);
+
+    //Retrieve the LIN UUID from saved instance state or arguments and have
+    //the presenter look it up.
+    if(savedInstanceState != null) {
+      mPresenter.linSearchRequested(savedInstanceState.getString(KEY_LIN_UUID));
+    } else {
+      mPresenter.linSearchRequested(getArguments().getString(KEY_LIN_UUID));
+    }
+
     return result;
   }
 
+  /**
+   * Save the instance state of the fragment
+   * @param outState Bundle containing data to be saved.
+   */
   @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    if(mLIN != null) {
-      setupViewFields();
-    }
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString(KEY_LIN_UUID, mLIN.getUuid());
   }
 
   /**

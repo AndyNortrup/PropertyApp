@@ -11,7 +11,7 @@ import io.realm.exceptions.RealmMigrationNeededException;
 public class RealmDefinition {
   public static final String PRODUCTION_REALM = "PropertyBook.realm";
   public static String TEASTING_REALM = "Test.realm";
-  public static final int REALM_VERSION = 2;
+  public static final int REALM_VERSION = 3;
 
   public static Realm getRealm(Context c, String realmFile) {
     try {

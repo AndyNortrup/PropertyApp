@@ -17,6 +17,7 @@ public class StockNumber extends RealmObject {
   private String dla;
   private String pubData; //publication data
   private int onHand; //quantity on hand
+  private String uuid; //Unique identifier for the stock number
 
   //reference to the LIN id to which this NSN belongs.
   private LineNumber parentLineNumber;
@@ -133,5 +134,13 @@ public class StockNumber extends RealmObject {
 
   public void setSerialNumbers(RealmList<SerialNumber> serialNumbers) {
     this.serialNumbers = serialNumbers;
+  }
+
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 }
