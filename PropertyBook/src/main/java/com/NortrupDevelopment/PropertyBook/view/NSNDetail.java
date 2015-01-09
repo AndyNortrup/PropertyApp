@@ -1,13 +1,10 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
@@ -22,9 +19,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * View extends a LinearLayout for the display of information pertaining to a
+ * NSN
  * Created by andy on 12/9/14.
  */
-public class NSNDetailFragment extends Fragment
+public class NSNDetail extends LinearLayout
   implements TitledFragment
 {
 
@@ -38,38 +37,23 @@ public class NSNDetailFragment extends Fragment
   private RecyclerView.LayoutManager mLayoutManager;
   private StockNumber mStockNumber;
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup parent,
-    Bundle savedInstanceState)
-  {
-    View result = inflater.inflate(R.layout.fragment_nsn_detail, parent, false);
-
-    ButterKnife.inject(this, result);
-
-    //mRecyclerView.setHasFixedSize(true);
-    mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
-    DividerItemDecoration decoration = new DividerItemDecoration(getActivity(),
-        DividerItemDecoration.VERTICAL_LIST);
-    mRecyclerView.addItemDecoration(decoration);
-
-    return result;
+  public NSNDetail(Context context, AttributeSet attr) {
+    super(context, attr);
   }
 
-  @Override
-  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
-    if(mStockNumber != null) {
-      setViewValues();
-    }
+  @Override protected void onFinishInflate() {
+    ButterKnife.inject(this);
+
+    mLayoutManager = new LinearLayoutManager(getContext());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+    DividerItemDecoration decoration = new DividerItemDecoration(getContext(),
+        DividerItemDecoration.VERTICAL_LIST);
+    mRecyclerView.addItemDecoration(decoration);
   }
 
   public void setStockNumber(StockNumber stockNumber) {
     mStockNumber = stockNumber;
-
-    if(getView() != null) {
-      setViewValues();
-    }
+    setViewValues();
   }
 
   public String getTitle() {

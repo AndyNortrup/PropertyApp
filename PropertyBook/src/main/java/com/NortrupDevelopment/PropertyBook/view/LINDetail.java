@@ -24,6 +24,12 @@ public interface LINDetail {
    * Directs the view to take the provided LIN object and add it to the view
    * @param lineNumber LIN to be added to the view.
    */
-  public void addLIN(LineNumber lineNumber);
+  public void addLineNumber(LineNumber lineNumber);
+
+  /**
+   * Retrieves the currently displayed LineNumber
+   * @return Currently displayed LineNumber
+   */
+  public LineNumber getLineNumber();
 
 }

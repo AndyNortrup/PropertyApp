@@ -6,7 +6,7 @@ import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.view.LINBrowser;
+import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -17,9 +17,9 @@ import io.realm.RealmResults;
  */
 public class LINBrowserPresenter{
 
-  private LINBrowser mInstance;
+  private LINBrowserView mInstance;
 
-  public LINBrowserPresenter(LINBrowser activity) {
+  public LINBrowserPresenter(LINBrowserView activity) {
     mInstance = activity;
   }
 
@@ -30,11 +30,11 @@ public class LINBrowserPresenter{
     loadListContents();
   }
 
-  private void loadListContents() {
+  public void loadListContents() {
     //Show the loading progress bar.
     mInstance.showLoadingProgressBar();
 
-    Realm realm = RealmDefinition.getRealm(mInstance.getContex(),
+    Realm realm = RealmDefinition.getRealm(mInstance.getContext(),
         RealmDefinition.PRODUCTION_REALM);
     RealmResults<LineNumber> lineNumbers =
         realm.where(LineNumber.class)

@@ -1,17 +1,14 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.CurrentView;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivityPresenter;
 import com.squareup.otto.Subscribe;
 
@@ -19,35 +16,54 @@ import butterknife.ButterKnife;
 
 /**
  * Serves as the central Activity for the activity, all components are handled
- * in individual fragments
+ * in individual views
  * Created by andy on 12/15/14.
  */
 public class MainActivity extends ActionBarActivity {
 
-  private final static String currentFragmentTag = "DISPLAYED_FRAGMENT";
   private MainActivityPresenter mPresenter;
-  private FragmentManager mFragmentManager;
+  Container mContainer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     setContentView(R.layout.base_layout);
 
     getActionBar();
 
-    mPresenter = new MainActivityPresenter();
+    mContainer = (Container) findViewById(R.id.container);
+
+    mPresenter = MainActivityPresenter.getInstance(this);
     BusProvider.getBus().register(this);
 
-    mFragmentManager = getSupportFragmentManager();
-    FragmentTransaction ft = mFragmentManager.beginTransaction();
+    int currentScreen = CurrentView.getInstance().getCurrentScreen();
+    if(currentScreen == CurrentView.SCREEN_BROWSE) {
+      mContainer.showBrowser();
+    } else if(currentScreen == CurrentView.SCREEN_DETAIL &&
+        mPresenter.getCurrentDetailLineNumber() != null) {
+      mContainer.showLineNumber(mPresenter.getCurrentDetailLineNumber());
+    } else {
+      mContainer.showBrowser();
+    }
 
-    LINBrowserFragment linBrowserFragment = new LINBrowserFragment();
+  }
 
-    ft.add(R.id.fragment_container, linBrowserFragment, currentFragmentTag);
+  /**
+   * Retrieve a copy of the current container
+   * @return
+   */
+  public Container getContainer() {
+    return mContainer;
+  }
 
-    ft.commit();
-
+  /**
+   * Handles the user pressing the back button locally.
+   */
+  @Override public void onBackPressed() {
+    boolean handled = mContainer.onBackPressed();
+    if(!handled) {
+      finish();
+    }
   }
 
 
@@ -65,7 +81,8 @@ public class MainActivity extends ActionBarActivity {
    * @param event
    */
   @Subscribe public void linDetailRequested(LINDetailRequestedEvent event) {
-    replaceWithLINDetail(event.getRequestedLIN());
+    mPresenter.setCurrentDetailLineNumber(event.getRequestedLIN());
+    mContainer.showLineNumber(event.getRequestedLIN());
   }
 
   /**
@@ -73,88 +90,11 @@ public class MainActivity extends ActionBarActivity {
    * @param event
    */
   @Subscribe public void importRequested(ImportRequestedEvent event) {
-    replaceWithImport();
+    //TODO: Show the import view
   }
 
   @Subscribe public void importComplete(ImportCompleteEvent event) {
-    replaceWithBrowser();
+    //TODO: Show the browser after completing an import
   }
 
-  /**
-   * Replace the existing fragment currentFragmentTag with the a LIN Detail
-   * Fragment
-   * @param requestedLIN Line Number to be displayed by the fragment.
-   */
-  public void replaceWithLINDetail(LineNumber requestedLIN) {
-
-    TabbedLINDetailFragment linDetailFragment = new TabbedLINDetailFragment();
-    linDetailFragment.setRetainInstance(true);
-
-    Bundle arguments = new Bundle();
-    arguments.putString(
-        TabbedLINDetailFragment.KEY_LIN_UUID,
-        requestedLIN.getUuid());
-
-    linDetailFragment.setArguments(arguments);
-
-    FragmentTransaction fragmentTransaction =
-        mFragmentManager.beginTransaction();
-
-    fragmentTransaction.replace(R.id.fragment_container,
-        linDetailFragment,
-        currentFragmentTag)
-        .addToBackStack("Browser");
-
-    fragmentTransaction.commit();
-
-    printBackStackDebug();
-  }
-
-  /**
-   * Replace the current fragment tagged: CurrentFragmentTag with the an
-   * Import Fragment
-   */
-  public void replaceWithImport() {
-    ImportFragment importFragment = new ImportFragment();
-
-    FragmentTransaction fragmentTransaction =
-        mFragmentManager.beginTransaction();
-
-    fragmentTransaction.replace(
-        mFragmentManager.findFragmentByTag(currentFragmentTag).getId(),
-        importFragment,
-        currentFragmentTag)
-        .addToBackStack("import")
-        .commit();
-
-    printBackStackDebug();
-  }
-
-  /**
-   * Replace the current fragment with the LINBrowserFragment
-   */
-  public void replaceWithBrowser() {
-    LINBrowserFragment linBrowserFragment = new LINBrowserFragment();
-
-    FragmentTransaction fragmentTransaction =
-        mFragmentManager.beginTransaction();
-
-    fragmentTransaction.replace(
-        mFragmentManager.findFragmentByTag(currentFragmentTag).getId(),
-        linBrowserFragment,
-        currentFragmentTag)
-        .addToBackStack("browser")
-        .commit();
-
-    printBackStackDebug();
-
-  }
-
-  private void printBackStackDebug() {
-    FragmentManager fm = getSupportFragmentManager();
-    int count = fm.getBackStackEntryCount();
-    for(int x=0; x<count; x++) {
-      Log.i("Backstack", fm.getBackStackEntryAt(x).getName());
-    }
-  }
 }

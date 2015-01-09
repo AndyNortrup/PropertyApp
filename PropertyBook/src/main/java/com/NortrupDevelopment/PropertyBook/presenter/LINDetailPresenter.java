@@ -28,7 +28,7 @@ public class LINDetailPresenter {
         .findAll();
 
     for(LineNumber lin : lineNumbers) {
-      mDetailView.addLIN(lin);
+      mDetailView.addLineNumber(lin);
     }
   }
 }

@@ -1,7 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.content.Context;
-
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import io.realm.RealmResults;
@@ -31,9 +29,4 @@ public interface LINBrowser {
    */
   public void setList(RealmResults<LineNumber> LineNumbers);
 
-  /**
-   * Return a copy of the instances context
-   * @return Context for the instance
-   */
-  public Context getContex();
 }

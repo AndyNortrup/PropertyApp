@@ -1,7 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.view.search;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SearchStockNum
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
-import com.NortrupDevelopment.PropertyBook.view.LINDetailActivity;
 
 import io.realm.RealmResults;
 
@@ -61,14 +59,7 @@ public class SearchResultsFragment<T> extends ListFragment
                                     int position,
                                     long id)
             {
-          LineNumber lin = mArrayAdapter.getLineNumberForIndex(position);
-
-          Intent startNSNBrowser = new Intent(getActivity(),
-              LINDetailActivity.class);
-
-          startNSNBrowser.putExtra(LINDetailActivity.LIN_ID_KEY, lin.getLin());
-
-          getActivity().startActivity(startNSNBrowser);
+          //TODO: Show LIN Detail view
             }
         });
 

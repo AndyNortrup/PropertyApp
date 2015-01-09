@@ -2,4 +2,5 @@
 <resources>
     <declare-styleable name="NonScrollingListView"/>
     <declare-styleable name="StepPagerStrip"/>
+    <declare-styleable name="SinglePaneContainer"/>
 </resources>
