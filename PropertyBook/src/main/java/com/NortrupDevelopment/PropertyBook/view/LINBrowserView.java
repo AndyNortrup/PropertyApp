@@ -15,6 +15,7 @@ import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
 import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -26,6 +27,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
   @InjectView(R.id.lin_list) ListView mListView;
   @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
+  @InjectView(R.id.fab_expand_menu_button) FloatingActionsMenu mFloatingMenu;
 
   public LINBrowserView(Context context, AttributeSet attr) {
     super(context, attr);
