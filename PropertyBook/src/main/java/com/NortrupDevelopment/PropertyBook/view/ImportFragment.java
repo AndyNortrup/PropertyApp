@@ -24,20 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
-import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
 import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
-import com.squareup.otto.Subscribe;
+import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  * Displays a wizard to manage the import of a property book into the database.
@@ -142,14 +142,14 @@ public class ImportFragment extends Fragment
   @Override
   public void onStart() {
     super.onStart();
-    BusProvider.getBus().register(this);
+    EventBus.getDefault().register(this);
   }
 
 
   @Override
   public void onStop() {
     super.onStop();
-    BusProvider.getBus().unregister(this);
+    EventBus.getDefault().register(this);
   }
 
 
@@ -310,7 +310,7 @@ public class ImportFragment extends Fragment
 
     getFragmentManager().beginTransaction().remove(mImportFragment).commit();
     mImportFragment = null;
-    BusProvider.getBus().post(new ImportCompleteEvent());
+    EventBus.getDefault().post(new DefaultImportCompleteEvent());
   }
 
   /**
@@ -438,16 +438,15 @@ public class ImportFragment extends Fragment
     }
   }
 
-  @Subscribe
-  public void onImportMessage(ImportMessageEvent event) {
+  public void onEvent(ImportMessageEvent event) {
     updateImportProgress(event.getMessage());
   }
 
-  @Subscribe public void onImportCanceled(ImportCanceledEvent event) {
+  public void onEvent(ImportCanceledEvent event) {
     importFailed();
   }
 
-  @Subscribe public void onImportFinished(ImportFinishedEvent event) {
+  public void onEvent(ImportFinishedEvent event) {
     if(event.getStatus() == ImportTaskFragment.PropertyBookImporter.RESULT_OK) {
       importComplete();
     } else {

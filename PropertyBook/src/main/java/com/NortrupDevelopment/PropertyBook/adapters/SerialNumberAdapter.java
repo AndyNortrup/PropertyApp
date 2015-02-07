@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters;
+package com.NortrupDevelopment.PropertyBook.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import io.realm.RealmList;
 public class SerialNumberAdapter
     extends RecyclerView.Adapter<SerialNumberViewHolder> {
 
-  private RealmList<SerialNumber> mItems;
+  private RealmList  <SerialNumber> mItems;
 
   public SerialNumberAdapter(RealmList<SerialNumber> data) {
     mItems = data;

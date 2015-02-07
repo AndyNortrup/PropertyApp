@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.view;
+package com.NortrupDevelopment.PropertyBook.presenter;
 
 import android.content.Context;
 

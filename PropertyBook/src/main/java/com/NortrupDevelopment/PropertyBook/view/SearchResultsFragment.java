@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.view.search;
+package com.NortrupDevelopment.PropertyBook.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SearchLineNumberArrayAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SearchResultAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SearchSerialNumberArrayAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SearchStockNumberArrayAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.SearchLineNumberArrayAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.SearchResultAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.SearchSerialNumberArrayAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.SearchStockNumberArrayAdapter;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;

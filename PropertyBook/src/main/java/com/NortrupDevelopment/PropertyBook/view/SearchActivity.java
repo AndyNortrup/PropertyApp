@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.view.search;
+package com.NortrupDevelopment.PropertyBook.view;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 import com.NortrupDevelopment.PropertyBook.model.SearchSuggestionProvider;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
-import com.NortrupDevelopment.PropertyBook.view.NoSearchResultsFragment;
 
 import java.util.ArrayList;
 

@@ -2,7 +2,6 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.view.LINDetail;
 
 import io.realm.Realm;
 import io.realm.RealmResults;

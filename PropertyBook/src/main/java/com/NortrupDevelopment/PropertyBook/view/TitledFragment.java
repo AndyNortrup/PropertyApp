@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.view.search;
+package com.NortrupDevelopment.PropertyBook.view;
 
 /**
  * Created by andy on 12/7/14.

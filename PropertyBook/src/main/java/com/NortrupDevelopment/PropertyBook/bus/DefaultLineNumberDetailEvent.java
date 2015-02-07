@@ -5,13 +5,15 @@ import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 /**
  * Created by andy on 12/15/14.
  */
-public class LINDetailRequestedEvent {
+public class DefaultLineNumberDetailEvent
+    implements  DisplayLineNumberDetailEvent {
 
   LineNumber mRequestedLIN;
-  public LINDetailRequestedEvent(LineNumber requestedLIN) {
+  public DefaultLineNumberDetailEvent(LineNumber requestedLIN) {
     mRequestedLIN = requestedLIN;
   }
 
+  @Override
   public LineNumber getRequestedLIN() {
     return mRequestedLIN;
   }

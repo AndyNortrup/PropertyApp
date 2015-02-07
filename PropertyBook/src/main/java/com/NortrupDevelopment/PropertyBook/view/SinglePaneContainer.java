@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.CurrentView;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
 
 /**
  * Serves as the container for the main activity.  Manages the back stack as

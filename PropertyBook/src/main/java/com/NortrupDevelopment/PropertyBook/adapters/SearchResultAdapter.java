@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters;
+package com.NortrupDevelopment.PropertyBook.adapters;
 
 import android.content.Context;
 import android.text.Spannable;

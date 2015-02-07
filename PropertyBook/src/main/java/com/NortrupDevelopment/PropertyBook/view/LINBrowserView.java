@@ -3,6 +3,7 @@ package com.NortrupDevelopment.PropertyBook.view;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,14 +12,17 @@ import android.widget.ListView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.LineNumberArrayAdapter;
-import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
-import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultSearchRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import io.realm.RealmResults;
 
 public class LINBrowserView extends LinearLayout implements LINBrowser
@@ -27,7 +31,6 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
   @InjectView(R.id.lin_list) ListView mListView;
   @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
-  @InjectView(R.id.fab_expand_menu_button) FloatingActionsMenu mFloatingMenu;
 
   public LINBrowserView(Context context, AttributeSet attr) {
     super(context, attr);
@@ -49,6 +52,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
     super.onFinishInflate();
 
     ButterKnife.inject(this, getRootView());
+
     mPresenter.loadListContents();
   }
 
@@ -96,7 +100,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
             LineNumber lin =  ((LineNumberArrayAdapter)mListView.getAdapter())
                 .getItem(position);
-            BusProvider.getBus().post(new LINDetailRequestedEvent(lin));
+            EventBus.getDefault().post(new DefaultLineNumberDetailEvent(lin));
         }
       });
     } else {
@@ -105,4 +109,15 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
   }
 
+  @OnClick(R.id.fab_import)
+  public void requestImport() {
+    Log.i("BrowserView", "Import Requested");
+    EventBus.getDefault().post(new DefaultImportRequestedEvent());
+  }
+
+  @OnClick(R.id.fab_search)
+  public void requestSearch() {
+    Log.i("BrowserView", "Search Requested");
+    EventBus.getDefault().post(new DefaultSearchRequestedEvent());
+  }
 }

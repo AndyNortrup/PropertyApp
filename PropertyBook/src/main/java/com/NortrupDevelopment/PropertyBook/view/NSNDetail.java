@@ -8,10 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.adapters.SeachAdapters.SerialNumberAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.SerialNumberAdapter;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
-import com.NortrupDevelopment.PropertyBook.view.search.TitledFragment;
 
 import java.text.NumberFormat;
 

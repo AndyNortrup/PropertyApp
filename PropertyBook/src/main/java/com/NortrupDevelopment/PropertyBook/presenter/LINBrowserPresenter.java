@@ -1,13 +1,13 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
-import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
+import de.greenrobot.event.EventBus;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -17,7 +17,7 @@ import io.realm.RealmResults;
  */
 public class LINBrowserPresenter{
 
-  private LINBrowserView mInstance;
+  private LINBrowser mInstance;
 
   public LINBrowserPresenter(LINBrowserView activity) {
     mInstance = activity;
@@ -46,20 +46,20 @@ public class LINBrowserPresenter{
       mInstance.setList(lineNumbers);
       mInstance.showList();
     } else {
-      BusProvider.getBus().post(new ImportRequestedEvent());
+      EventBus.getDefault().post(new DefaultImportRequestedEvent());
     }
   }
 
   //region UI Click events
   public void listItemSelected(LineNumber selected) {
-    BusProvider.getBus().post(new LINDetailRequestedEvent(selected));
+    EventBus.getDefault().post(new DefaultLineNumberDetailEvent(selected));
   }
 
   /**
    * Called by the Activity when the user requests the import activity.
    */
   public void importRequested() {
-    BusProvider.getBus().post(new ImportRequestedEvent());
+    EventBus.getDefault().post(new DefaultImportRequestedEvent());
   }
 
 
@@ -67,7 +67,7 @@ public class LINBrowserPresenter{
    * Called by the Activity when the user request the import activity.
    */
   public void statisticsRequested() {
-    BusProvider.getBus().post(new StatisticsRequestedEvent());
+    EventBus.getDefault().post(new StatisticsRequestedEvent());
   }
   //endregion
 }

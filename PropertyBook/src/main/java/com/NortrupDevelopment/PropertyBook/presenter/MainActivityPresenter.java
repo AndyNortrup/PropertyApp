@@ -1,57 +1,22 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
-import com.NortrupDevelopment.PropertyBook.view.MainActivity;
 
 /**
- * Created by andy on 12/15/14.
+ * Created by andy on 2/7/15.
  */
-public class MainActivityPresenter {
-
-  private static final int SCREEN_DETAIL = 1;
-
-  private static MainActivityPresenter instance;
-
-  MainActivity mActivity;
-
-  LineNumber mCurrentDetailLineNumber;
-  int mCurrentScreen;
-
-  public static MainActivityPresenter getInstance(MainActivity activity) {
-    if(instance == null) {
-      instance = new MainActivityPresenter(activity);
-    } else {
-      instance.setActivity(activity);
-    }
-    return instance;
-  }
-
-  private MainActivityPresenter(MainActivity activity) {
-    mActivity = activity;
-
-
-  }
-
+public interface MainActivityPresenter {
   @Nullable
-  public LineNumber getCurrentDetailLineNumber() {
-    return mCurrentDetailLineNumber;
-  }
+  LineNumber getCurrentDetailLineNumber();
 
-  public void setActivity(MainActivity activity) {
-    mActivity = activity;
-  }
+  void setCurrentDetailLineNumber(LineNumber lineNumber);
 
-  public void setCurrentDetailLineNumber(LineNumber lineNumber) {
-    mCurrentDetailLineNumber = lineNumber;
-  }
+  void requestCurrentScreen();
 
-  public int getCurrentScreen() {
-    return mCurrentScreen;
-  }
+  void setScreenDetail();
 
-  public void setScreenDetail() {
-    mCurrentScreen = SCREEN_DETAIL;
-  }
+  void searchRequested(Intent intent);
 }

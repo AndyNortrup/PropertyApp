@@ -1,25 +1,24 @@
 package com.NortrupDevelopment.PropertyBook.io;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.control.ModelUtils;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.squareup.otto.Bus;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.greenrobot.event.EventBus;
 import jxl.read.biff.BiffException;
 
 /**
@@ -30,12 +29,9 @@ public class ImportTaskFragment extends Fragment {
 
   public static final String ARGUMENTS_KEY = "ARGUMENTS_KEY";
 
-  private Bus bus;
-
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
-    bus = BusProvider.getBus();
   }
 
   @Override
@@ -163,17 +159,17 @@ public class ImportTaskFragment extends Fragment {
 
     @Override
     protected void onProgressUpdate(String... message) {
-      bus.post(new ImportMessageEvent(message[0]));
+      EventBus.getDefault().post(new ImportMessageEvent(message[0]));
     }
 
     @Override
     protected void onCancelled() {
-      bus.post(new ImportCanceledEvent());
+      EventBus.getDefault().post(new ImportCanceledEvent());
     }
 
     @Override
     protected void onPostExecute(Integer statusCode) {
-      bus.post(new ImportFinishedEvent(statusCode));
+      EventBus.getDefault().post(new ImportFinishedEvent(statusCode));
     }
   }
 

@@ -1,8 +1,9 @@
 package com.NortrupDevelopment.PropertyBook.bus;
 
 /**
- * Created by andy on 12/15/14.
+ * Event to be sent over the EventBus that sends a request for the reciever to
+ * display the search function
+ * Created by andy on 2/7/15.
  */
-public class SearchRequestedEvent {
-
+public interface SearchRequestedEvent {
 }

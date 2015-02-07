@@ -1,7 +1,8 @@
 package com.NortrupDevelopment.PropertyBook.bus;
 
 /**
- * Created by andy on 12/15/14.
+ * Defines an interface for Requests to import files into the databases
+ * Created by andy on 2/7/15.
  */
-public class ImportRequestedEvent {
+public interface ImportRequestedEvent {
 }

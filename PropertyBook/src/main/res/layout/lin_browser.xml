@@ -31,7 +31,19 @@
         android:layout_marginRight="16dp"
         fab:fab_addButtonColorNormal="@color/primary_color"
         fab:fab_addButtonColorPressed="@color/primary_color_dark"
-        fab:fab_addButtonPlusIconColor="@android:color/white">
+        fab:fab_addButtonPlusIconColor="@android:color/white"
+        fab:fab_labelStyle="@style/menu_labels_style">
+
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab_import"
+            fab:fab_colorNormal="@color/primary_color"
+            fab:fab_colorPressed="@color/primary_color_dark"
+            fab:fab_icon="@drawable/ic_action_import"
+            fab:fab_title="@string/import_label"
+            />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_search"
@@ -42,6 +54,7 @@
             fab:fab_icon="@drawable/ic_action_search"
             fab:fab_title="@string/search_label"
             />
+
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </RelativeLayout>
 

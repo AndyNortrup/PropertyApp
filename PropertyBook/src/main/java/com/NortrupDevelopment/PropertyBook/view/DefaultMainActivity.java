@@ -1,25 +1,32 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.bus.BusProvider;
+import com.NortrupDevelopment.PropertyBook.bus.DisplayBrowserEvent;
+import com.NortrupDevelopment.PropertyBook.bus.DisplayLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.bus.LINDetailRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.model.CurrentView;
+import com.NortrupDevelopment.PropertyBook.bus.SearchRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.presenter.DefaultMainActivityPresenter;
+import com.NortrupDevelopment.PropertyBook.presenter.MainActivity;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivityPresenter;
-import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Serves as the central Activity for the activity, all components are handled
  * in individual views
  * Created by andy on 12/15/14.
  */
-public class MainActivity extends ActionBarActivity {
+public class DefaultMainActivity
+    extends ActionBarActivity
+    implements MainActivity
+{
 
   private MainActivityPresenter mPresenter;
   Container mContainer;
@@ -33,19 +40,19 @@ public class MainActivity extends ActionBarActivity {
 
     mContainer = (Container) findViewById(R.id.container);
 
-    mPresenter = MainActivityPresenter.getInstance(this);
-    BusProvider.getBus().register(this);
+    mPresenter = DefaultMainActivityPresenter.getInstance();
+    mPresenter.requestCurrentScreen();
 
-    int currentScreen = CurrentView.getInstance().getCurrentScreen();
-    if(currentScreen == CurrentView.SCREEN_BROWSE) {
-      mContainer.showBrowser();
-    } else if(currentScreen == CurrentView.SCREEN_DETAIL &&
-        mPresenter.getCurrentDetailLineNumber() != null) {
-      mContainer.showLineNumber(mPresenter.getCurrentDetailLineNumber());
-    } else {
-      mContainer.showBrowser();
-    }
+  }
 
+  @Override
+  protected void onStart() {
+    EventBus.getDefault().register(this);
+  }
+
+  @Override
+  protected void onStop() {
+    EventBus.getDefault().register(this);
   }
 
   /**
@@ -66,21 +73,27 @@ public class MainActivity extends ActionBarActivity {
     }
   }
 
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    Log.i("Main Activity", "Received New Intent");
+    if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+      mPresenter.searchRequested(intent);
+    }
+  }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
-
     ButterKnife.reset(this);
-
-    BusProvider.getBus().unregister(this);
   }
 
   /**
    * Handles a request from the bus to display the LIN Detail Fragment
    * @param event
    */
-  @Subscribe public void linDetailRequested(LINDetailRequestedEvent event) {
+  @Override
+  public void onEvent(DisplayLineNumberDetailEvent event) {
     mPresenter.setCurrentDetailLineNumber(event.getRequestedLIN());
     mContainer.showLineNumber(event.getRequestedLIN());
   }
@@ -89,12 +102,26 @@ public class MainActivity extends ActionBarActivity {
    * Handles a request from the bus to display the import fragment
    * @param event
    */
-  @Subscribe public void importRequested(ImportRequestedEvent event) {
+  @Override
+  public void onEvent(ImportRequestedEvent event) {
     //TODO: Show the import view
+    Log.i("Main Activity", "Received import request");
   }
 
-  @Subscribe public void importComplete(ImportCompleteEvent event) {
-    //TODO: Show the browser after completing an import
+  @Override
+  public void onEvent(ImportCompleteEvent event) {
+    mContainer.showBrowser();
+  }
+
+  @Override
+  public void onEvent(SearchRequestedEvent event) {
+    Log.i("Main Activity", "Received search request");
+    onSearchRequested();
+  }
+
+  @Override
+  public void onEvent(DisplayBrowserEvent event) {
+    mContainer.showBrowser();
   }
 
 }

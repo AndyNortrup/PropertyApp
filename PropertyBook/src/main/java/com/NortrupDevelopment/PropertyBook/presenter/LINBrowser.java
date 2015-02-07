@@ -1,4 +1,6 @@
-package com.NortrupDevelopment.PropertyBook.view;
+package com.NortrupDevelopment.PropertyBook.presenter;
+
+import android.content.Context;
 
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
@@ -28,5 +30,7 @@ public interface LINBrowser {
    * @param LineNumbers Array of LINs to be used in the list.
    */
   public void setList(RealmResults<LineNumber> LineNumbers);
+
+  public Context getContext();
 
 }
