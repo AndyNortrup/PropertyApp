@@ -1,7 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.content.Context;
-
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 /**
@@ -15,21 +13,9 @@ public interface LINDetail {
 
 
   /**
-   * Get a copy of the view's Context
-   * @return The view's context
-   */
-  public Context getContext();
-
-  /**
    * Directs the view to take the provided LIN object and add it to the view
    * @param lineNumber LIN to be added to the view.
    */
-  public void addLineNumber(LineNumber lineNumber);
-
-  /**
-   * Retrieves the currently displayed LineNumber
-   * @return Currently displayed LineNumber
-   */
-  public LineNumber getLineNumber();
+  public void setLineNumber(LineNumber lineNumber);
 
 }

@@ -15,22 +15,19 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
-import com.NortrupDevelopment.PropertyBook.presenter.LINDetailPresenter;
 import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * Line Number View displays all of the details of the provided Line Number
  * Created by andy on 12/14/14.
  */
 public class TabbedLINDetail extends LinearLayout implements LINDetail {
 
-  public static final String KEY_LIN_UUID = "LIN_UUID";
-
-  private LineNumber mLIN;
-  private ViewPagerAdapter mPagerAdapter;
-  private LINDetailPresenter mPresenter;
+  private LineNumber mLineNumber;
+  private PagerAdapter mPagerAdapter;
 
   @InjectView(R.id.nsn_detail_pager) ViewPager mViewPager;
   @InjectView(R.id.lin) TextView linTV;
@@ -53,10 +50,7 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
 
     ButterKnife.inject(this);
 
-    mViewPager = (ViewPager)findViewById(R.id.nsn_detail_pager);
-    mPagerAdapter = new ViewPagerAdapter();
-
-    mPresenter = new LINDetailPresenter(this);
+    mPagerAdapter = new NSNViewPagerAdapter();
 
   }
 
@@ -66,25 +60,52 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
    * @param lineNumber LIN to be added to the view.
    */
   @Override
-  public void addLineNumber(LineNumber lineNumber) {
-    mLIN = lineNumber;
+  public void setLineNumber(LineNumber lineNumber) {
+    mLineNumber = lineNumber;
     setupViewFields();
   }
 
   /**
-   * Retrieves the currently displayed LineNumber
-   *
-   * @return Currently displayed LineNumber
+   * Setup the view with data from the Line Number
    */
-  @Override
-  public LineNumber getLineNumber() {
-    return mLIN;
-  }
-
   private void setupViewFields() {
     setupHeaderFields();
+    setupStockNumberViewPager();
+  }
+
+  /**
+   * Draws information from mLineNumber and sets up the header fields on the view.
+   */
+  private void setupHeaderFields() {
+    linTV.setText(mLineNumber.getLin());
+    nomenclatureTV.setText(mLineNumber.getNomenclature());
+
+    if (!TextUtils.isEmpty(mLineNumber.getSubLin())) {
+      subLinTV.setText("Sub LIN: " + mLineNumber.getSubLin());
+      subLinTV.setVisibility(View.VISIBLE);
+    } else {
+      subLinTV.setVisibility(View.GONE);
+    }
+
+    authorizedTV.setText(String.valueOf(mLineNumber.getAuthorized()));
+    requiredTV.setText(String.valueOf(mLineNumber.getRequired()));
+    sriTV.setText(mLineNumber.getSri());
+    mDueInTV.setText(Integer.toString(mLineNumber.getDueIn()));
+    ercTV.setText(mLineNumber.getErc());
+    authDocTV.setText(mLineNumber.getAuthDoc());
+
+    if (mLineNumber.getPropertyBook() != null) {
+      pbicTV.setText(
+          mLineNumber.getPropertyBook().getPbic().replace("pbicTV ", ""));
+    }
+  }
+
+  /**
+   * Setup the view pager with the NSN children of the Line Number in the view.
+   */
+  private void setupStockNumberViewPager() {
     mViewPager.setAdapter(mPagerAdapter);
-    if(mLIN.getStockNumbers().size() > 0) {
+    if(mLineNumber.getStockNumbers().size() > 0) {
       mPagerAdapter.notifyDataSetChanged();
     } else {
       mViewPager.setVisibility(View.GONE);
@@ -92,40 +113,14 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
     }
   }
 
-  /**
-   * Draws information from mLIN and sets up the header fields on the view.
-   */
-  private void setupHeaderFields() {
-    linTV.setText(mLIN.getLin());
-    nomenclatureTV.setText(mLIN.getNomenclature());
-
-    if (!TextUtils.isEmpty(mLIN.getSubLin())) {
-      subLinTV.setText("Sub LIN: " + mLIN.getSubLin());
-      subLinTV.setVisibility(View.VISIBLE);
-    } else {
-      subLinTV.setVisibility(View.GONE);
-    }
-
-    authorizedTV.setText(String.valueOf(mLIN.getAuthorized()));
-    requiredTV.setText(String.valueOf(mLIN.getRequired()));
-    sriTV.setText(mLIN.getSri());
-    mDueInTV.setText(Integer.toString(mLIN.getDueIn()));
-    ercTV.setText(mLIN.getErc());
-    authDocTV.setText(mLIN.getAuthDoc());
-
-    if (mLIN.getPropertyBook() != null) {
-      pbicTV.setText(mLIN.getPropertyBook().getPbic().replace("pbicTV ", ""));
-    }
-  }
-
-  private class ViewPagerAdapter extends PagerAdapter {
+  private class NSNViewPagerAdapter extends PagerAdapter {
 
     /**
      * Return the number of views available.
      */
     @Override
     public int getCount() {
-      return mLIN.getStockNumbers().size();
+      return mLineNumber.getStockNumbers().size();
     }
 
     /**
@@ -140,20 +135,20 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
     @Override
     public CharSequence getPageTitle(int position) {
       return NSNFormatter.getFormattedNSN(
-          mLIN.getStockNumbers().get(position).getNsn());
+          mLineNumber.getStockNumbers().get(position).getNsn());
     }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
 
-      StockNumber stockNumber = mLIN.getStockNumbers().get(position);
+      StockNumber stockNumber = mLineNumber.getStockNumbers().get(position);
 
       LayoutInflater inflater = LayoutInflater.from(getContext());
       NSNDetail view =
           (NSNDetail)inflater.inflate(R.layout.nsn_detail, null);
       view.setStockNumber(stockNumber);
 
-      ((ViewPager)collection).addView(view);
+      collection.addView(view);
 
       return view;
     }
@@ -181,7 +176,7 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
                                       int position,
                                       Object view)
     {
-      ((ViewPager)container).removeView((View)view);
+      container.removeView((View) view);
     }
   }
 }

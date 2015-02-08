@@ -47,11 +47,13 @@ public class DefaultMainActivity
 
   @Override
   protected void onStart() {
+    super.onStart();
     EventBus.getDefault().register(this);
   }
 
   @Override
   protected void onStop() {
+    super.onStop();
     EventBus.getDefault().register(this);
   }
 

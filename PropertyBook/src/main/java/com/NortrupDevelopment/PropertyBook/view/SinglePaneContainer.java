@@ -40,7 +40,7 @@ public class SinglePaneContainer extends FrameLayout implements Container {
       View.inflate(getContext(), R.layout.tabbed_lin_detail, this);
     }
     linDetail = (TabbedLINDetail)getChildAt(0);
-    linDetail.addLineNumber(lineNumber);
+    linDetail.setLineNumber(lineNumber);
     CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_DETAIL);
   }
 
