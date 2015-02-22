@@ -15,7 +15,7 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
-import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
+import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

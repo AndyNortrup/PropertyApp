@@ -1,12 +1,6 @@
-package com.NortrupDevelopment.PropertyBook.control;
+package com.NortrupDevelopment.PropertyBook.model;
 
 import android.content.Context;
-
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
-import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;

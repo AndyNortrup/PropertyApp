@@ -1,5 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
@@ -93,6 +94,9 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
    */
   @Override
   public void searchRequested(Intent intent) {
+    if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+      String query = intent.getStringExtra(SearchManager.QUERY);
+    }
 
   }
 }

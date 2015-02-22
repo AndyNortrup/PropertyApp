@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.SerialNumberAdapter;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
-import com.NortrupDevelopment.PropertyBook.util.NSNFormatter;
+import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
 
 import java.text.NumberFormat;
 
@@ -23,7 +23,7 @@ import butterknife.InjectView;
  * Created by andy on 12/9/14.
  */
 public class NSNDetail extends LinearLayout
-  implements TitledFragment
+  implements TitledView
 {
 
   @InjectView(R.id.serial_number_list) RecyclerView mRecyclerView;

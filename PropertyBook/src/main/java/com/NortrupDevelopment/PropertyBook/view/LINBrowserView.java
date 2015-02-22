@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 
 public class LINBrowserView extends LinearLayout implements LINBrowser
@@ -84,9 +85,8 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
     if (lineNumbers != null) {
 
-      LineNumberArrayAdapter adapter = new LineNumberArrayAdapter(getContext(),
-          lineNumbers,
-          true); //AutoUpdate
+      RealmBaseAdapter<LineNumber> adapter = new LineNumberArrayAdapter(getContext(),
+          lineNumbers); //AutoUpdate
 
       mListView.setAdapter(adapter);
       mListView.setFastScrollEnabled(true);

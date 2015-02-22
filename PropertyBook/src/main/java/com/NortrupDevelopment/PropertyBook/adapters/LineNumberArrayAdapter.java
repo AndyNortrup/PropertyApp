@@ -32,12 +32,10 @@ public class LineNumberArrayAdapter extends RealmBaseAdapter<LineNumber>
    *
    * @param context  The current context.
    * @param lineNumbers LineNumbers to be displayed
-   * @param automaticUpdate Should the Adapter automatically update
    */
   public LineNumberArrayAdapter(Context context,
-                                RealmResults<LineNumber> lineNumbers,
-                                boolean automaticUpdate) {
-    super(context, lineNumbers, automaticUpdate);
+                                RealmResults<LineNumber> lineNumbers) {
+    super(context, lineNumbers, true);
 
     //Mark where our mSectionMap are.
     HashMap<String, Integer> map = new HashMap<String, Integer>();

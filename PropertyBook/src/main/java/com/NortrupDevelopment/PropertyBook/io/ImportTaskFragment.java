@@ -11,7 +11,7 @@ import android.util.Log;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
-import com.NortrupDevelopment.PropertyBook.control.ModelUtils;
+import com.NortrupDevelopment.PropertyBook.model.ModelUtils;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.util;
+package com.NortrupDevelopment.PropertyBook.model;
 
 /**
  * Adds dashes to a NSN in order to show a human readable NSN in the
@@ -20,5 +20,9 @@ public class NSNFormatter {
     sb.insert(7, DASH);
     sb.insert(11, DASH);
     return sb.toString();
+  }
+
+  public static String removeDashesFromNSN(String nsn) {
+    return nsn.replace("-", "");
   }
 }

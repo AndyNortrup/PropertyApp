@@ -2,7 +2,7 @@ package com.NortrupDevelopment.PropertyBook.test;
 
 import android.test.AndroidTestCase;
 
-import com.NortrupDevelopment.PropertyBook.control.ModelUtils;
+import com.NortrupDevelopment.PropertyBook.model.ModelUtils;
 import com.NortrupDevelopment.PropertyBook.io.PrimaryHandReceiptReader;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;

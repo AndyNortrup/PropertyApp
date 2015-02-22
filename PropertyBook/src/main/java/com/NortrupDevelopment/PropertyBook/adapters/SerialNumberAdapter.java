@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.ViewHolders.SerialNumberViewHolder;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 
 import io.realm.RealmList;

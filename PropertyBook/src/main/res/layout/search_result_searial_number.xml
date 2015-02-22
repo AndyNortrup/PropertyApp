@@ -70,6 +70,7 @@
         android:text="@string/serial_number_label"
         android:id="@+id/sn_label"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/nsn_label"
         android:layout_alignLeft="@+id/nsn_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
