@@ -2,15 +2,12 @@ package com.NortrupDevelopment.PropertyBook.model;
 
 import java.util.AbstractList;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
-public class PropertyBook extends RealmObject {
+public class PropertyBook {
   private String description;
   private String uic;
   private String pbic;
 
-  private RealmList<LineNumber> lineNumbers;
+  private AbstractList<LineNumber> lineNumbers;
 
   public String getDescription() {
     return description;

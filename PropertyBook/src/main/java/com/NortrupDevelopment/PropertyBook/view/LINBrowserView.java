@@ -2,18 +2,17 @@ package com.NortrupDevelopment.PropertyBook.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.adapters.LineNumberArrayAdapter;
+import com.NortrupDevelopment.PropertyBook.adapters.LineNumberBrowserAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultSearchRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
@@ -25,13 +24,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import io.realm.RealmBaseAdapter;
 
 public class LINBrowserView extends LinearLayout implements LINBrowser
 {
   private LINBrowserPresenter mPresenter;
 
-  @InjectView(R.id.lin_list) ListView mListView;
+  @InjectView(R.id.lin_list)
+  RecyclerView mListView;
   @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
 
   public LINBrowserView(Context context, AttributeSet attr) {
@@ -86,11 +85,11 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
 
     if (lineNumbers != null) {
 
-      RealmBaseAdapter<LineNumber> adapter = new LineNumberArrayAdapter(getContext(),
-          lineNumbers); //AutoUpdate
+      mListView.setAdapter(new LineNumberBrowserAdapter(lineNumbers));
+      mListView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-      mListView.setAdapter(adapter);
-      mListView.setFastScrollEnabled(true);
+      /*
+      //mListView.setFastScrollEnabled(true);
 
       mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
@@ -99,11 +98,12 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
                                 int position,
                                 long id) {
 
-            LineNumber lin =  ((LineNumberArrayAdapter)mListView.getAdapter())
+            LineNumber lin =  (mListView.getAdapter())
                 .getItem(position);
             EventBus.getDefault().post(new DefaultLineNumberDetailEvent(lin));
         }
       });
+      */
     } else {
       mPresenter.importRequested();
     }

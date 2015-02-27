@@ -36,9 +36,9 @@ public class LINBrowserPresenter {
     //Show the loading progress bar.
     mInstance.showLoadingProgressBar();
 
-    //TODO: Convert to use ModelSearcher
     ModelSearcher searcher = new RealmModelSearcher(RealmDefinition.getRealm(
         mInstance.getContext(), RealmDefinition.PRODUCTION_REALM));
+
     ArrayList<LineNumber> lineNumbers =
         new ArrayList(searcher.searchLineNumber(""));
 
