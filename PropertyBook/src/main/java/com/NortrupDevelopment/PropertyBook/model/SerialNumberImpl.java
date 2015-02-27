@@ -1,19 +1,25 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
 
-import io.realm.RealmObject;
-
 /**
  * This is the basic data structure to track a serial numbered property book
  * item.
  * Created by andy on 5/16/13.
  */
-public class RealmSerialNumber extends RealmObject implements SerialNumber {
+public class SerialNumberImpl implements SerialNumber {
 
 
   private String serialNumber;
   private String sysNo;
-  private RealmStockNumber stockNumber;
+  private StockNumber stockNumber;
+
+  public SerialNumberImpl(String serialNumber,
+                          String sysNo,
+                          StockNumber stockNumber) {
+    this.serialNumber = serialNumber;
+    this.sysNo = sysNo;
+    this.stockNumber = stockNumber;
+  }
 
   @Override
   public String getSerialNumber() {
@@ -42,9 +48,6 @@ public class RealmSerialNumber extends RealmObject implements SerialNumber {
 
   @Override
   public void setStockNumber(StockNumber stockNumber) {
-    if (!(stockNumber instanceof RealmStockNumber)) {
-      throw new IllegalStateException("Not a Realm StockNumber");
-    }
-    this.stockNumber = (RealmStockNumber) stockNumber;
+    this.stockNumber = stockNumber;
   }
 }

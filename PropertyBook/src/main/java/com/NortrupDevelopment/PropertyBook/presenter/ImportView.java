@@ -3,8 +3,6 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 import android.content.Context;
 import android.net.Uri;
 
-import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
-
 /**
  * Interface allowing for communcation between the ImportPresenter and
  * an implmenting view.
@@ -35,6 +33,7 @@ public interface ImportView {
 
   /**
    * Used by the presenter to enable or disable the Import Button.
+   *
    * @param state True if the import button should be enabled.
    */
   public void setImportButtonEnabled(boolean state);
@@ -51,6 +50,7 @@ public interface ImportView {
 
   /**
    * Return a copy of the Activity's presenter
+   *
    * @return The presenter for this activity.
    */
   public ImportPresenter getPresenter();

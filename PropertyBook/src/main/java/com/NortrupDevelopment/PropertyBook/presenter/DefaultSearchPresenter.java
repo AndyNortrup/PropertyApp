@@ -10,8 +10,7 @@ import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultAddSearchResultsViewEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.model.RealmModelSearcher;
+import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
@@ -19,7 +18,6 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
-import io.realm.RealmResults;
 
 /**
  * Default Search presenter handles the the lookup of search results for the
@@ -39,8 +37,7 @@ public class DefaultSearchPresenter implements SearchPresenter {
   public AbstractList<View> searchForTerm(String term) {
     ArrayList<View> result = new ArrayList<View>();
 
-    ModelSearcher searcher = new RealmModelSearcher(
-        RealmDefinition.getRealm(mContext, RealmDefinition.PRODUCTION_REALM));
+    ModelSearcher searcher = new ModelSearcherImpl();
     boolean foundSomething = false;
 
     View lineNumbers = searchForLineNumbers(searcher, term);
@@ -83,8 +80,7 @@ public class DefaultSearchPresenter implements SearchPresenter {
   @Nullable
   private View searchForLineNumbers(ModelSearcher searcher, String term) {
 
-    RealmResults<LineNumber> lineNumbers =
-        (RealmResults<LineNumber>) searcher.searchLineNumber(term);
+    AbstractList<LineNumber> lineNumbers = searcher.searchLineNumber(term);
 
     if (lineNumbers.size() == 0) {
       return null;

@@ -95,7 +95,6 @@
     <orderEntry type="library" exported="" scope="TEST" name="objenesis-1.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockable-android-21" level="project" />
-    <orderEntry type="library" exported="" name="realm-android-0.79.1" level="project" />
     <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="dagger-1.2.2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.2" level="project" />

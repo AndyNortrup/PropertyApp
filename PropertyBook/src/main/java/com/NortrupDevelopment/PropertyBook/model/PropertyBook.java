@@ -2,42 +2,23 @@ package com.NortrupDevelopment.PropertyBook.model;
 
 import java.util.AbstractList;
 
-public class PropertyBook {
-  private String description;
-  private String uic;
-  private String pbic;
+/**
+ * Created by andy on 2/27/15.
+ */
+public interface PropertyBook {
+  String getDescription();
 
-  private AbstractList<LineNumber> lineNumbers;
+  void setDescription(String description);
 
-  public String getDescription() {
-    return description;
-  }
+  String getUic();
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+  void setUic(String uic);
 
-  public String getUic() {
-    return uic;
-  }
+  String getPbic();
 
-  public void setUic(String uic) {
-    this.uic = uic;
-  }
+  void setPbic(String pbic);
 
-  public String getPbic() {
-    return pbic;
-  }
+  AbstractList<LineNumber> getLineNumbers();
 
-  public void setPbic(String pbic) {
-    this.pbic = pbic;
-  }
-
-  public AbstractList<LineNumber> getLineNumbers() {
-    return lineNumbers;
-  }
-
-  public void setLineNumbers(AbstractList<LineNumber> lineNumbers) {
-    this.lineNumbers = lineNumbers;
-  }
+  void setLineNumbers(AbstractList<LineNumber> lineNumbers);
 }

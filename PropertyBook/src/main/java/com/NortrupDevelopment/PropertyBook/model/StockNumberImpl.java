@@ -1,15 +1,13 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import java.math.BigDecimal;
 import java.util.AbstractList;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
-public class RealmStockNumber extends RealmObject implements StockNumber {
+public class StockNumberImpl implements StockNumber {
 
   private String nsn; //NSN
   private String ui; //Unit of Issue
-  private long unitPrice; //Unit Price
+  private BigDecimal unitPrice; //Unit Price
   private String nomenclature; //NSN Nomenclature
   private String llc; //LLC code
   private String ecs; //ECS code
@@ -21,9 +19,39 @@ public class RealmStockNumber extends RealmObject implements StockNumber {
   private int onHand; //quantity on hand
 
   //reference to the LIN id to which this NSN belongs.
-  private RealmLineNumber parentLineNumber;
+  private LineNumber parentLineNumber;
 
-  private RealmList<RealmSerialNumber> serialNumbers;
+  private AbstractList<SerialNumber> serialNumbers;
+
+  public StockNumberImpl(String nsn,
+                         String ui,
+                         BigDecimal unitPrice,
+                         String nomenclature,
+                         String llc,
+                         String ecs,
+                         String srrc,
+                         String uiiManaged,
+                         String ciic,
+                         String dla,
+                         String pubData,
+                         int onHand,
+                         LineNumber parentLineNumber,
+                         AbstractList<SerialNumber> serialNumbers) {
+    this.nsn = nsn;
+    this.ui = ui;
+    this.unitPrice = unitPrice;
+    this.nomenclature = nomenclature;
+    this.llc = llc;
+    this.ecs = ecs;
+    this.srrc = srrc;
+    this.uiiManaged = uiiManaged;
+    this.ciic = ciic;
+    this.dla = dla;
+    this.pubData = pubData;
+    this.onHand = onHand;
+    this.parentLineNumber = parentLineNumber;
+    this.serialNumbers = serialNumbers;
+  }
 
   @Override
   public String getNsn() {
@@ -46,12 +74,12 @@ public class RealmStockNumber extends RealmObject implements StockNumber {
   }
 
   @Override
-  public long getUnitPrice() {
+  public BigDecimal getUnitPrice() {
     return unitPrice;
   }
 
   @Override
-  public void setUnitPrice(long unitPrice) {
+  public void setUnitPrice(BigDecimal unitPrice) {
     this.unitPrice = unitPrice;
   }
 
@@ -160,10 +188,7 @@ public class RealmStockNumber extends RealmObject implements StockNumber {
 
   @Override
   public void setParentLineNumber(LineNumber parentLineNumber) {
-    if (!(parentLineNumber instanceof RealmLineNumber)) {
-      throw new IllegalStateException("Not a realm object.");
-    }
-    this.parentLineNumber = (RealmLineNumber) parentLineNumber;
+    this.parentLineNumber = parentLineNumber;
   }
 
 
@@ -175,12 +200,7 @@ public class RealmStockNumber extends RealmObject implements StockNumber {
 
   @Override
   public void setSerialNumbers(AbstractList<SerialNumber> serialNumbers) {
-    if (!(serialNumbers.get(0) instanceof RealmSerialNumber)) {
-      throw new IllegalStateException("Objects are not Realm Objects");
-    }
-    for (SerialNumber sn : serialNumbers) {
-      this.serialNumbers.add((RealmSerialNumber) sn);
-    }
+    this.serialNumbers = serialNumbers;
   }
 
 }

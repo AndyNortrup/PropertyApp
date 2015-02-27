@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.SerialNumberAdapter;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
+import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.text.NumberFormat;
 
@@ -23,15 +23,20 @@ import butterknife.InjectView;
  * Created by andy on 12/9/14.
  */
 public class NSNDetail extends LinearLayout
-  implements TitledView
-{
+    implements TitledView {
 
-  @InjectView(R.id.serial_number_list) RecyclerView mRecyclerView;
-  @InjectView(R.id.nomenclature_value) TextView mNomenclature;
-  @InjectView(R.id.nsn_value) TextView mStockNumberLabel;
-  @InjectView(R.id.on_hand_value) TextView mOnHand;
-  @InjectView(R.id.unit_of_issue_value) TextView mUnitOfIssue;
-  @InjectView(R.id.unit_price_value) TextView mUnitPrice;
+  @InjectView(R.id.serial_number_list)
+  RecyclerView mRecyclerView;
+  @InjectView(R.id.nomenclature_value)
+  TextView mNomenclature;
+  @InjectView(R.id.nsn_value)
+  TextView mStockNumberLabel;
+  @InjectView(R.id.on_hand_value)
+  TextView mOnHand;
+  @InjectView(R.id.unit_of_issue_value)
+  TextView mUnitOfIssue;
+  @InjectView(R.id.unit_price_value)
+  TextView mUnitPrice;
 
   private RecyclerView.LayoutManager mLayoutManager;
   private StockNumber mStockNumber;
@@ -40,7 +45,8 @@ public class NSNDetail extends LinearLayout
     super(context, attr);
   }
 
-  @Override protected void onFinishInflate() {
+  @Override
+  protected void onFinishInflate() {
     ButterKnife.inject(this);
 
     mLayoutManager = new LinearLayoutManager(getContext());
@@ -56,7 +62,7 @@ public class NSNDetail extends LinearLayout
   }
 
   public String getTitle() {
-    if(mStockNumber == null) {
+    if (mStockNumber == null) {
       return "";
     }
     return NSNFormatter.getFormattedNSN(mStockNumber.getNsn());
@@ -69,8 +75,7 @@ public class NSNDetail extends LinearLayout
     mOnHand.setText(String.valueOf(mStockNumber.getOnHand()));
     mUnitOfIssue.setText(mStockNumber.getUi());
     mUnitPrice.setText(
-        NumberFormat.getCurrencyInstance().format(
-            (long)(mStockNumber.getUnitPrice()/100)));
+        NumberFormat.getCurrencyInstance().format(mStockNumber.getUnitPrice()));
 
     mRecyclerView.setAdapter(
         new SerialNumberAdapter(mStockNumber.getSerialNumbers()));

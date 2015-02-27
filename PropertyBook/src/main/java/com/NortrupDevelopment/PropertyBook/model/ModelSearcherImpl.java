@@ -2,24 +2,17 @@ package com.NortrupDevelopment.PropertyBook.model;
 
 import java.util.AbstractList;
 
-import io.realm.Realm;
 
 /**
  * Class used to search the Realm object database for objects that match the
  * criteria provided.
  * Created by andy on 2/8/15.
  */
-public class RealmModelSearcher implements ModelSearcher {
+public class ModelSearcherImpl implements ModelSearcher {
 
 
-  private Realm mRealm;
+  public ModelSearcherImpl() {
 
-  public RealmModelSearcher(Realm realm) {
-    mRealm = realm;
-  }
-
-  private Realm getRealm() {
-    return mRealm;
   }
 
   /**
@@ -33,13 +26,12 @@ public class RealmModelSearcher implements ModelSearcher {
   @Override
   public AbstractList<LineNumber> searchLineNumber(String keyword) {
 
-    return (AbstractList) getRealm().where(RealmLineNumber.class)
-        .contains("lin", keyword)
-        .or()
-        .contains("subLin", keyword)
-        .or()
-        .contains("nomenclature", keyword)
-        .findAll();
+    return null;
+  }
+
+  @Override
+  public AbstractList<LineNumber> getAllLineNumbers() {
+    return null;
   }
 
   /**
@@ -51,13 +43,12 @@ public class RealmModelSearcher implements ModelSearcher {
    */
   @Override
   public AbstractList<StockNumber> searchStockNumber(String keyword) {
-    return (AbstractList) getRealm().where(RealmStockNumber.class)
-        .contains("nomenclature", keyword)
-        .or()
-        .contains("nsn", keyword)
-        .or()
-        .contains("nsn", NSNFormatter.removeDashesFromNSN(keyword))
-        .findAll();
+    return null;
+  }
+
+  @Override
+  public AbstractList<StockNumber> getAllStockNumbers() {
+    return null;
   }
 
   /**
@@ -69,10 +60,6 @@ public class RealmModelSearcher implements ModelSearcher {
    */
   @Override
   public AbstractList<SerialNumber> searchSerialNumber(String keyword) {
-    return (AbstractList) getRealm().where(RealmSerialNumber.class)
-        .contains("serialNumber", keyword)
-        .or()
-        .contains("sysNo", keyword)
-        .findAll();
+    return null;
   }
 }

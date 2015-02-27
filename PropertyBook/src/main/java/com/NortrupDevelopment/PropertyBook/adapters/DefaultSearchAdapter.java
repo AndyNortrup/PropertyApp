@@ -3,9 +3,9 @@ package com.NortrupDevelopment.PropertyBook.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.NortrupDevelopment.PropertyBook.model.RealmLineNumber;
-import com.NortrupDevelopment.PropertyBook.model.RealmSerialNumber;
-import com.NortrupDevelopment.PropertyBook.model.RealmStockNumber;
+import com.NortrupDevelopment.PropertyBook.model.LineNumberImpl;
+import com.NortrupDevelopment.PropertyBook.model.SerialNumberImpl;
+import com.NortrupDevelopment.PropertyBook.model.StockNumberImpl;
 
 import java.util.AbstractList;
 
@@ -28,11 +28,11 @@ public class DefaultSearchAdapter<T>
   public DefaultSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
     if (mItems.size() > 0) {
-      if (mItems.get(0) instanceof RealmLineNumber) {
+      if (mItems.get(0) instanceof LineNumberImpl) {
         return new DefaultSearchLineNumberViewHolder(parent);
-      } else if (mItems.get(0) instanceof RealmStockNumber) {
+      } else if (mItems.get(0) instanceof StockNumberImpl) {
         return new DefaultSearchStockNumberViewHolder(parent);
-      } else if (mItems.get(0) instanceof RealmSerialNumber) {
+      } else if (mItems.get(0) instanceof SerialNumberImpl) {
         return new DefaultSearchSerialNumberViewHolder(parent);
       }
     }

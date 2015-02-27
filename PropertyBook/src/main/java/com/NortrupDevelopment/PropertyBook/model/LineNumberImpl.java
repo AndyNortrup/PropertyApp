@@ -1,11 +1,9 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
-public class RealmLineNumber extends RealmObject implements LineNumber {
+public class LineNumberImpl implements LineNumber {
 
   private String lin;
   private String subLin;
@@ -16,9 +14,38 @@ public class RealmLineNumber extends RealmObject implements LineNumber {
   private int required;
   private int authorized;
   private int dueIn;
-
   private PropertyBook propertyBook;
-  private RealmList<RealmStockNumber> stockNumbers;
+  private ArrayList<StockNumber> stockNumbers;
+
+
+  public LineNumberImpl(String lin,
+                        String subLin,
+                        String sri,
+                        String erc,
+                        String nomenclature,
+                        String authDoc,
+                        int required,
+                        int authorized,
+                        int dueIn,
+                        PropertyBook propertyBook,
+                        ArrayList<StockNumber> stockNumbers) {
+    this.lin = lin;
+    this.subLin = subLin;
+    this.sri = sri;
+    this.erc = erc;
+    this.nomenclature = nomenclature;
+    this.authDoc = authDoc;
+    this.required = required;
+    this.authorized = authorized;
+    this.dueIn = dueIn;
+    this.propertyBook = propertyBook;
+    this.stockNumbers = stockNumbers;
+  }
+
+
+  public LineNumberImpl() {
+    stockNumbers = new ArrayList<StockNumber>();
+  }
 
   /**
    * @return the lin
@@ -198,11 +225,11 @@ public class RealmLineNumber extends RealmObject implements LineNumber {
   @Override
   public void setStockNumbers(AbstractList<StockNumber> stockNumbers) {
     if (stockNumbers.size() > 0) {
-      if (!(stockNumbers.get(0) instanceof RealmStockNumber)) {
+      if (!(stockNumbers.get(0) instanceof StockNumberImpl)) {
         throw new IllegalStateException("Not a Realms Stock Number");
       }
       for (StockNumber nsn : stockNumbers) {
-        this.stockNumbers.add((RealmStockNumber) nsn);
+        this.stockNumbers.add((StockNumberImpl) nsn);
       }
     }
   }

@@ -1,19 +1,17 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.content.Context;
+import android.widget.ScrollView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.model.RealmLineNumber;
-import com.NortrupDevelopment.PropertyBook.model.RealmStockNumber;
+import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.AbstractList;
 import java.util.Locale;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardView;
@@ -23,89 +21,102 @@ import it.gmariotti.cardslib.library.view.CardView;
  * statistics of their property book.
  * Created by andy on 4/6/14.
  */
-public class PropertyBookStatisticsActivity extends Activity {
+public class PropertyBookStatisticsActivity extends ScrollView {
 
   private static final String LOG_TAG = "STATISTICS";
+  ModelSearcher searcher;
+  private AbstractList<StockNumber> stockNumbers;
 
+  public PropertyBookStatisticsActivity(Context context,
+                                        ModelSearcher searcher) {
+    super(context);
+    this.searcher = searcher;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    setupTotalValueCard();
 
-    Card mCardValue;
+    setupItemCountCard();
+
+    setupLineNumberCountCard();
+  }
+
+  private void setupLineNumberCountCard() {
     Card mCardLINCount;
-    Card mCardItemCount;
+    mCardLINCount = new Card(getContext(), R.layout.card_statistics_layout);
+    mCardLINCount.setTitle(String.valueOf(getTotalLineNumbers()));
 
-    setContentView(R.layout.activity_pb_statistics);
-
-    Realm realm = RealmDefinition.getRealm(this,
-        RealmDefinition.PRODUCTION_REALM);
-
-    mCardValue = new Card(this, R.layout.card_statistics_layout);
-    CardHeader valueHeader = new CardHeader(this);
-    valueHeader.setTitle(getString(R.string.property_book_value));
-    mCardValue.addCardHeader(valueHeader);
-    mCardValue.setTitle(getPropertyBookValue(realm));
-
-    CardView valueCardView = (CardView) findViewById(R.id.property_book_value);
-    valueCardView.setCard(mCardValue);
-
-    mCardItemCount = new Card(this, R.layout.card_statistics_layout);
-    CardHeader itemCountHeader = new CardHeader(this);
-    itemCountHeader.setTitle(getString(R.string.property_book_total_items));
-    mCardItemCount.addCardHeader(itemCountHeader);
-    mCardItemCount.setTitle(String.valueOf(getItemCount(realm)));
-
-    CardView itemCountCardView =
-        (CardView) findViewById(R.id.property_book_item_count);
-    itemCountCardView.setCard(mCardItemCount);
-
-    mCardLINCount = new Card(this, R.layout.card_statistics_layout);
-    CardHeader linCountHeader = new CardHeader(this);
-    linCountHeader.setTitle(getString(R.string.property_book_total_lins));
+    CardHeader linCountHeader = new CardHeader(getContext());
+    linCountHeader.setTitle(
+        getContext().getString(R.string.property_book_total_lins));
     mCardLINCount.addCardHeader(linCountHeader);
-    mCardLINCount.setTitle(String.valueOf(getTotalLineNumbers(realm)));
 
     CardView linCountCardView =
         (CardView) findViewById(R.id.property_book_lin_count);
     linCountCardView.setCard(mCardLINCount);
+  }
 
+  private void setupItemCountCard() {
+    Card mCardItemCount;
+    mCardItemCount = new Card(getContext(), R.layout.card_statistics_layout);
+    mCardItemCount.setTitle(String.valueOf(getItemCount()));
+
+    CardHeader itemCountHeader = new CardHeader(getContext());
+    itemCountHeader.setTitle(
+        getContext().getString(R.string.property_book_total_items));
+    mCardItemCount.addCardHeader(itemCountHeader);
+
+    CardView itemCountCardView =
+        (CardView) findViewById(R.id.property_book_item_count);
+    itemCountCardView.setCard(mCardItemCount);
+  }
+
+  private void setupTotalValueCard() {
+    Card mCardValue;
+    mCardValue = new Card(getContext(), R.layout.card_statistics_layout);
+    mCardValue.setTitle(getPropertyBookValue());
+
+    CardHeader valueHeader = new CardHeader(getContext());
+    valueHeader.setTitle(
+        getContext().getString(R.string.property_book_value));
+    mCardValue.addCardHeader(valueHeader);
+
+    CardView valueCardView = (CardView) findViewById(R.id.property_book_value);
+    valueCardView.setCard(mCardValue);
   }
 
   /**
    * Calculate the value of the property book
    * SUM(StockNumber.onHand * StockNumber.unitPrice)
    *
-   * @param realm Realm to get data from
    * @return String formatted as currency of the total value of the property
    * book
    */
-  private String getPropertyBookValue(Realm realm) {
-    RealmResults<RealmStockNumber> stockNumbers = realm.where(RealmStockNumber.class)
-        .notEqualTo("onHand", 0)
-        .findAll();
+  private String getPropertyBookValue() {
 
-    long valueInCents = 0;
+    if (stockNumbers == null) {
+      stockNumbers = searcher.getAllStockNumbers();
+    }
+    BigDecimal totalValue = new BigDecimal(0);
     for (StockNumber stockNumber : stockNumbers) {
-      valueInCents += (stockNumber.getOnHand() * stockNumber.getUnitPrice());
+      totalValue.add(stockNumber.getUnitPrice()
+          .multiply(new BigDecimal(stockNumber.getOnHand())));
     }
 
     NumberFormat formatter =
         NumberFormat.getCurrencyInstance(Locale.getDefault());
 
-    return formatter.format((double) (valueInCents) / 100);
+    return formatter.format(totalValue);
   }
 
   /**
    * Get the total number of items in the property book SUM(StockNumber.onHand)
    *
-   * @param realm Realm to get data from
    * @return Total number of items
    */
-  private int getItemCount(Realm realm) {
-    RealmResults<RealmStockNumber> stockNumbers = realm.where(RealmStockNumber.class)
-        .notEqualTo("onHand", 0)
-        .findAll();
+  private int getItemCount() {
+
+    if (stockNumbers == null) {
+      stockNumbers = searcher.getAllStockNumbers();
+    }
 
     int result = 0;
 
@@ -119,11 +130,10 @@ public class PropertyBookStatisticsActivity extends Activity {
   /**
    * Get the total count of LineNumbers
    *
-   * @param realm Realm to get data from
    * @return Total number of LineNumbers
    */
-  private long getTotalLineNumbers(Realm realm) {
-    return realm.where(RealmLineNumber.class).count();
+  private long getTotalLineNumbers() {
+    return searcher.getAllLineNumbers().size();
   }
 
 }

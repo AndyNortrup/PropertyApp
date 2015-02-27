@@ -2,17 +2,17 @@ package com.NortrupDevelopment.PropertyBook.io;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelFactory;
 import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
-import com.NortrupDevelopment.PropertyBook.model.RealmLineNumber;
-import com.NortrupDevelopment.PropertyBook.model.RealmStockNumber;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,8 +95,10 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
     try {
       workbook = Workbook.getWorkbook(inFile);
     } catch (BiffException biff) {
+      Log.e("HandReceiptReader", biff.getMessage());
       throw biff;
     } catch (IOException ioe) {
+      Log.e("HandReceiptReader", ioe.getMessage());
       throw ioe;
     }
 
@@ -106,9 +108,6 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
 
       Sheet sheet = workbook.getSheet(sheets[sheetIndex]);
 
-      //create some markers
-      currentLineNumber = new RealmLineNumber();
-      currentStockNumber = new RealmStockNumber();
       boolean checkForSerialNumbers = false;
 
       PropertyBook pbic = getPropertyBook(sheet);
@@ -218,7 +217,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private PropertyBook createPropertyBook(
       String pbic,
       String uic) {
-    return modelFactory.createPropertyBook(pbic, uic, "");
+    return modelFactory.createOrphanPropertyBook(pbic, uic, "");
   }
 
   private LineNumber createLineNumberFrom(Sheet sheet,
@@ -254,7 +253,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
               .getContents());
     }
 
-    LineNumber lineNumber = modelFactory.createLineNumber(
+    LineNumber lineNumber = modelFactory.createOrphanLineNumber(
         sheet.getCell(colNumberLIN, currentRowNumber).getContents(),
         sheet.getCell(columnNumberLinSubLin, currentRowNumber).getContents(),
         sheet.getCell(columnNumberLinSri, currentRowNumber).getContents(),
@@ -273,7 +272,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private LineNumber createSubLineNumberFrom(Sheet sheet,
                                              int currentRowNumber) {
 
-    LineNumber lineNumber = modelFactory.createLineNumber(currentLineNumber.getLin(),
+    LineNumber lineNumber = modelFactory.createOrphanLineNumber(currentLineNumber.getLin(),
         sheet.getCell(columnNumberLinSubLin, currentRowNumber).getContents(),
         currentLineNumber.getSri(),
         currentLineNumber.getErc(),
@@ -299,13 +298,13 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private StockNumber createStockNumber(Sheet sheet,
                                         int currentRowNumber) {
 
-    double unitPrice = 0;
+    BigDecimal unitPrice = new BigDecimal(0);
     if (!TextUtils.isEmpty(
         sheet.getCell(columnNumberNsnUp, currentRowNumber).getContents())) {
 
-      unitPrice = Double.parseDouble(
+      unitPrice = new BigDecimal(Double.parseDouble(
           sheet.getCell(columnNumberNsnUp, currentRowNumber)
-              .getContents()) * 100;
+              .getContents()));
     }
 
     int onHand = 0;
@@ -317,7 +316,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
       onHand = Integer.parseInt(onHandString);
     }
 
-    return modelFactory.createStockNumber(
+    return modelFactory.createOrphanStockNumber(
         sheet.getCell(columnNumberNSN, currentRowNumber).getContents(),
         sheet.getCell(columnNumberNsnUi, currentRowNumber).getContents(),
         unitPrice,
@@ -337,7 +336,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private SerialNumber createSerialNumber(Sheet sheet,
                                           int currentRowNumber,
                                           int columnIndex) {
-    return modelFactory.createSerialNumber(
+    return modelFactory.createOrphanSerialNumber(
         sheet.getCell(columnIndex, currentRowNumber).getContents(),
         sheet.getCell(columnIndex - 1, currentRowNumber).getContents());
   }

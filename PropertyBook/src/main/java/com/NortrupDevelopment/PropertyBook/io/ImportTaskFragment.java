@@ -11,9 +11,8 @@ import android.util.Log;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
-import com.NortrupDevelopment.PropertyBook.model.ModelUtils;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.model.RealmModelFactory;
+import com.NortrupDevelopment.PropertyBook.model.ModelFactoryImpl;
+import com.NortrupDevelopment.PropertyBook.model.ModelUtilsImpl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -142,10 +141,7 @@ public class ImportTaskFragment extends Fragment {
 
       Log.i(DEBUG_CODE, "Starting to read property book.");
       PrimaryHandReceiptReader reader = new PrimaryHandReceiptReaderImpl(
-          new RealmModelFactory(
-              RealmDefinition.getRealm(getActivity(),
-                  RealmDefinition.PRODUCTION_REALM))
-      );
+          new ModelFactoryImpl());
       reader.readHandReceipt(inStream, sheetIndexes);
     }
 
@@ -154,8 +150,7 @@ public class ImportTaskFragment extends Fragment {
 
 
       //Clear the contents of all tables
-      ModelUtils.deleteAllPropertyBooks(mContext,
-          RealmDefinition.PRODUCTION_REALM);
+      new ModelUtilsImpl().deleteAllPropertyBooks();
 
       Log.i(DEBUG_CODE, "Added removal old data removal commands.");
     }

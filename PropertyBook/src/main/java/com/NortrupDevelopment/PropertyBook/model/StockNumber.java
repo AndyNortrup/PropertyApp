@@ -1,5 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import java.math.BigDecimal;
 import java.util.AbstractList;
 
 /**
@@ -15,9 +16,9 @@ public interface StockNumber {
 
   void setUi(String ui);
 
-  long getUnitPrice();
+  BigDecimal getUnitPrice();
 
-  void setUnitPrice(long unitPrice);
+  void setUnitPrice(BigDecimal unitPrice);
 
   String getNomenclature();
 

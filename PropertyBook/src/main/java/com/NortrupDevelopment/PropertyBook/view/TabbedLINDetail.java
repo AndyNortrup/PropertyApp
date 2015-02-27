@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
-import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,24 +29,37 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
   private LineNumber mLineNumber;
   private PagerAdapter mPagerAdapter;
 
-  @InjectView(R.id.nsn_detail_pager) ViewPager mViewPager;
-  @InjectView(R.id.lin) TextView linTV;
-  @InjectView(R.id.nomenclature) TextView nomenclatureTV;
-  @InjectView(R.id.sub_lin) TextView subLinTV;
-  @InjectView(R.id.authorized_value) TextView authorizedTV;
-  @InjectView(R.id.required_value) TextView requiredTV;
-  @InjectView(R.id.sri_value) TextView sriTV;
-  @InjectView(R.id.due_in_value) TextView mDueInTV;
-  @InjectView(R.id.erc_value) TextView ercTV;
-  @InjectView(R.id.auth_doc_value) TextView authDocTV;
-  @InjectView(R.id.pbic_value) TextView pbicTV;
-  @InjectView(R.id.no_nsn_label) TextView mNoStockNumbersLabel;
+  @InjectView(R.id.nsn_detail_pager)
+  ViewPager mViewPager;
+  @InjectView(R.id.lin)
+  TextView linTV;
+  @InjectView(R.id.nomenclature)
+  TextView nomenclatureTV;
+  @InjectView(R.id.sub_lin)
+  TextView subLinTV;
+  @InjectView(R.id.authorized_value)
+  TextView authorizedTV;
+  @InjectView(R.id.required_value)
+  TextView requiredTV;
+  @InjectView(R.id.sri_value)
+  TextView sriTV;
+  @InjectView(R.id.due_in_value)
+  TextView mDueInTV;
+  @InjectView(R.id.erc_value)
+  TextView ercTV;
+  @InjectView(R.id.auth_doc_value)
+  TextView authDocTV;
+  @InjectView(R.id.pbic_value)
+  TextView pbicTV;
+  @InjectView(R.id.no_nsn_label)
+  TextView mNoStockNumbersLabel;
 
   public TabbedLINDetail(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  @Override protected void onFinishInflate() {
+  @Override
+  protected void onFinishInflate() {
 
     ButterKnife.inject(this);
 
@@ -105,7 +118,7 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
    */
   private void setupStockNumberViewPager() {
     mViewPager.setAdapter(mPagerAdapter);
-    if(mLineNumber.getStockNumbers().size() > 0) {
+    if (mLineNumber.getStockNumbers().size() > 0) {
       mPagerAdapter.notifyDataSetChanged();
     } else {
       mViewPager.setVisibility(View.GONE);
@@ -145,7 +158,7 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
 
       LayoutInflater inflater = LayoutInflater.from(getContext());
       NSNDetail view =
-          (NSNDetail)inflater.inflate(R.layout.nsn_detail, null);
+          (NSNDetail) inflater.inflate(R.layout.nsn_detail, null);
       view.setStockNumber(stockNumber);
 
       collection.addView(view);
@@ -157,6 +170,7 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
      * Determines whether a page View is associated with a specific key object
      * as returned by {@link #instantiateItem(android.view.ViewGroup, int)}. This method is
      * required for a PagerAdapter to function properly.
+     *
      * @param view   Page View to check for association with <code>object</code>
      * @param object Object to check for association with <code>view</code>
      * @return true if <code>view</code> is associated with the key object <code>object</code>
@@ -168,14 +182,15 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
 
     /**
      * Remove an object from the the collection
+     *
      * @param container Container with the item in it.
-     * @param position Position of the view in the collection
-     * @param view View to be removed
+     * @param position  Position of the view in the collection
+     * @param view      View to be removed
      */
-    @Override public void destroyItem(ViewGroup container,
-                                      int position,
-                                      Object view)
-    {
+    @Override
+    public void destroyItem(ViewGroup container,
+                            int position,
+                            Object view) {
       container.removeView((View) view);
     }
   }

@@ -8,12 +8,12 @@ import com.NortrupDevelopment.PropertyBook.view.DefaultMainActivity;
 
 import io.realm.Realm;
 
-public class RealmModelSearcherTest extends InstrumentationTestCase {
+public class ModelSearcherImplTest extends InstrumentationTestCase {
 
   private ModelSearcher searcher;
   Activity mContext;
 
-  public RealmModelSearcherTest() {
+  public ModelSearcherImplTest() {
     super();
   }
 
@@ -24,7 +24,7 @@ public class RealmModelSearcherTest extends InstrumentationTestCase {
         new Bundle());
 
     Realm realm = Realm.getInstance(mContext.getFilesDir());
-    searcher = new RealmModelSearcher(realm);
+    searcher = new ModelSearcherImpl(realm);
   }
 
   public void testSearchLineNumber() throws Exception {

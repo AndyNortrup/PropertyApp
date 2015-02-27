@@ -5,8 +5,7 @@ import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
-import com.NortrupDevelopment.PropertyBook.model.RealmModelSearcher;
+import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
 import java.util.ArrayList;
@@ -36,8 +35,7 @@ public class LINBrowserPresenter {
     //Show the loading progress bar.
     mInstance.showLoadingProgressBar();
 
-    ModelSearcher searcher = new RealmModelSearcher(RealmDefinition.getRealm(
-        mInstance.getContext(), RealmDefinition.PRODUCTION_REALM));
+    ModelSearcher searcher = new ModelSearcherImpl();
 
     ArrayList<LineNumber> lineNumbers =
         new ArrayList(searcher.searchLineNumber(""));

@@ -58,7 +58,7 @@ dependencies {
     compile project(':aFileChooser:aFileChooser')
 
     //Realm for database use
-    compile 'io.realm:realm-android:0.79.1'
+    //compile 'io.realm:realm-android:0.79.1'
 
     //ButterKnife does view injection
     compile 'com.jakewharton:butterknife:6.0.0'
