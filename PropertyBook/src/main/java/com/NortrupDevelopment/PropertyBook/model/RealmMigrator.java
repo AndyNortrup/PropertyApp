@@ -13,8 +13,8 @@ public class RealmMigrator implements RealmMigration {
   @Override
   public long execute(Realm realm, long version) {
 
-    if(version == 0) {
-      Table stockNumber = realm.getTable(StockNumber.class);
+    if (version == 0) {
+      Table stockNumber = realm.getTable(RealmStockNumber.class);
       stockNumber.addColumn(ColumnType.LINK_LIST, "serialNumbers");
       version++;
     }

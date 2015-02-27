@@ -1,146 +1,65 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.AbstractList;
 
-public class StockNumber extends RealmObject {
+/**
+ * Interface to define a stock number
+ * Created by andy on 2/25/15.
+ */
+public interface StockNumber {
+  String getNsn();
 
-  private String nsn; //NSN
-  private String ui; //Unit of Issue
-  private long unitPrice; //Unit Price
-  private String nomenclature; //NSN Nomenclature
-  private String llc; //LLC code
-  private String ecs; //ECS code
-  private String srrc; //SRRC code
-  private String uiiManaged;
-  private String ciic;
-  private String dla;
-  private String pubData; //publication data
-  private int onHand; //quantity on hand
-  private String uuid; //Unique identifier for the stock number
+  void setNsn(String nsn);
 
-  //reference to the LIN id to which this NSN belongs.
-  private LineNumber parentLineNumber;
+  String getUi();
 
-  private RealmList<SerialNumber> serialNumbers;
+  void setUi(String ui);
 
-  public String getNsn() {
-    return nsn;
-  }
+  long getUnitPrice();
 
-  public void setNsn(String nsn) {
-    this.nsn = nsn;
-  }
+  void setUnitPrice(long unitPrice);
 
-  public String getUi() {
-    return ui;
-  }
+  String getNomenclature();
 
-  public void setUi(String ui) {
-    this.ui = ui;
-  }
+  void setNomenclature(String nomenclature);
 
-  public long getUnitPrice() {
-    return unitPrice;
-  }
+  String getLlc();
 
-  public void setUnitPrice(long unitPrice) {
-    this.unitPrice = unitPrice;
-  }
+  void setLlc(String llc);
 
-  public String getNomenclature() {
-    return nomenclature;
-  }
+  String getEcs();
 
-  public void setNomenclature(String nomenclature) {
-    this.nomenclature = nomenclature;
-  }
+  void setEcs(String ecs);
 
-  public String getLlc() {
-    return llc;
-  }
+  String getSrrc();
 
-  public void setLlc(String llc) {
-    this.llc = llc;
-  }
+  void setSrrc(String srrc);
 
-  public String getEcs() {
-    return ecs;
-  }
+  String getUiiManaged();
 
-  public void setEcs(String ecs) {
-    this.ecs = ecs;
-  }
+  void setUiiManaged(String uiiManaged);
 
-  public String getSrrc() {
-    return srrc;
-  }
+  String getCiic();
 
-  public void setSrrc(String srrc) {
-    this.srrc = srrc;
-  }
+  void setCiic(String ciic);
 
-  public String getUiiManaged() {
-    return uiiManaged;
-  }
+  String getDla();
 
-  public void setUiiManaged(String uiiManaged) {
-    this.uiiManaged = uiiManaged;
-  }
+  void setDla(String dla);
 
-  public String getCiic() {
-    return ciic;
-  }
+  String getPubData();
 
-  public void setCiic(String ciic) {
-    this.ciic = ciic;
-  }
+  void setPubData(String pubData);
 
-  public String getDla() {
-    return dla;
-  }
+  int getOnHand();
 
-  public void setDla(String dla) {
-    this.dla = dla;
-  }
+  void setOnHand(int onHand);
 
-  public String getPubData() {
-    return pubData;
-  }
+  LineNumber getParentLineNumber();
 
-  public void setPubData(String pubData) {
-    this.pubData = pubData;
-  }
+  void setParentLineNumber(LineNumber parentLineNumber);
 
-  public int getOnHand() {
-    return onHand;
-  }
+  AbstractList<SerialNumber> getSerialNumbers();
 
-  public void setOnHand(int onHand) {
-    this.onHand = onHand;
-  }
-
-  public LineNumber getParentLineNumber() {
-    return parentLineNumber;
-  }
-
-  public void setParentLineNumber(LineNumber parentLineNumber) {
-    this.parentLineNumber = parentLineNumber;
-  }
-
-  public RealmList<SerialNumber> getSerialNumbers() {
-    return serialNumbers;
-  }
-
-  public void setSerialNumbers(RealmList<SerialNumber> serialNumbers) {
-    this.serialNumbers = serialNumbers;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
-  }
+  void setSerialNumbers(AbstractList<SerialNumber> serialNumbers);
 }

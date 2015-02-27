@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 
-import io.realm.RealmList;
+import java.util.AbstractList;
 
 /**
  * Created by andy on 12/9/14.
@@ -16,9 +16,9 @@ import io.realm.RealmList;
 public class SerialNumberAdapter
     extends RecyclerView.Adapter<SerialNumberViewHolder> {
 
-  private RealmList  <SerialNumber> mItems;
+  private AbstractList<SerialNumber> mItems;
 
-  public SerialNumberAdapter(RealmList<SerialNumber> data) {
+  public SerialNumberAdapter(AbstractList<SerialNumber> data) {
     mItems = data;
   }
 
@@ -26,7 +26,7 @@ public class SerialNumberAdapter
   public SerialNumberViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
     View itemView = LayoutInflater.from(
         viewGroup.getContext())
-          .inflate(R.layout.serial_number_item, viewGroup, false);
+        .inflate(R.layout.serial_number_item, viewGroup, false);
 
     return new SerialNumberViewHolder(itemView);
   }

@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchViewHolder;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
 import butterknife.ButterKnife;
@@ -14,10 +13,12 @@ import butterknife.InjectView;
  * Created by andy on 2/8/15.
  */
 public class DefaultSearchLineNumberViewHolder
-  extends  DefaultSearchViewHolder<LineNumber> {
+    extends DefaultSearchViewHolder<LineNumber> {
 
-  @InjectView(R.id.lin_search_lin) TextView lineNumber;
-  @InjectView(R.id.lin_search_nomenclature) TextView nomenclature;
+  @InjectView(R.id.lin_search_lin)
+  TextView lineNumber;
+  @InjectView(R.id.lin_search_nomenclature)
+  TextView nomenclature;
 
   public DefaultSearchLineNumberViewHolder(View itemView) {
     super(itemView);

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 
-import io.realm.RealmResults;
+import java.util.AbstractList;
 
 /**
  * This interface defines the methods required for the LINBrowserPresenter
@@ -29,7 +29,7 @@ public interface LINBrowser {
    * provided adapter.
    * @param LineNumbers Array of LINs to be used in the list.
    */
-  public void setList(RealmResults<LineNumber> LineNumbers);
+  public void setList(AbstractList<LineNumber> LineNumbers);
 
   public Context getContext();
 

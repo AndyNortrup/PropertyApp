@@ -1,12 +1,18 @@
 apply plugin: 'android'
 
 android {
+
     compileSdkVersion 21
     buildToolsVersion '21.1.1'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     signingConfigs {
 
         releaseConfig {
@@ -23,30 +29,56 @@ android {
             signingConfig signingConfigs.releaseConfig
         }
     }
+
     productFlavors {
     }
 
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+
+
 }
 
 
 dependencies {
+    //JXL for reading XLS documents
     compile files('libs/jxl.jar')
+
+    //Cardslib
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.0.1'
+
+    //Android support libraries
     compile 'com.android.support:support-v4:21.0.2'
     compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'com.android.support:support-v13:21.0.2'
     compile 'com.android.support:recyclerview-v7:21.0.2'
+
+    //File chooser library
     compile project(':aFileChooser:aFileChooser')
-    compile 'io.realm:realm-android:0.75.1'
-    compile 'com.afollestad:material-dialogs:0.4.3'
+
+    //Realm for database use
+    compile 'io.realm:realm-android:0.79.1'
+
+    //ButterKnife does view injection
     compile 'com.jakewharton:butterknife:6.0.0'
+
+    //Two way view makes RecyclerView easier
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
+
+    //Floating Action button library
     compile 'com.getbase:floatingactionbutton:1.5.1'
+
+    //Eventbus for message passing
     compile 'de.greenrobot:eventbus:2.4.0'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    //Gradle
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+
+    //Testing libraries
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.9.5"
+    //androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    //androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
 }

@@ -1,186 +1,53 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.AbstractList;
 
-public class LineNumber extends RealmObject {
+/**
+ * Public interface for LineNumber objects
+ * Created by andy on 2/25/15.
+ */
+public interface LineNumber {
+  String getLin();
 
-  private String lin;
-  private String subLin;
-  private String sri;
-  private String erc;
-  private String nomenclature;
-  private String authDoc;
-  private int required;
-  private int authorized;
-  private int dueIn;
-  private String uuid;
+  void setLin(String lin);
 
-  private PropertyBook propertyBook;
-  private RealmList<StockNumber> stockNumbers;
+  String getSubLin();
 
-  /**
-   * @return the lin
-   */
-  public String getLin() {
-    return lin;
-  }
+  void setSubLin(String subLin);
 
+  String getSri();
 
-  /**
-   * @param lin the lin to set
-   */
-  public void setLin(String lin) {
-    this.lin = lin;
-  }
+  void setSri(String sri);
 
+  String getErc();
 
-  /**
-   * @return the subLin
-   */
-  public String getSubLin() {
-    return subLin;
-  }
+  void setErc(String erc);
 
+  String getNomenclature();
 
-  /**
-   * @param subLin the subLin to set
-   */
-  public void setSubLin(String subLin) {
-    this.subLin = subLin;
-  }
+  void setNomenclature(String nomencalture);
 
+  String getAuthDoc();
 
-  /**
-   * @return the sri
-   */
-  public String getSri() {
-    return sri;
-  }
+  void setAuthDoc(String authDoc);
 
+  int getRequired();
 
-  /**
-   * @param sri the sri to set
-   */
-  public void setSri(String sri) {
-    this.sri = sri;
-  }
+  void setRequired(int required);
 
+  int getAuthorized();
 
-  /**
-   * @return the erc
-   */
-  public String getErc() {
-    return erc;
-  }
+  void setAuthorized(int authorized);
 
+  int getDueIn();
 
-  /**
-   * @param erc the erc to set
-   */
-  public void setErc(String erc) {
-    this.erc = erc;
-  }
+  void setDueIn(int dueIn);
 
+  PropertyBook getPropertyBook();
 
-  /**
-   * @return the nomenclature
-   */
-  public String getNomenclature() {
-    return nomenclature;
-  }
+  void setPropertyBook(PropertyBook propertyBook);
 
+  AbstractList<StockNumber> getStockNumbers();
 
-  /**
-   * @param nomencalture set the nomenclature
-   */
-  public void setNomenclature(String nomencalture) {
-    this.nomenclature = nomencalture;
-  }
-
-
-  /**
-   * @return the authDoc
-   */
-  public String getAuthDoc() {
-    return authDoc;
-  }
-
-
-  /**
-   * @param authDoc the authDoc to set
-   */
-  public void setAuthDoc(String authDoc) {
-    this.authDoc = authDoc;
-  }
-
-
-  /**
-   * @return the required
-   */
-  public int getRequired() {
-    return required;
-  }
-
-
-  /**
-   * @param required the required to set
-   */
-  public void setRequired(int required) {
-    this.required = required;
-  }
-
-
-  /**
-   * @return the authorized
-   */
-  public int getAuthorized() {
-    return authorized;
-  }
-
-
-  /**
-   * @param authorized the authorized to set
-   */
-  public void setAuthorized(int authorized) {
-    this.authorized = authorized;
-  }
-
-  /**
-   * @return the dueIn
-   */
-  public int getDueIn() {
-    return dueIn;
-  }
-
-  /**
-   * @param dueIn the dueIn to set
-   */
-  public void setDueIn(int dueIn) {
-    this.dueIn = dueIn;
-  }
-
-  public PropertyBook getPropertyBook() {
-    return propertyBook;
-  }
-
-  public void setPropertyBook(PropertyBook propertyBook) {
-    this.propertyBook = propertyBook;
-  }
-
-  public RealmList<StockNumber> getStockNumbers() {
-    return stockNumbers;
-  }
-
-  public void setStockNumbers(RealmList<StockNumber> stockNumbers) {
-    this.stockNumbers = stockNumbers;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
-  }
+  void setStockNumbers(AbstractList<StockNumber> stockNumbers);
 }

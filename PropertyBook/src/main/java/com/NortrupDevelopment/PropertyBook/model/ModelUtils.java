@@ -13,6 +13,7 @@ public class ModelUtils {
 
   /**
    * Deletes all the entire contents of a realm.
+   *
    * @param context Application context with the given realm.
    */
   public static void deleteAllPropertyBooks(Context context, String realmFile) {
@@ -25,14 +26,15 @@ public class ModelUtils {
     query.findAll().clear();
 
     //Delete all of the Line Numbers
-    RealmQuery<LineNumber> lineNumberQuery = realm.where(LineNumber.class);
+    RealmQuery<RealmLineNumber> lineNumberQuery =
+        realm.where(RealmLineNumber.class);
     lineNumberQuery.findAll().clear();
 
     //Delete all of the Stock Numbers
-    realm.where(StockNumber.class).findAll().clear();
+    realm.where(RealmStockNumber.class).findAll().clear();
 
     //Delete all of the serial numbers
-    realm.where(SerialNumber.class).findAll().clear();
+    realm.where(RealmSerialNumber.class).findAll().clear();
 
     realm.commitTransaction();
   }

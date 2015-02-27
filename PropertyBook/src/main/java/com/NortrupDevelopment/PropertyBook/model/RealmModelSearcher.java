@@ -1,7 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
-import android.content.Context;
-
 import java.util.AbstractList;
 
 import io.realm.Realm;
@@ -13,20 +11,17 @@ import io.realm.Realm;
  */
 public class RealmModelSearcher implements ModelSearcher {
 
-  private Context mContext;
+
   private Realm mRealm;
 
-  public RealmModelSearcher(Context context) {
-    mContext = context;
+  public RealmModelSearcher(Realm realm) {
+    mRealm = realm;
   }
 
   private Realm getRealm() {
-    if(mRealm == null) {
-      mRealm = RealmDefinition.getRealm(mContext,
-          RealmDefinition.PRODUCTION_REALM);
-    }
     return mRealm;
   }
+
   /**
    * Search the model for LineNumbers containing the keyword in the LIN, SubLIN,
    * or Nomenclature fields.
@@ -38,7 +33,7 @@ public class RealmModelSearcher implements ModelSearcher {
   @Override
   public AbstractList<LineNumber> searchLineNumber(String keyword) {
 
-    return getRealm().where(LineNumber.class)
+    return (AbstractList) getRealm().where(RealmLineNumber.class)
         .contains("lin", keyword)
         .or()
         .contains("subLin", keyword)
@@ -56,7 +51,7 @@ public class RealmModelSearcher implements ModelSearcher {
    */
   @Override
   public AbstractList<StockNumber> searchStockNumber(String keyword) {
-    return getRealm().where(StockNumber.class)
+    return (AbstractList) getRealm().where(RealmStockNumber.class)
         .contains("nomenclature", keyword)
         .or()
         .contains("nsn", keyword)
@@ -74,12 +69,10 @@ public class RealmModelSearcher implements ModelSearcher {
    */
   @Override
   public AbstractList<SerialNumber> searchSerialNumber(String keyword) {
-    return getRealm().where(SerialNumber.class)
+    return (AbstractList) getRealm().where(RealmSerialNumber.class)
         .contains("serialNumber", keyword)
         .or()
         .contains("sysNo", keyword)
         .findAll();
-
-
   }
 }

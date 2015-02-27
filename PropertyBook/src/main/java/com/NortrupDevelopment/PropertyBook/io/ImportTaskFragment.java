@@ -13,6 +13,7 @@ import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.model.ModelUtils;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
+import com.NortrupDevelopment.PropertyBook.model.RealmModelFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -91,15 +92,15 @@ public class ImportTaskFragment extends Fragment {
       InputStream inStream;
       String results = "";
 
-        try {
+      try {
 
-          Looper.prepare();
+        Looper.prepare();
 
-          inStream =
-              mContext.getContentResolver().openInputStream(params[0].getFile());
+        inStream =
+            mContext.getContentResolver().openInputStream(params[0].getFile());
 
 				/*
-				 * If we have set the EMPTY_DATABASE_KEY in the extras then
+         * If we have set the EMPTY_DATABASE_KEY in the extras then
 				 * we want to delete all of the contents of the database before
 				 * importing the new property book.
 				 *
@@ -109,51 +110,54 @@ public class ImportTaskFragment extends Fragment {
 				 * Use of an if will eventually support a decision to merge or
 				 * replace the data.
 				 */
-          if(params[0].isEmptyDatabase()) {
-
-            publishProgress("Deleting old data.");
-
-
-            //Clear the contents of all tables
-            ModelUtils.deleteAllPropertyBooks(mContext, RealmDefinition.PRODUCTION_REALM);
-
-            Log.i(DEBUG_CODE, "Added removal old data removal commands.");
-          }
-
-
-          publishProgress("Reading property book");
-
-          Log.i(DEBUG_CODE, "Starting to read property book.");
-          PrimaryHandReceiptReader.readHandReceipt(inStream,
-              sheetIndexes,
-              mContext,
-              RealmDefinition.PRODUCTION_REALM);
-
-
-          publishProgress("Writing data");
-
-
-
-          publishProgress("File import complete.");
-
-          inStream.close();
-
-        } catch (FileNotFoundException e) {
-          Log.e(DEBUG_CODE, e.getMessage(), e);
-          results = "The file could not be found or accessed.";
-        } catch (IOException e) {
-          Log.e(DEBUG_CODE, e.getMessage(), e);
-          results = "There was an IO exception reading your file";
-        } catch (BiffException e) {
-          Log.e(DEBUG_CODE, e.getMessage(), e);
-          results = "There was a problem reading the excel file provided.";
-        } catch (Throwable t) {
-          Log.e(DEBUG_CODE, t.getMessage(), t);
-          return RESULT_ERROR;
-        } finally {
-          publishProgress(results);
+        if (params[0].isEmptyDatabase()) {
+          deleteCurrentData();
         }
+
+        readInputFile(sheetIndexes, inStream);
+
+        inStream.close();
+
+      } catch (FileNotFoundException e) {
+        Log.e(DEBUG_CODE, e.getMessage(), e);
+        results = "The file could not be found or accessed.";
+      } catch (IOException e) {
+        Log.e(DEBUG_CODE, e.getMessage(), e);
+        results = "There was an IO exception reading your file";
+      } catch (BiffException e) {
+        Log.e(DEBUG_CODE, e.getMessage(), e);
+        results = "There was a problem reading the excel file provided.";
+      } catch (Throwable t) {
+        Log.e(DEBUG_CODE, t.getMessage(), t);
+        return RESULT_ERROR;
+      } finally {
+        publishProgress(results);
+      }
       return RESULT_OK;
+    }
+
+    private void readInputFile(int[] sheetIndexes, InputStream inStream)
+        throws BiffException, IOException {
+      publishProgress("Reading property book");
+
+      Log.i(DEBUG_CODE, "Starting to read property book.");
+      PrimaryHandReceiptReader reader = new PrimaryHandReceiptReaderImpl(
+          new RealmModelFactory(
+              RealmDefinition.getRealm(getActivity(),
+                  RealmDefinition.PRODUCTION_REALM))
+      );
+      reader.readHandReceipt(inStream, sheetIndexes);
+    }
+
+    private void deleteCurrentData() {
+      publishProgress("Deleting old data.");
+
+
+      //Clear the contents of all tables
+      ModelUtils.deleteAllPropertyBooks(mContext,
+          RealmDefinition.PRODUCTION_REALM);
+
+      Log.i(DEBUG_CODE, "Added removal old data removal commands.");
     }
 
 

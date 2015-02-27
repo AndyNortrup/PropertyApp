@@ -1,50 +1,19 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
-
-import io.realm.RealmObject;
-
 /**
- * This is the basic data structure to track a serial numbered property book
- * item.
- * Created by andy on 5/16/13.
+ * Serial Number interface defines the public requirements for a serial number.
+ * Created by andy on 2/25/15.
  */
-public class SerialNumber extends RealmObject {
+public interface SerialNumber {
+  String getSerialNumber();
 
+  void setSerialNumber(String serialNumber);
 
-  private String serialNumber;
-  private String sysNo;
-  private StockNumber stockNumber;
-  private String uuid;
+  String getSysNo();
 
-  public String getSerialNumber() {
-    return serialNumber;
-  }
+  void setSysNo(String sysNo);
 
-  public void setSerialNumber(String serialNumber) {
-    this.serialNumber = serialNumber;
-  }
+  StockNumber getStockNumber();
 
-  public String getSysNo() {
-    return sysNo;
-  }
-
-  public void setSysNo(String sysNo) {
-    this.sysNo = sysNo;
-  }
-
-  public StockNumber getStockNumber() {
-    return stockNumber;
-  }
-
-  public void setStockNumber(StockNumber stockNumber) {
-    this.stockNumber = stockNumber;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
-  }
+  void setStockNumber(StockNumber stockNumber);
 }

@@ -1,5 +1,7 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import java.util.AbstractList;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
@@ -34,11 +36,11 @@ public class PropertyBook extends RealmObject {
     this.pbic = pbic;
   }
 
-  public RealmList<LineNumber> getLineNumbers() {
+  public AbstractList<LineNumber> getLineNumbers() {
     return lineNumbers;
   }
 
-  public void setLineNumbers(RealmList<LineNumber> lineNumbers) {
+  public void setLineNumbers(AbstractList<LineNumber> lineNumbers) {
     this.lineNumbers = lineNumbers;
   }
 }

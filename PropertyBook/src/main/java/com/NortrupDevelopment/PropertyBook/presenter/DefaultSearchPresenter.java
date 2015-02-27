@@ -7,16 +7,13 @@ import android.view.View;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchLineNumberAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchSerialNumberAdapter;
-import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchStockNumberAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultAddSearchResultsViewEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
+import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 import com.NortrupDevelopment.PropertyBook.model.RealmModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.model.StockNumber;
-import com.NortrupDevelopment.PropertyBook.view.SearchResultsView;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -25,13 +22,15 @@ import de.greenrobot.event.EventBus;
 import io.realm.RealmResults;
 
 /**
+ * Default Search presenter handles the the lookup of search results for the
+ * SearchView
  * Created by andy on 2/8/15.
  */
-public class RealmSearchPresenter implements SearchPresenter {
+public class DefaultSearchPresenter implements SearchPresenter {
 
   private Context mContext;
 
-  private RealmSearchPresenter(Context context) {
+  private DefaultSearchPresenter(Context context) {
     mContext = context;
   }
 
@@ -40,7 +39,8 @@ public class RealmSearchPresenter implements SearchPresenter {
   public AbstractList<View> searchForTerm(String term) {
     ArrayList<View> result = new ArrayList<View>();
 
-    ModelSearcher searcher = new RealmModelSearcher(mContext);
+    ModelSearcher searcher = new RealmModelSearcher(
+        RealmDefinition.getRealm(mContext, RealmDefinition.PRODUCTION_REALM));
     boolean foundSomething = false;
 
     View lineNumbers = searchForLineNumbers(searcher, term);
@@ -58,13 +58,13 @@ public class RealmSearchPresenter implements SearchPresenter {
     }
 
     View serialNumbers = searchForSerialNumbers(searcher, term);
-    if(stockNumbers != null) {
+    if (stockNumbers != null) {
       EventBus.getDefault()
           .post(new DefaultAddSearchResultsViewEvent(serialNumbers));
       foundSomething = true;
     }
 
-    if(!foundSomething) {
+    if (!foundSomething) {
 
       NoSearchResultsView view = new NoSearchResultsView(mContext);
       view.setSearchTerm(term);
@@ -90,11 +90,11 @@ public class RealmSearchPresenter implements SearchPresenter {
       return null;
     }
 
-    SearchResultsView view = new SearchResultsView(mContext);
-    view.setTitle(mContext.getString(R.string.lin));
+    SearchResultsList view = new DefaultSearchResultsView(mContext,
+        mContext.getString(R.string.lin));
 
     RecyclerView.Adapter adapter =
-        new DefaultSearchAdapter<LineNumber>(lineNumbers);
+        new DefaultSearchAdapter<>(lineNumbers);
     view.setAdapter(adapter);
     return view;
   }
@@ -107,18 +107,17 @@ public class RealmSearchPresenter implements SearchPresenter {
    */
   @Nullable
   private View searchForStockNumbers(ModelSearcher searcher, String term) {
-    RealmResults<StockNumber> stockNumbers =
-        (RealmResults<StockNumber>) searcher.searchStockNumber(term);
+    AbstractList<StockNumber> stockNumbers = searcher.searchStockNumber(term);
 
     if (stockNumbers.size() == 0) {
       return null;
     }
 
-    SearchResultsView view = new SearchResultsView(mContext);
-    view.setTitle(mContext.getString(R.string.nsn));
+    SearchResultsList view = new DefaultSearchResultsView(mContext,
+        mContext.getString(R.string.nsn));
 
     RecyclerView.Adapter adapter =
-        new DefaultSearchAdapter<StockNumber>(stockNumbers);
+        new DefaultSearchAdapter<>(stockNumbers);
     view.setAdapter(adapter);
     return view;
   }
@@ -126,18 +125,18 @@ public class RealmSearchPresenter implements SearchPresenter {
   @Nullable
   private View searchForSerialNumbers(ModelSearcher searcher, String term) {
 
-    RealmResults<SerialNumber> serialNumbers =
-        (RealmResults<SerialNumber>) searcher.searchSerialNumber(term);
+    AbstractList<SerialNumber> serialNumbers =
+        searcher.searchSerialNumber(term);
 
     if (serialNumbers.size() == 0) {
       return null;
     }
 
-    SearchResultsView view = new SearchResultsView(mContext);
-    view.setTitle(mContext.getString(R.string.serial_number));
+    SearchResultsList view = new DefaultSearchResultsView(mContext,
+        mContext.getString(R.string.serial_number));
 
     RecyclerView.Adapter adapter =
-        new DefaultSearchAdapter<SerialNumber>(serialNumbers);
+        new DefaultSearchAdapter<>(serialNumbers);
     view.setAdapter(adapter);
 
     return view;

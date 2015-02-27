@@ -3,35 +3,36 @@ package com.NortrupDevelopment.PropertyBook.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
+import com.NortrupDevelopment.PropertyBook.model.RealmLineNumber;
+import com.NortrupDevelopment.PropertyBook.model.RealmSerialNumber;
+import com.NortrupDevelopment.PropertyBook.model.RealmStockNumber;
 
 import java.util.AbstractList;
-
-import io.realm.RealmObject;
 
 /**
  * Created by andy on 2/8/15.
  */
-public class DefaultSearchAdapter<T extends RealmObject>
+public class DefaultSearchAdapter<T>
     extends RecyclerView.Adapter<DefaultSearchViewHolder> {
 
   protected AbstractList<T> mItems;
+  //private SparseArray<RecyclerView.ViewHolder> viewHolders;
 
   public DefaultSearchAdapter(AbstractList<T> data) {
     mItems = data;
+    //viewHolders = new SparseArray<RecyclerView.ViewHolder>(data.size());
   }
 
 
   @Override
   public DefaultSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    if(mItems.size() > 0) {
-      if(mItems.get(0) instanceof LineNumber) {
+
+    if (mItems.size() > 0) {
+      if (mItems.get(0) instanceof RealmLineNumber) {
         return new DefaultSearchLineNumberViewHolder(parent);
-      } else if(mItems.get(0) instanceof StockNumber) {
+      } else if (mItems.get(0) instanceof RealmStockNumber) {
         return new DefaultSearchStockNumberViewHolder(parent);
-      } else if (mItems.get(0) instanceof SerialNumber) {
+      } else if (mItems.get(0) instanceof RealmSerialNumber) {
         return new DefaultSearchSerialNumberViewHolder(parent);
       }
     }

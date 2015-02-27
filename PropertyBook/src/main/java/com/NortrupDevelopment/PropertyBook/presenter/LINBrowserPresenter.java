@@ -4,18 +4,20 @@ import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
+import com.NortrupDevelopment.PropertyBook.model.RealmModelSearcher;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
+import java.util.ArrayList;
+
 import de.greenrobot.event.EventBus;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Provides presentation layer processing for the LINBrowserActivity.
  * Created by andy on 7/12/14.
  */
-public class LINBrowserPresenter{
+public class LINBrowserPresenter {
 
   private LINBrowser mInstance;
 
@@ -35,15 +37,12 @@ public class LINBrowserPresenter{
     mInstance.showLoadingProgressBar();
 
     //TODO: Convert to use ModelSearcher
-    Realm realm = RealmDefinition.getRealm(mInstance.getContext(),
-        RealmDefinition.PRODUCTION_REALM);
-    RealmResults<LineNumber> lineNumbers =
-        realm.where(LineNumber.class)
-            .findAll();
+    ModelSearcher searcher = new RealmModelSearcher(RealmDefinition.getRealm(
+        mInstance.getContext(), RealmDefinition.PRODUCTION_REALM));
+    ArrayList<LineNumber> lineNumbers =
+        new ArrayList(searcher.searchLineNumber(""));
 
-    if(lineNumbers.size() > 0) {
-      lineNumbers.sort("lin");
-
+    if (lineNumbers.size() > 0) {
       mInstance.setList(lineNumbers);
       mInstance.showList();
     } else {

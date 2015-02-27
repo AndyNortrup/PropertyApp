@@ -19,12 +19,13 @@ import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 
+import java.util.AbstractList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import io.realm.RealmBaseAdapter;
-import io.realm.RealmResults;
 
 public class LINBrowserView extends LinearLayout implements LINBrowser
 {
@@ -81,7 +82,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
    *
    * @param lineNumbers List of LINs to be displayed.
    */
-  public void setList(RealmResults<LineNumber> lineNumbers) {
+  public void setList(AbstractList<LineNumber> lineNumbers) {
 
     if (lineNumbers != null) {
 
