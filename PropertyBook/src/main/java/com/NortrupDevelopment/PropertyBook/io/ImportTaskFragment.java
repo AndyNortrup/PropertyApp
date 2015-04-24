@@ -135,6 +135,15 @@ public class ImportTaskFragment extends Fragment {
       return RESULT_OK;
     }
 
+    /**
+     * Reads the contents of a file into model objects.
+     *
+     * @param sheetIndexes An array of integers indicating the indexes of sheets
+     *                     to be read from the xls file.
+     * @param inStream     A file stream for an XLS file.
+     * @throws BiffException Thrown if there are errors reading the XLS format.
+     * @throws IOException   Thrown if there are errors reading the file.
+     */
     private void readInputFile(int[] sheetIndexes, InputStream inStream)
         throws BiffException, IOException {
       publishProgress("Reading property book");

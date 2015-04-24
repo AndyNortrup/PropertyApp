@@ -1,4 +1,4 @@
-package com.NortrupDevelopment.PropertyBook.model;
+package com.NortrupDevelopment.PropertyBook.model.sqlite;
 
 import android.provider.BaseColumns;
 

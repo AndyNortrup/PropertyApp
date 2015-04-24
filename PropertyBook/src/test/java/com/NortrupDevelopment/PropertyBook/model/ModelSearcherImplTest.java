@@ -6,8 +6,6 @@ import android.test.InstrumentationTestCase;
 
 import com.NortrupDevelopment.PropertyBook.view.DefaultMainActivity;
 
-import io.realm.Realm;
-
 public class ModelSearcherImplTest extends InstrumentationTestCase {
 
   private ModelSearcher searcher;
@@ -23,8 +21,7 @@ public class ModelSearcherImplTest extends InstrumentationTestCase {
         DefaultMainActivity.class,
         new Bundle());
 
-    Realm realm = Realm.getInstance(mContext.getFilesDir());
-    searcher = new ModelSearcherImpl(realm);
+    searcher = new ModelSearcherImpl();
   }
 
   public void testSearchLineNumber() throws Exception {

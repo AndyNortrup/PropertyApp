@@ -54,10 +54,6 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private static final int columnNumberNsnOH = 16;
 
   //Serial numbers are listed in columns B, F, J & N
-  //private static final int columnNumberSnB = 1;
-  //private static final int columnNumberSnF = 5;
-  //private static final int columnNumberSnJ = 9;
-  //private static final int columnNumberSnN = 13;
   private static final int[] columnNumberSerialNumbers = {1, 5, 9, 13};
 
   //REGEX to vet a LIN number 9, alphanumeric characters
