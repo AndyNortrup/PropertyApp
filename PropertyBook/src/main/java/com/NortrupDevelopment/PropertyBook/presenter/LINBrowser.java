@@ -2,7 +2,7 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 
 import android.content.Context;
 
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 
 import java.util.AbstractList;
 
@@ -27,6 +27,7 @@ public interface LINBrowser {
   /**
    * Implementing class should set the CardListView adapter to the
    * provided adapter.
+   *
    * @param LineNumbers Array of LINs to be used in the list.
    */
   public void setList(AbstractList<LineNumber> LineNumbers);

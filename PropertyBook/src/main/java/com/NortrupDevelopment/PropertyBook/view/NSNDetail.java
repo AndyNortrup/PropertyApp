@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.SerialNumberAdapter;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.text.NumberFormat;
 

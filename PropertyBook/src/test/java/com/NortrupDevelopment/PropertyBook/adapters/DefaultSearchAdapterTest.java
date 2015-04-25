@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.test.InstrumentationTestCase;
 
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
 import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;

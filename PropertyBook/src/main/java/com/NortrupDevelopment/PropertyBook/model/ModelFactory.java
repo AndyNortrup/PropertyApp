@@ -1,5 +1,10 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.PropertyBook;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
+
 import java.math.BigDecimal;
 
 /**

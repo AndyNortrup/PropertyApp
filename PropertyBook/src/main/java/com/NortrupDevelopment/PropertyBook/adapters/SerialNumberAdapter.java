@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
 
 import java.util.AbstractList;
 
@@ -36,7 +36,7 @@ public class SerialNumberAdapter
                                int i) {
     SerialNumber item = mItems.get(i);
     serialNumberViewHolder.serialNumber.setText(item.getSerialNumber());
-    serialNumberViewHolder.systemNumber.setText(item.getSysNo());
+    serialNumberViewHolder.systemNumber.setText(item.getSystemNumber());
   }
 
   @Override

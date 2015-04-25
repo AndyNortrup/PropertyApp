@@ -14,7 +14,7 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.LineNumberBrowserAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultSearchRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 
@@ -25,21 +25,21 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class LINBrowserView extends LinearLayout implements LINBrowser
-{
+public class LINBrowserView extends LinearLayout implements LINBrowser {
   private LINBrowserPresenter mPresenter;
 
   @InjectView(R.id.lin_list)
   RecyclerView mListView;
-  @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
+  @InjectView(R.id.lin_loading_progress)
+  LinearLayout mLoadingLayout;
 
   public LINBrowserView(Context context, AttributeSet attr) {
     super(context, attr);
 
     LayoutInflater inflater;
 
-    if(context instanceof Activity) {
-      inflater = (LayoutInflater)((Activity) context).getLayoutInflater();
+    if (context instanceof Activity) {
+      inflater = ((Activity) context).getLayoutInflater();
     } else {
       inflater = LayoutInflater.from(context);
     }
@@ -49,15 +49,16 @@ public class LINBrowserView extends LinearLayout implements LINBrowser
     mPresenter = new LINBrowserPresenter(this);
   }
 
-  @Override protected void onFinishInflate() {
+  @Override
+  protected void onFinishInflate() {
     super.onFinishInflate();
 
     ButterKnife.inject(this, getRootView());
-
     mPresenter.loadListContents();
   }
 
-  /**getRootView()
+  /**
+   * getRootView()
    * Shows the Loading progress bar and hides mCardList and mEmptyLayout.
    */
   @Override

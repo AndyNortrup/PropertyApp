@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -14,10 +14,12 @@ import butterknife.InjectView;
  * Created by andy on 2/8/15.
  */
 public class DefaultSearchStockNumberViewHolder
-    extends  DefaultSearchViewHolder<StockNumber> {
+    extends DefaultSearchViewHolder<StockNumber> {
 
-  @InjectView(R.id.nsn_search_nomenclature) TextView nomenclature;
-  @InjectView(R.id.nsn_search_nsn) TextView stockNumber;
+  @InjectView(R.id.nsn_search_nomenclature)
+  TextView nomenclature;
+  @InjectView(R.id.nsn_search_nsn)
+  TextView stockNumber;
 
   public DefaultSearchStockNumberViewHolder(View view) {
     super(view);

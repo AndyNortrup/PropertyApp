@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 
 import java.util.AbstractList;
 

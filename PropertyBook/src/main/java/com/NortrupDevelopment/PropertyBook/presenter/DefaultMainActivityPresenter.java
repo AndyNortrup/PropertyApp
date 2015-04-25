@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 
 import com.NortrupDevelopment.PropertyBook.bus.DefaultDisplayBrowserEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+
+import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 
@@ -18,19 +20,11 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
   private static final int SCREEN_BROWSER = 0;
   private static final int SCREEN_DETAIL = 1;
 
-  private static DefaultMainActivityPresenter instance;
-
   LineNumber mCurrentDetailLineNumber;
   int mCurrentScreen;
 
-  public static DefaultMainActivityPresenter getInstance() {
-    if(instance == null) {
-      instance = new DefaultMainActivityPresenter();
-    }
-    return instance;
-  }
-
-  private DefaultMainActivityPresenter() {
+  @Inject
+  public DefaultMainActivityPresenter() {
   }
 
   @Override

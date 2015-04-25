@@ -8,14 +8,15 @@ import android.view.View;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.DefaultSearchAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultAddSearchResultsViewEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 
@@ -27,6 +28,8 @@ import de.greenrobot.event.EventBus;
 public class DefaultSearchPresenter implements SearchPresenter {
 
   private Context mContext;
+  @Inject
+  ModelSearcher searcher;
 
   private DefaultSearchPresenter(Context context) {
     mContext = context;
@@ -37,7 +40,6 @@ public class DefaultSearchPresenter implements SearchPresenter {
   public AbstractList<View> searchForTerm(String term) {
     ArrayList<View> result = new ArrayList<View>();
 
-    ModelSearcher searcher = new ModelSearcherImpl();
     boolean foundSomething = false;
 
     View lineNumbers = searchForLineNumbers(searcher, term);

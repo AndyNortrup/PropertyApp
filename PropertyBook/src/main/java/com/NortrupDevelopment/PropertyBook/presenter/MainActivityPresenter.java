@@ -3,7 +3,7 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 
 /**
  * Created by andy on 2/7/15.

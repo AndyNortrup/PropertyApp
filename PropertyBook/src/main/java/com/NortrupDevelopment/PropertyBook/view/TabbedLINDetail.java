@@ -12,9 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.NSNFormatter;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
 
 import butterknife.ButterKnife;

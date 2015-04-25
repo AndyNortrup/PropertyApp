@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
+import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.DisplayBrowserEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DisplayLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.SearchRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.presenter.DefaultMainActivityPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivity;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivityPresenter;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -28,19 +30,21 @@ public class DefaultMainActivity
     implements MainActivity
 {
 
-  private MainActivityPresenter mPresenter;
+  @Inject
+  MainActivityPresenter mPresenter;
   Container mContainer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    ((App) getApplication()).inject(this);
+
     setContentView(R.layout.base_layout);
 
     getActionBar();
 
     mContainer = (Container) findViewById(R.id.container);
-
-    mPresenter = DefaultMainActivityPresenter.getInstance();
     mPresenter.requestCurrentScreen();
 
   }

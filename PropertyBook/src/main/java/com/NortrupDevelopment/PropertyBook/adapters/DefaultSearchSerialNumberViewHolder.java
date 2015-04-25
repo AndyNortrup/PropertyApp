@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

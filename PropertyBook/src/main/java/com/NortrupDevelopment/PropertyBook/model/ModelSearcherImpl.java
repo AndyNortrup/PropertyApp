@@ -1,6 +1,17 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import android.content.Context;
+
+import com.NortrupDevelopment.PropertyBook.dagger_modules.ForApplication;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
+
 import java.util.AbstractList;
+
+import javax.inject.Inject;
+
+import io.realm.Realm;
 
 
 /**
@@ -10,9 +21,11 @@ import java.util.AbstractList;
  */
 public class ModelSearcherImpl implements ModelSearcher {
 
+  private Realm realm;
 
-  public ModelSearcherImpl() {
-
+  @Inject
+  public ModelSearcherImpl(@ForApplication Context context) {
+    realm = Realm.getInstance(context);
   }
 
   /**
@@ -26,12 +39,18 @@ public class ModelSearcherImpl implements ModelSearcher {
   @Override
   public AbstractList<LineNumber> searchLineNumber(String keyword) {
 
-    return null;
+    return realm.where(LineNumber.class)
+        .contains("lin", keyword)
+        .or()
+        .contains("nomenclature", keyword)
+        .findAll();
+
   }
 
   @Override
   public AbstractList<LineNumber> getAllLineNumbers() {
-    return null;
+    return realm.where(LineNumber.class)
+        .findAll();
   }
 
   /**
@@ -43,12 +62,17 @@ public class ModelSearcherImpl implements ModelSearcher {
    */
   @Override
   public AbstractList<StockNumber> searchStockNumber(String keyword) {
-    return null;
+    return realm.where(StockNumber.class)
+        .contains("nsn", keyword)
+        .or()
+        .contains("nomenclature", keyword)
+        .findAll();
   }
 
   @Override
   public AbstractList<StockNumber> getAllStockNumbers() {
-    return null;
+    return realm.where(StockNumber.class)
+        .findAll();
   }
 
   /**
@@ -60,6 +84,10 @@ public class ModelSearcherImpl implements ModelSearcher {
    */
   @Override
   public AbstractList<SerialNumber> searchSerialNumber(String keyword) {
-    return null;
+    return realm.where(SerialNumber.class)
+        .contains("serialNumber", keyword)
+        .or()
+        .contains("systemNumber", keyword)
+        .findAll();
   }
 }

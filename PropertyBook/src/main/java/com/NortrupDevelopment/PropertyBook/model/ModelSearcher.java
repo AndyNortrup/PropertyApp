@@ -1,5 +1,9 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
+
 import java.util.AbstractList;
 
 /**

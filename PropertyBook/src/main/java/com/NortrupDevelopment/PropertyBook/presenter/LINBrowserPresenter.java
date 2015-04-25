@@ -3,12 +3,13 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
-import java.util.ArrayList;
+import java.util.AbstractList;
+
+import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 
@@ -19,6 +20,8 @@ import de.greenrobot.event.EventBus;
 public class LINBrowserPresenter {
 
   private LINBrowser mInstance;
+  @Inject
+  ModelSearcher searcher;
 
   public LINBrowserPresenter(LINBrowserView activity) {
     mInstance = activity;
@@ -35,10 +38,7 @@ public class LINBrowserPresenter {
     //Show the loading progress bar.
     mInstance.showLoadingProgressBar();
 
-    ModelSearcher searcher = new ModelSearcherImpl();
-
-    ArrayList<LineNumber> lineNumbers =
-        new ArrayList(searcher.searchLineNumber(""));
+    AbstractList<LineNumber> lineNumbers = searcher.getAllLineNumbers();
 
     if (lineNumbers.size() > 0) {
       mInstance.setList(lineNumbers);

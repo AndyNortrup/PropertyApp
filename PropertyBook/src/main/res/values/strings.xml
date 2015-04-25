@@ -68,6 +68,7 @@
     <string name="google_plus_link">
         <a href="www.google.com/+Propertybookapp">www.google.com/+Propertybookapp</a>
     </string>
+    <string name="loading_property_book">Loading property book.</string>
 
 
 </resources>

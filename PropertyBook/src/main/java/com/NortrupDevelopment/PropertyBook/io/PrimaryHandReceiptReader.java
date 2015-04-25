@@ -1,6 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.io;
 
-import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
+import com.NortrupDevelopment.PropertyBook.dao.PropertyBook;
 
 import java.io.IOException;
 import java.io.InputStream;

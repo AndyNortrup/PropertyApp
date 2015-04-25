@@ -4,8 +4,8 @@ import android.content.Context;
 import android.widget.ScrollView;
 
 import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -97,8 +97,11 @@ public class PropertyBookStatisticsActivity extends ScrollView {
     }
     BigDecimal totalValue = new BigDecimal(0);
     for (StockNumber stockNumber : stockNumbers) {
-      totalValue.add(stockNumber.getUnitPrice()
-          .multiply(new BigDecimal(stockNumber.getOnHand())));
+
+      BigDecimal lineValue = new BigDecimal(
+          stockNumber.getOnHand() * stockNumber.getUnitPrice() / 100);
+
+      totalValue.add(lineValue);
     }
 
     NumberFormat formatter =

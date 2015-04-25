@@ -4,11 +4,11 @@ package com.NortrupDevelopment.PropertyBook.io;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
+import com.NortrupDevelopment.PropertyBook.dao.PropertyBook;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelFactory;
-import com.NortrupDevelopment.PropertyBook.model.PropertyBook;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
-import com.NortrupDevelopment.PropertyBook.model.StockNumber;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,14 +6,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.NortrupDevelopment.PropertyBook.R;
+import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.CurrentView;
-import com.NortrupDevelopment.PropertyBook.model.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
 
 /**
  * Serves as the container for the main activity.  Manages the back stack as
  * well as adding and removing views from the container.
- *
+ * <p/>
  * Created by andy on 1/8/15.
  */
 public class SinglePaneContainer extends FrameLayout implements Container {
@@ -28,24 +28,25 @@ public class SinglePaneContainer extends FrameLayout implements Container {
   /**
    * Runs after the view inflates
    */
-  @Override protected void onFinishInflate() {
+  @Override
+  protected void onFinishInflate() {
     super.onFinishInflate();
-    linBrowser = (LINBrowserView)getChildAt(0);
+    linBrowser = (LINBrowserView) getChildAt(0);
   }
 
   @Override
   public void showLineNumber(LineNumber lineNumber) {
-    if(linBrowserAttached()) {
+    if (linBrowserAttached()) {
       removeViewAt(0);
       View.inflate(getContext(), R.layout.tabbed_lin_detail, this);
     }
-    linDetail = (TabbedLINDetail)getChildAt(0);
+    linDetail = (TabbedLINDetail) getChildAt(0);
     linDetail.setLineNumber(lineNumber);
     CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_DETAIL);
   }
 
   public void showBrowser() {
-    if(!linBrowserAttached()) {
+    if (!linBrowserAttached()) {
       removeViewAt(0);
       addView(linBrowser);
       CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_BROWSE);
@@ -54,7 +55,7 @@ public class SinglePaneContainer extends FrameLayout implements Container {
 
   @Override
   public boolean onBackPressed() {
-    if(linBrowserAttached()) {
+    if (linBrowserAttached()) {
       return false;
     }
     showBrowser();

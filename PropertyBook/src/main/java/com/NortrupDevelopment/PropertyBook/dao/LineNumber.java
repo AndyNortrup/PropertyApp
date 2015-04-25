@@ -1,10 +1,9 @@
-package com.NortrupDevelopment.PropertyBook.model;
+package com.NortrupDevelopment.PropertyBook.dao;
 
-import java.util.ArrayList;
-
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class LineNumberImpl extends RealmObject {
+public class LineNumber extends RealmObject {
 
   private String lin;
   private String subLin;
@@ -16,32 +15,7 @@ public class LineNumberImpl extends RealmObject {
   private int authorized;
   private int dueIn;
   private PropertyBook propertyBook;
-  private ArrayList<StockNumber> stockNumbers;
-
-
-  public LineNumberImpl(String lin,
-                        String subLin,
-                        String sri,
-                        String erc,
-                        String nomenclature,
-                        String authDoc,
-                        int required,
-                        int authorized,
-                        int dueIn,
-                        PropertyBook propertyBook,
-                        ArrayList<StockNumber> stockNumbers) {
-    this.lin = lin;
-    this.subLin = subLin;
-    this.sri = sri;
-    this.erc = erc;
-    this.nomenclature = nomenclature;
-    this.authDoc = authDoc;
-    this.required = required;
-    this.authorized = authorized;
-    this.dueIn = dueIn;
-    this.propertyBook = propertyBook;
-    this.stockNumbers = stockNumbers;
-  }
+  private RealmList<StockNumber> stockNumbers;
 
   public String getLin() {
     return lin;
@@ -123,11 +97,11 @@ public class LineNumberImpl extends RealmObject {
     this.propertyBook = propertyBook;
   }
 
-  public ArrayList<StockNumber> getStockNumbers() {
+  public RealmList<StockNumber> getStockNumbers() {
     return stockNumbers;
   }
 
-  public void setStockNumbers(ArrayList<StockNumber> stockNumbers) {
+  public void setStockNumbers(RealmList<StockNumber> stockNumbers) {
     this.stockNumbers = stockNumbers;
   }
 }

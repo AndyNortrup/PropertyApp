@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.NortrupDevelopment.PropertyBook.R;
-import com.NortrupDevelopment.PropertyBook.model.SerialNumber;
+import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
 
 import java.util.AbstractList;
 
@@ -56,7 +56,7 @@ public class SerialNumberArrayAdapter
         serialNumber.getSerialNumber().length() - 4,
         serialNumber.getSerialNumber().length() - 1));
 
-    systemNumber.setText(serialNumber.getSysNo());
+    systemNumber.setText(serialNumber.getSystemNumber());
 
     return convertView;
   }
