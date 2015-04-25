@@ -90,8 +90,8 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
 
     //Dagger
-    apt 'com.squareup.dagger:dagger:1.2.2'
-    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+    apt 'com.google.dagger:dagger-compiler:2.0'
+    compile 'com.google.dagger:dagger:2.0'
 
     //Testing libraries
     //testCompile 'junit:junit:4.12'

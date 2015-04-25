@@ -42,7 +42,7 @@ public class DefaultMainActivity
 
     setContentView(R.layout.base_layout);
 
-    getActionBar();
+    getSupportActionBar();
 
     mContainer = (Container) findViewById(R.id.container);
     mPresenter.requestCurrentScreen();
@@ -96,7 +96,7 @@ public class DefaultMainActivity
 
   /**
    * Handles a request from the bus to display the LIN Detail Fragment
-   * @param event
+   * @param event  Bus Event passed through EventBus
    */
   @Override
   public void onEvent(DisplayLineNumberDetailEvent event) {
@@ -106,7 +106,7 @@ public class DefaultMainActivity
 
   /**
    * Handles a request from the bus to display the import fragment
-   * @param event
+   * @param event Bus Event passed through EventBus
    */
   @Override
   public void onEvent(ImportRequestedEvent event) {
