@@ -1,16 +1,15 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.content.Intent;
-import android.support.annotation.Nullable;
-
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 
 /**
  * Created by andy on 2/7/15.
  */
 public interface MainActivityPresenter {
-  @Nullable
+
   LineNumber getCurrentDetailLineNumber();
+
+  void attach(MainActivity activity);
 
   void setCurrentDetailLineNumber(LineNumber lineNumber);
 
@@ -18,5 +17,5 @@ public interface MainActivityPresenter {
 
   void setScreenDetail();
 
-  void searchRequested(Intent intent);
+  void searchRequested(String searchTerm);
 }

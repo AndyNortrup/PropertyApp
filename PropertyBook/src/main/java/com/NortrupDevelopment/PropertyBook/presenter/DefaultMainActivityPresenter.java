@@ -1,9 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.app.SearchManager;
-import android.content.Intent;
-import android.support.annotation.Nullable;
-
 import com.NortrupDevelopment.PropertyBook.bus.DefaultDisplayBrowserEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
@@ -11,6 +7,7 @@ import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
+import io.realm.Realm;
 
 /**
  * Created by andy on 12/15/14.
@@ -22,15 +19,22 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
 
   LineNumber mCurrentDetailLineNumber;
   int mCurrentScreen;
+  MainActivity activity;
+  Realm realm;
 
   @Inject
-  public DefaultMainActivityPresenter() {
+  public DefaultMainActivityPresenter(Realm realm) {
+    this.realm = realm;
   }
 
   @Override
-  @Nullable
   public LineNumber getCurrentDetailLineNumber() {
     return mCurrentDetailLineNumber;
+  }
+
+  @Override
+  public void attach(MainActivity activity) {
+    this.activity = activity;
   }
 
   @Override
@@ -56,7 +60,7 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
    * Line Number Detail Screen
    */
   private void setViewToLineDetail() {
-    if(mCurrentDetailLineNumber != null) {
+    if (mCurrentDetailLineNumber != null) {
       EventBus.getDefault().post(
           new DefaultLineNumberDetailEvent(mCurrentDetailLineNumber));
     } else {
@@ -75,7 +79,7 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
 
   /**
    * Sends a message over the EventBus that the MainActivity should display the
-   * Line Number Browser `Screen
+   * Line Number Browser Screen
    */
   @Override
   public void setScreenDetail() {
@@ -83,14 +87,12 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
   }
 
   /**
+   * Searches the model for information based on a search term
    *
-   * @param intent
+   * @param searchTerm - The term that is being searched for by the user
    */
   @Override
-  public void searchRequested(Intent intent) {
-    if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      String query = intent.getStringExtra(SearchManager.QUERY);
-    }
+  public void searchRequested(String searchTerm) {
 
   }
 }

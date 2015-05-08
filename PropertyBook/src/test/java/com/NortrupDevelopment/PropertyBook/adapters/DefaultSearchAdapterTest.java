@@ -8,7 +8,6 @@ import android.test.InstrumentationTestCase;
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
-import com.NortrupDevelopment.PropertyBook.model.RealmDefinition;
 import com.NortrupDevelopment.PropertyBook.view.DefaultMainActivity;
 
 import java.util.AbstractList;
@@ -28,8 +27,7 @@ public class DefaultSearchAdapterTest extends InstrumentationTestCase {
     RecyclerView view = new RecyclerView(mContext);
 
     ModelSearcher searcher = new ModelSearcherImpl(
-        RealmDefinition.getRealm(mContext,
-            RealmDefinition.TEASTING_REALM));
+    );
 
     AbstractList<LineNumber> contents = searcher.searchLineNumber("");
 

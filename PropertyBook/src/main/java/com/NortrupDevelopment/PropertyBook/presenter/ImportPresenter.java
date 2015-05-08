@@ -15,8 +15,7 @@ import java.util.ArrayList;
  * Presentation class to control the import of a file into the property book.
  * Created by andy on 7/23/14.
  */
-public class ImportPresenter implements PBICLoaderCallbacks
-{
+public class ImportPresenter implements PBICLoaderCallbacks {
 
   ImportView mView;
   Uri mFileUri;
@@ -37,7 +36,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
     mView.showImportProgress();
 
     //Remove all of the false values
-    while(mSelectedPBICs.indexOfValue(false) >= 0) {
+    while (mSelectedPBICs.indexOfValue(false) >= 0) {
       mSelectedPBICs.delete(mSelectedPBICs.indexOfValue(false));
     }
 
@@ -46,8 +45,8 @@ public class ImportPresenter implements PBICLoaderCallbacks
     int[] sheetsToImport = new int[mSelectedPBICs.size()];
     int index = 0;
 
-    for(int x = 0; x<mSelectedPBICs.size(); x++) {
-      if(mSelectedPBICs.valueAt(x)) {
+    for (int x = 0; x < mSelectedPBICs.size(); x++) {
+      if (mSelectedPBICs.valueAt(x)) {
         sheetsToImport[index] = x;
         index++;
       }
@@ -67,24 +66,16 @@ public class ImportPresenter implements PBICLoaderCallbacks
   /**
    * Called by the view in order to notify the presenter that the list of
    * checked items has changed.
+   *
    * @param checkedItems List of checked items in the PBIC list.
    */
   public void pbicSelectionChanged(SparseBooleanArray checkedItems) {
     mSelectedPBICs = checkedItems;
-    if(checkedItems.indexOfValue(true) >= 0) {
+    if (checkedItems.indexOfValue(true) >= 0) {
       mView.setImportButtonEnabled(true);
     } else {
       mView.setImportButtonEnabled(false);
     }
-  }
-
-  /**
-   * Called when the user has selected a file through the ACTION_GET_CONTENT
-   * picker
-   * @param fileUri Uri which points to the desired file.
-   */
-  public void fileSelected(Uri fileUri) {
-    fileSelected(fileUri, true);
   }
 
   /**
@@ -94,7 +85,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
    * and already have the list of sheet names.
    *
    * @param fileUri Uri which points to the desired file.
-   * @param lookup True to lookup the PBIC Sheet names from file.
+   * @param lookup  True to lookup the PBIC Sheet names from file.
    */
   public void fileSelected(Uri fileUri, boolean lookup) {
 
@@ -109,7 +100,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
 
         mView.showPBICSelect();
 
-        if(lookup) {
+        if (lookup) {
           //Get list of PBICs
           new PBICLoader(mFileUri, this, mView.getContext());
         }
@@ -118,7 +109,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
       }
 
       String fileName;
-      if(FileUtils.isGoogleDriveDocument(fileUri)) {
+      if (FileUtils.isGoogleDriveDocument(fileUri)) {
         Cursor cursor = (mView.getContext()).getContentResolver()
             .query(fileUri, null, null, null, null);
         cursor.moveToFirst();
@@ -136,14 +127,15 @@ public class ImportPresenter implements PBICLoaderCallbacks
   /**
    * Used by the view when it wants to restore the fileUri after a configuration
    * change without forcing a rebuild of the list.
+   *
    * @param fileUri Uri of the selected file.
-   *                @param pbics List of the Array
+   * @param pbics   List of the Array
    */
   public void restoreFileInformation(Uri fileUri,
                                      String[] pbics) {
     mFileUri = fileUri;
 
-    if(pbics == null) {
+    if (pbics == null) {
       fileSelected(mFileUri, true);
     } else {
       fileSelected(mFileUri, false);
@@ -153,6 +145,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
 
   /**
    * Returns the uri of the currently selected file.
+   *
    * @return File Uri
    */
   public Uri getFileUri() {
@@ -167,7 +160,7 @@ public class ImportPresenter implements PBICLoaderCallbacks
   @Override
   public void receivePBICList(String[] result) {
     mPBICSheetNames = new ArrayList<String>();
-    for(int x=0; x<result.length; x++) {
+    for (int x = 0; x < result.length; x++) {
       mPBICSheetNames.add(result[x]);
       mView.addPBIC(x, result[x]);
     }

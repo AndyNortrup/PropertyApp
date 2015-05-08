@@ -33,5 +33,4 @@ public interface LINBrowser {
   public void setList(AbstractList<LineNumber> LineNumbers);
 
   public Context getContext();
-
 }

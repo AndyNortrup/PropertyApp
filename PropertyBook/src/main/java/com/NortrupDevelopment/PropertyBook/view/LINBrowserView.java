@@ -1,6 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.adapters.LineNumberBrowserAdapter;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportRequestedEvent;
@@ -20,33 +20,28 @@ import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
 
 import java.util.AbstractList;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class LINBrowserView extends LinearLayout implements LINBrowser {
-  private LINBrowserPresenter mPresenter;
-
-  @InjectView(R.id.lin_list)
-  RecyclerView mListView;
-  @InjectView(R.id.lin_loading_progress)
-  LinearLayout mLoadingLayout;
+  @Inject LINBrowserPresenter mPresenter;
+  @InjectView(R.id.lin_list) RecyclerView mListView;
+  @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
 
   public LINBrowserView(Context context, AttributeSet attr) {
     super(context, attr);
+    ((App) context.getApplicationContext()).component().inject(this);
 
     LayoutInflater inflater;
-
-    if (context instanceof Activity) {
-      inflater = ((Activity) context).getLayoutInflater();
-    } else {
-      inflater = LayoutInflater.from(context);
-    }
-
+    inflater = LayoutInflater.from(context);
     inflater.inflate(R.layout.lin_browser, this, true);
 
-    mPresenter = new LINBrowserPresenter(this);
+    //Attach the view to the presenter
+    mPresenter.attach(this);
   }
 
   @Override
@@ -54,6 +49,10 @@ public class LINBrowserView extends LinearLayout implements LINBrowser {
     super.onFinishInflate();
 
     ButterKnife.inject(this, getRootView());
+
+    //Set the recycler view here so that we can avoid an NPE
+    //https://github.com/Malinskiy/SuperRecyclerView/issues/25
+    mListView.setLayoutManager(new LinearLayoutManager(getContext()));
     mPresenter.loadListContents();
   }
 
@@ -85,26 +84,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser {
   public void setList(AbstractList<LineNumber> lineNumbers) {
 
     if (lineNumbers != null) {
-
       mListView.setAdapter(new LineNumberBrowserAdapter(lineNumbers));
-      mListView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-      /*
-      //mListView.setFastScrollEnabled(true);
-
-      mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent,
-                                View view,
-                                int position,
-                                long id) {
-
-            LineNumber lin =  (mListView.getAdapter())
-                .getItem(position);
-            EventBus.getDefault().post(new DefaultLineNumberDetailEvent(lin));
-        }
-      });
-      */
     } else {
       mPresenter.importRequested();
     }

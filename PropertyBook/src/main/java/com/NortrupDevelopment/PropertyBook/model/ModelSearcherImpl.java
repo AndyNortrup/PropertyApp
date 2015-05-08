@@ -1,7 +1,5 @@
 package com.NortrupDevelopment.PropertyBook.model;
 
-import android.content.Context;
-
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.dao.SerialNumber;
 import com.NortrupDevelopment.PropertyBook.dao.StockNumber;
@@ -23,8 +21,8 @@ public class ModelSearcherImpl implements ModelSearcher {
   private Realm realm;
 
   @Inject
-  public ModelSearcherImpl(Context context) {
-    realm = Realm.getInstance(context);
+  public ModelSearcherImpl(Realm realm) {
+    this.realm = realm;
   }
 
   /**

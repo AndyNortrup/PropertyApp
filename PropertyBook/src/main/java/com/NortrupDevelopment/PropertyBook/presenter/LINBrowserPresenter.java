@@ -5,7 +5,6 @@ import com.NortrupDevelopment.PropertyBook.bus.DefaultLineNumberDetailEvent;
 import com.NortrupDevelopment.PropertyBook.bus.StatisticsRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
-import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
 import java.util.AbstractList;
 
@@ -20,10 +19,14 @@ import de.greenrobot.event.EventBus;
 public class LINBrowserPresenter {
 
   private LINBrowser mInstance;
-  @Inject
-  ModelSearcher searcher;
+  private ModelSearcher searcher;
 
-  public LINBrowserPresenter(LINBrowserView activity) {
+  @Inject
+  public LINBrowserPresenter(ModelSearcher searcher) {
+    this.searcher = searcher;
+  }
+
+  public void attach(LINBrowser activity) {
     mInstance = activity;
   }
 

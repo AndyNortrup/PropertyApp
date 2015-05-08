@@ -1,5 +1,6 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import io.realm.Realm;
 
 /**
  * Serves as the central Activity for the activity, all components are handled
@@ -30,16 +32,16 @@ public class DefaultMainActivity
     implements MainActivity
 {
 
-  @Inject
-  MainActivityPresenter mPresenter;
+  @Inject Realm realm;
+  @Inject MainActivityPresenter mPresenter;
   Container mContainer;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    ((App) getApplication()).inject(this);
-
+    ((App) getApplication()).component().inject(this);
+    mPresenter.getCurrentDetailLineNumber();
     setContentView(R.layout.base_layout);
 
     getSupportActionBar();
@@ -58,7 +60,7 @@ public class DefaultMainActivity
   @Override
   protected void onStop() {
     super.onStop();
-    EventBus.getDefault().register(this);
+    EventBus.getDefault().unregister(this);
   }
 
   /**
@@ -84,7 +86,7 @@ public class DefaultMainActivity
     super.onNewIntent(intent);
     Log.i("Main Activity", "Received New Intent");
     if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
-      mPresenter.searchRequested(intent);
+      mPresenter.searchRequested(intent.getStringExtra(SearchManager.QUERY));
     }
   }
 

@@ -30,6 +30,7 @@ import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
 import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
+import com.NortrupDevelopment.PropertyBook.io.PropertyBookImporter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
@@ -132,7 +133,7 @@ public class ImportFragment extends Fragment
         }
       } else {
         mPresenter.fileSelected(
-            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)));
+            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)), true);
       }
 
       if (savedInstanceState.containsKey(PROGRESS_DIALOG_KEY)) {
@@ -423,7 +424,7 @@ public class ImportFragment extends Fragment
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == FILE_SELECT_CODE && resultCode ==
         Activity.RESULT_OK) {
-      mPresenter.fileSelected(data.getData());
+      mPresenter.fileSelected(data.getData(), true);
     }
   }
 
@@ -450,7 +451,7 @@ public class ImportFragment extends Fragment
   }
 
   public void onEvent(ImportFinishedEvent event) {
-    if (event.getStatus() == ImportTaskFragment.PropertyBookImporter.RESULT_OK) {
+    if (event.getStatus() == PropertyBookImporter.RESULT_OK) {
       importComplete();
     } else {
       importFailed();
