@@ -10,9 +10,12 @@ import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.DisplayBrowserEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DisplayLineNumberDetailEvent;
+import com.NortrupDevelopment.PropertyBook.bus.FileSelectRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.bus.FileSelectedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.SearchRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.io.AuthorizedFileTypeIntent;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivity;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivityPresenter;
 
@@ -36,6 +39,8 @@ public class DefaultMainActivity
   @Inject MainActivityPresenter mPresenter;
   Container mContainer;
 
+  private static final int OPEN_FILE_REQUEST = 1;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,6 +59,7 @@ public class DefaultMainActivity
   @Override
   protected void onStart() {
     super.onStart();
+    mPresenter.attach(this);
     EventBus.getDefault().register(this);
   }
 
@@ -63,6 +69,11 @@ public class DefaultMainActivity
     EventBus.getDefault().unregister(this);
   }
 
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    mPresenter.requestCurrentScreen();
+  }
   /**
    * Retrieve a copy of the current container
    * @return
@@ -106,14 +117,21 @@ public class DefaultMainActivity
     mContainer.showLineNumber(event.getRequestedLIN());
   }
 
+  @Override public void showImport() {
+    mContainer.showImport();
+  }
+
   /**
-   * Handles a request from the bus to display the import fragment
+   * Handles a request from the bus to display the import screen
    * @param event Bus Event passed through EventBus
    */
   @Override
   public void onEvent(ImportRequestedEvent event) {
+
     //TODO: Show the import view
     Log.i("Main Activity", "Received import request");
+    mPresenter.setImportView();
+    //TODO: Close floating action button menu
   }
 
   @Override
@@ -130,6 +148,22 @@ public class DefaultMainActivity
   @Override
   public void onEvent(DisplayBrowserEvent event) {
     mContainer.showBrowser();
+  }
+
+  @Override
+  public void onEvent(FileSelectRequestedEvent event) {
+    Intent selectFile = new AuthorizedFileTypeIntent();
+    if (getIntent().resolveActivity(getPackageManager()) != null) {
+      startActivityForResult(selectFile, OPEN_FILE_REQUEST);
+    }
+  }
+
+  //TODO: Retrieve result from file select intent
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode == RESULT_OK && requestCode == OPEN_FILE_REQUEST) {
+      EventBus.getDefault().post(new FileSelectedEvent(data.getData()));
+    }
   }
 
 }

@@ -2,6 +2,7 @@ package com.NortrupDevelopment.PropertyBook.presenter;
 
 import com.NortrupDevelopment.PropertyBook.bus.DisplayBrowserEvent;
 import com.NortrupDevelopment.PropertyBook.bus.DisplayLineNumberDetailEvent;
+import com.NortrupDevelopment.PropertyBook.bus.FileSelectRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.SearchRequestedEvent;
@@ -40,4 +41,8 @@ public interface MainActivity
    * @param event
    */
   void onEvent(DisplayBrowserEvent event);
+
+  void onEvent(FileSelectRequestedEvent event);
+
+  void showImport();
 }

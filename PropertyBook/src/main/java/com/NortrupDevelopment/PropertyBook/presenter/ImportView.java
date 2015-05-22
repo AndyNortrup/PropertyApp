@@ -1,7 +1,7 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
 import android.content.Context;
-import android.net.Uri;
+import android.util.SparseBooleanArray;
 
 /**
  * Interface allowing for communcation between the ImportPresenter and
@@ -29,7 +29,7 @@ public interface ImportView {
   /**
    * Directs the view to add a pbicTV to the list
    */
-  public void addPBIC(int index, String pbicName);
+  public void addPBIC(String[] pbics);
 
   /**
    * Used by the presenter to enable or disable the Import Button.
@@ -55,11 +55,5 @@ public interface ImportView {
    */
   public ImportPresenter getPresenter();
 
-  /**
-   * Instructs the view to start an ImportTaskFragment
-   */
-  public void startImportFragment(Uri file,
-                                  int[] sheets,
-                                  boolean emptyDatabase);
-
+  void setSelectedPBICs(SparseBooleanArray selectedPBICs);
 }

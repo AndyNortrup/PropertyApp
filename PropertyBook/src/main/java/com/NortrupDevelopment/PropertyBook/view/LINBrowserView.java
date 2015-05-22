@@ -17,6 +17,7 @@ import com.NortrupDevelopment.PropertyBook.bus.DefaultSearchRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowser;
 import com.NortrupDevelopment.PropertyBook.presenter.LINBrowserPresenter;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.AbstractList;
 
@@ -31,6 +32,7 @@ public class LINBrowserView extends LinearLayout implements LINBrowser {
   @Inject LINBrowserPresenter mPresenter;
   @InjectView(R.id.lin_list) RecyclerView mListView;
   @InjectView(R.id.lin_loading_progress) LinearLayout mLoadingLayout;
+  @InjectView(R.id.fab_menu) FloatingActionsMenu mFloatingActionsMenu;
 
   public LINBrowserView(Context context, AttributeSet attr) {
     super(context, attr);
@@ -94,12 +96,14 @@ public class LINBrowserView extends LinearLayout implements LINBrowser {
   @OnClick(R.id.fab_import)
   public void requestImport() {
     Log.i("BrowserView", "Import Requested");
+    mFloatingActionsMenu.collapse();
     EventBus.getDefault().post(new DefaultImportRequestedEvent());
   }
 
   @OnClick(R.id.fab_search)
   public void requestSearch() {
     Log.i("BrowserView", "Search Requested");
+    mFloatingActionsMenu.collapse();
     EventBus.getDefault().post(new DefaultSearchRequestedEvent());
   }
 }

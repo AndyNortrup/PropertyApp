@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.NortrupDevelopment.PropertyBook.view.ImportViewImpl
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/import_header"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/import_header"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/primary_color"/>
+
+    <TextView
+        android:id="@+id/import_welcome_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:text="@string/import_welcome_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/import_file_select_button"
+        style="@style/ButtonFullWidth.WithMargin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_action_folder_open"
+        android:src="@drawable/ic_action_folder_open"
+        android:text="@string/select_import_file"
+        />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/import_file_path"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            />
+
+        <ImageView
+            android:id="@+id/import_file_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/pbic_select_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:choiceMode="multipleChoice"
+        android:divider="@color/primary_color"
+        android:dividerHeight="1sp"
+        android:drawSelectorOnTop="false"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/import_button"
+        style="@style/ButtonFullWidth.WithMargin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:drawableLeft="@drawable/ic_action_import"
+        android:text="@string/pbic_select_button"
+        android:visibility="gone"/>
+
+</com.NortrupDevelopment.PropertyBook.view.ImportViewImpl>

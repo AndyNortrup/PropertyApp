@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.path="$MODULE_DIR$/PropertyBook" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="PropertyApp" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":PropertyBook" external.linked.project.path="$MODULE_DIR$/PropertyBook" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="PropertyApp" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
         <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
+        <option name="BUILDABLE" value="false" />
       </configuration>
     </facet>
     <facet type="android-gradle" name="Android-Gradle">
@@ -17,8 +18,9 @@
         <option name="SELECTED_TEST_ARTIFACT" value="_unit_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugUnitTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugUnitTest" />
+        <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugUnitTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -28,7 +30,7 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/PropertyBook/build/intermediates/classes/debug" />
+    <output url="file://$MODULE_DIR$/PropertyBook/build/retrolambda/debug" />
     <output-test url="file://$MODULE_DIR$/PropertyBook/build/intermediates/classes/test/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/PropertyBook">
@@ -87,8 +89,7 @@
       <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/reports" />
-      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/test-results" />
+      <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/retrolambda" />
       <excludeFolder url="file://$MODULE_DIR$/PropertyBook/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform (1)" jdkType="Android SDK" />
@@ -96,11 +97,13 @@
     <orderEntry type="library" exported="" name="cardview-v7-21.0.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="mockable-android-21" level="project" />
     <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="rxandroid-0.24.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.2" level="project" />
     <orderEntry type="library" exported="" name="floatingactionbutton-1.5.1" level="project" />
     <orderEntry type="library" exported="" name="realm-android-0.80.1" level="project" />
     <orderEntry type="library" exported="" name="twowayview-0.1.4" level="project" />
     <orderEntry type="library" exported="" name="support-v13-21.0.2" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="javax.annotation-10.0-b28" level="project" />
     <orderEntry type="library" exported="" name="butterknife-6.0.0" level="project" />
@@ -110,7 +113,5 @@
     <orderEntry type="library" exported="" name="dagger-2.0" level="project" />
     <orderEntry type="library" exported="" name="jxl" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.2" level="project" />
-    <orderEntry type="module" module-name="aFileChooser-aFileChooser" exported="" />
   </component>
 </module>
-

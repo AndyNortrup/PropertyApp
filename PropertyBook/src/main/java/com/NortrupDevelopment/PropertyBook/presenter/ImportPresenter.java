@@ -1,32 +1,42 @@
 package com.NortrupDevelopment.PropertyBook.presenter;
 
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.util.SparseBooleanArray;
 
-import com.NortrupDevelopment.PropertyBook.loaders.PBICLoader;
-import com.NortrupDevelopment.PropertyBook.loaders.PBICLoaderCallbacks;
-import com.ipaulpro.afilechooser.utils.FileUtils;
+import com.NortrupDevelopment.PropertyBook.App;
+import com.NortrupDevelopment.PropertyBook.bus.FileSelectRequestedEvent;
+import com.NortrupDevelopment.PropertyBook.io.FileUtilities;
+import com.NortrupDevelopment.PropertyBook.io.PBICNameReader;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
+
+import de.greenrobot.event.EventBus;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Presentation class to control the import of a file into the property book.
  * Created by andy on 7/23/14.
  */
-public class ImportPresenter implements PBICLoaderCallbacks {
+public class ImportPresenter {
 
   ImportView mView;
-  Uri mFileUri;
-  ArrayList<String> mPBICSheetNames;
+  String mFilePath;
+  String[] mPBICSheetNames;
   SparseBooleanArray mSelectedPBICs;
 
-  private static final String REQUIRED_FILE_TYPE =
-      "application/vnd.ms-excel";
 
-  public ImportPresenter(ImportView importView) {
-    mView = importView;
+  private static final String LOG_TAG = "Import Presenter";
+  @Inject public PBICNameReader mPBICNameReader;
+  @Inject public FileUtilities mFileUtilities;
+
+  @Inject
+  public ImportPresenter() {
+  }
+
+  public void attach(ImportView view) {
+    mView = view;
+    ((App) view.getContext().getApplicationContext()).component().inject(this);
   }
 
   /**
@@ -52,15 +62,16 @@ public class ImportPresenter implements PBICLoaderCallbacks {
       }
     }
 
-    mView.startImportFragment(mFileUri, sheetsToImport, true);
+    //TODO: Start the import process
 
   }
+
 
   /**
    * Called when the user requests to select a file to import from
    */
   public void fileSelectRequested() {
-    mView.showFileSelectIntent();
+    EventBus.getDefault().post(new FileSelectRequestedEvent());
   }
 
   /**
@@ -84,63 +95,29 @@ public class ImportPresenter implements PBICLoaderCallbacks {
    * lookup = false is used when we are restoring from a configuration change
    * and already have the list of sheet names.
    *
-   * @param fileUri Uri which points to the desired file.
-   * @param lookup  True to lookup the PBIC Sheet names from file.
+   * @param fileName String which points to the desired file.
    */
-  public void fileSelected(Uri fileUri, boolean lookup) {
+  public void fileSelected(Uri fileName) {
 
-    if (fileUri != null) {
+    mFilePath = fileName.toString();
 
-      boolean fileAccepted = false;
+    //boolean properType = mFileUtilities.isValidImportFile(fileName);
+    mView.setFileNameView(
+        mFileUtilities.extractFileNameFrom(fileName),
+        true);
 
-      //Check if the file is of the right data type
-      if (FileUtils.getMimeType(mView.getContext(), fileUri)
-          .equals(REQUIRED_FILE_TYPE)) {
-        mFileUri = fileUri;
-
-        mView.showPBICSelect();
-
-        if (lookup) {
-          //Get list of PBICs
-          new PBICLoader(mFileUri, this, mView.getContext());
-        }
-
-        fileAccepted = true;
-      }
-
-      String fileName;
-      if (FileUtils.isGoogleDriveDocument(fileUri)) {
-        Cursor cursor = (mView.getContext()).getContentResolver()
-            .query(fileUri, null, null, null, null);
-        cursor.moveToFirst();
-        fileName = cursor.getString(
-            cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-        cursor.close();
-      } else {
-        fileName = FileUtils.getFile(mView.getContext(), fileUri).getName();
-      }
-
-      mView.setFileNameView(fileName, fileAccepted);
-    }
+    mView.showPBICSelect();
+    mPBICNameReader.getSheetNamesFrom(fileName)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(s -> pbicListReceived(s));
   }
 
-  /**
-   * Used by the view when it wants to restore the fileUri after a configuration
-   * change without forcing a rebuild of the list.
-   *
-   * @param fileUri Uri of the selected file.
-   * @param pbics   List of the Array
-   */
-  public void restoreFileInformation(Uri fileUri,
-                                     String[] pbics) {
-    mFileUri = fileUri;
 
-    if (pbics == null) {
-      fileSelected(mFileUri, true);
-    } else {
-      fileSelected(mFileUri, false);
-      receivePBICList(pbics);
-    }
+  public void pbicListReceived(String[] pbics) {
+    mView.showPBICSelect();
+    mView.addPBIC(pbics);
+    mPBICSheetNames = pbics;
   }
 
   /**
@@ -148,26 +125,30 @@ public class ImportPresenter implements PBICLoaderCallbacks {
    *
    * @return File Uri
    */
-  public Uri getFileUri() {
-    return mFileUri;
+  public String getFilePath() {
+    return mFilePath;
+
   }
 
-  /**
-   * Sends an array of strings from the AsyncTask back to the callback.
-   *
-   * @param result List of PBIC Sheet Names
-   */
-  @Override
-  public void receivePBICList(String[] result) {
-    mPBICSheetNames = new ArrayList<String>();
-    for (int x = 0; x < result.length; x++) {
-      mPBICSheetNames.add(result[x]);
-      mView.addPBIC(x, result[x]);
-    }
-  }
 
   public void importCancelRequested() {
     //Todo: handle canceling the import.
   }
 
+  public void restoreViewState() {
+    if (mFilePath != null && !mFilePath.isEmpty()) {
+      mView.setFileNameView(
+          mFileUtilities.extractFileNameFrom(Uri.parse(mFilePath)),
+          true);
+    }
+
+    if (mPBICSheetNames != null) {
+      pbicListReceived(mPBICSheetNames);
+    }
+
+    if (mSelectedPBICs != null) {
+      mView.setSelectedPBICs(mSelectedPBICs);
+      mView.setImportButtonEnabled(true);
+    }
+  }
 }

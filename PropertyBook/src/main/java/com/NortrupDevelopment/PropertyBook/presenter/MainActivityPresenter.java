@@ -18,4 +18,6 @@ public interface MainActivityPresenter {
   void setScreenDetail();
 
   void searchRequested(String searchTerm);
+
+  void setImportView();
 }

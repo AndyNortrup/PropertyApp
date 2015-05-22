@@ -8,7 +8,10 @@ import android.widget.FrameLayout;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.CurrentView;
+import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
+
+import javax.inject.Inject;
 
 /**
  * Serves as the container for the main activity.  Manages the back stack as
@@ -20,7 +23,9 @@ public class SinglePaneContainer extends FrameLayout implements Container {
 
   LINBrowserView linBrowser;
   LINDetail linDetail;
+  ImportView importView;
 
+  @Inject
   public SinglePaneContainer(Context context, AttributeSet attr) {
     super(context, attr);
   }
@@ -51,6 +56,15 @@ public class SinglePaneContainer extends FrameLayout implements Container {
       addView(linBrowser);
       CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_BROWSE);
     }
+  }
+
+  public void showImport() {
+    if (linBrowserAttached()) {
+      removeViewAt(0);
+    }
+    View.inflate(getContext(), R.layout.import_view, this);
+    importView = (ImportView) getChildAt(0);
+    CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_IMPORT);
   }
 
   @Override

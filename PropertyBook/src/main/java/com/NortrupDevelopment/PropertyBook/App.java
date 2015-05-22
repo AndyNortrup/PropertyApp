@@ -4,8 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.dagger.PresenterModule;
-import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
+import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.view.DefaultMainActivity;
+import com.NortrupDevelopment.PropertyBook.view.ImportViewImpl;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
 
 import javax.inject.Singleton;
@@ -31,7 +32,9 @@ public class App extends Application {
 
     void inject(LINBrowserView linBrowserView);
 
-    void inject(ImportTaskFragment importTaskFragment);
+    void inject(ImportViewImpl importFragment);
+
+    void inject(ImportPresenter importPresenter);
   }
 
 

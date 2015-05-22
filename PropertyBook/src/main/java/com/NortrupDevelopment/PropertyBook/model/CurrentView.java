@@ -6,6 +6,7 @@ package com.NortrupDevelopment.PropertyBook.model;
  */
 public class CurrentView {
 
+  public static final int SCREEN_IMPORT = 3;
   public static int SCREEN_BROWSE = 1;
   public static int SCREEN_DETAIL = 2;
 

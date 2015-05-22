@@ -1,52 +1,48 @@
 package com.NortrupDevelopment.PropertyBook.view;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportCompleteEvent;
+import com.NortrupDevelopment.PropertyBook.bus.FileSelectedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
-import com.NortrupDevelopment.PropertyBook.io.ImportParameters;
-import com.NortrupDevelopment.PropertyBook.io.ImportTaskFragment;
+import com.NortrupDevelopment.PropertyBook.io.FileUtilities;
 import com.NortrupDevelopment.PropertyBook.io.PropertyBookImporter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
  * Displays a wizard to manage the import of a property book into the database.
  * Created by andy on 7/23/14.
  */
-public class ImportFragment extends Fragment
+public class ImportViewImpl extends LinearLayout
     implements ImportView,
-    View.OnClickListener,
     ListView.OnItemClickListener,
     DialogInterface.OnCancelListener,
     DialogInterface.OnClickListener {
@@ -54,140 +50,52 @@ public class ImportFragment extends Fragment
   private static final String PBIC_LIST_KEY = "PBIC_LIST_KEY";
   private static final String SELECTED_ITEMS_KEY = "SELECTED_ITEMS_KEY";
   private static final String PROGRESS_DIALOG_KEY = "PROGRESS_DIALOG_KEY";
+  private final String SUPER_STATE_KEY = "instanceState";
 
-  private static final String TAG_IMPORT_FRAGMENT = "TAG_IMPORT_FRAGMENT";
-
-  private static final int FILE_SELECT_CODE = 1;
-
-  @InjectView(R.id.import_file_select_button)
-  ImageButton mFileSelectButton;
-  @InjectView(R.id.import_button)
-  ImageButton mImportButton;
-  @InjectView(R.id.pbic_select_list)
-  ListView mPBICSelectList;
-  @InjectView(R.id.import_file_path)
-  TextView filePathDisplay;
-  @InjectView(R.id.import_file_status)
-  ImageView mImageFileStatus;
-
+  @InjectView(R.id.import_file_select_button) Button mFileSelectButton;
+  @InjectView(R.id.import_button) Button mImportButton;
+  @InjectView(R.id.pbic_select_list) ListView mPBICSelectList;
+  @InjectView(R.id.import_file_path) TextView filePathDisplay;
+  @InjectView(R.id.import_file_status) ImageView mImageFileStatus;
 
   private ArrayAdapter<String> mPBICListAdapter;
   private ArrayList<String> mPBICs;
   private ProgressDialog mImportProgressDialog;
 
   private String mImportMessage;
-  private ImportPresenter mPresenter;
+  @Inject ImportPresenter mPresenter;
 
-  private ImportTaskFragment mImportFragment;
+  @Inject FileUtilities mFileUtilities;
+
+  public ImportViewImpl(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    ((App) context.getApplicationContext()).component().inject(this);
+    mPresenter.attach(this);
+    setId(generateViewId());
+  }
 
   /**
    * Inflate the fragment view.
    *
-   * @param inflater           Inflater service to do the inflating
-   * @param container          Container that the fragment will exist in.
-   * @param savedInstanceState Previous state information.
    * @return An inflated view for display
    */
   @Override
-  public View onCreateView(LayoutInflater inflater,
-                           ViewGroup container,
-                           Bundle savedInstanceState) {
-    View result = inflater.inflate(R.layout.activity_import, container, false);
+  public void onFinishInflate() {
 
-    ButterKnife.inject(this, result);
-
-    mFileSelectButton.setOnClickListener(this);
-    mImportButton.setOnClickListener(this);
-    mImportButton.setEnabled(false);
-
-    mPresenter = new ImportPresenter(this);
-
-    if (savedInstanceState != null) {
-      restoreInstanceState(savedInstanceState);
-    }
-
-    mImportFragment = (ImportTaskFragment) getFragmentManager()
-        .findFragmentByTag(TAG_IMPORT_FRAGMENT);
-
-    return result;
+    ButterKnife.inject(this, getRootView());
+    mPresenter.restoreViewState();
   }
 
-  private void restoreInstanceState(Bundle savedInstanceState) {
 
-    if (savedInstanceState.containsKey(FILE_URI_KEY)) {
-      if (savedInstanceState.containsKey(PBIC_LIST_KEY)) {
-        mPresenter.restoreFileInformation(
-            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)),
-            savedInstanceState.getStringArray(PBIC_LIST_KEY));
-
-        //Restore checked items
-        if (savedInstanceState.containsKey(SELECTED_ITEMS_KEY)) {
-          ArrayList<Integer> checkedItems =
-              savedInstanceState.getIntegerArrayList(SELECTED_ITEMS_KEY);
-
-          for (Integer index : checkedItems) {
-            mPBICSelectList.setItemChecked(index, true);
-          }
-          mPresenter.pbicSelectionChanged(
-              mPBICSelectList.getCheckedItemPositions());
-        }
-      } else {
-        mPresenter.fileSelected(
-            Uri.parse(savedInstanceState.getString(FILE_URI_KEY)), true);
-      }
-
-      if (savedInstanceState.containsKey(PROGRESS_DIALOG_KEY)) {
-        mImportMessage = savedInstanceState.getString(PROGRESS_DIALOG_KEY);
-        showImportProgress();
-        mImportProgressDialog.setMessage(mImportMessage);
-      }
-    }
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
+  @Override public void onAttachedToWindow() {
+    super.onAttachedToWindow();
     EventBus.getDefault().register(this);
   }
 
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    EventBus.getDefault().register(this);
+  @Override public void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    EventBus.getDefault().unregister(this);
   }
-
-
-  @Override
-  /**
-   * Store state for the activity when the activity is destroyed.
-   */
-  public void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-
-    if (mPresenter.getFileUri() != null) {
-      outState.putString(FILE_URI_KEY, mPresenter.getFileUri().toString());
-    }
-
-    if (mPBICs != null) {
-      outState.putStringArray(PBIC_LIST_KEY, mPBICs.toArray(new String[0]));
-
-      //Store which items are checked in case of screen rotation
-      ArrayList<Integer> selectedIndexes = new ArrayList<Integer>();
-      SparseBooleanArray items = mPBICSelectList.getCheckedItemPositions();
-      for (int x = 0; x < items.size(); x++) {
-        if (items.get(x)) {
-          selectedIndexes.add(x);
-        }
-      }
-      outState.putIntegerArrayList(SELECTED_ITEMS_KEY, selectedIndexes);
-    }
-
-    if (mImportProgressDialog != null) {
-      outState.putString(PROGRESS_DIALOG_KEY, mImportMessage);
-    }
-  }
-
 
   /**
    * Called when the interface must display an intent to allow the user to
@@ -195,21 +103,7 @@ public class ImportFragment extends Fragment
    */
   public void showFileSelectIntent() {
 
-    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-    intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-    MimeTypeMap mime = MimeTypeMap.getSingleton();
-    intent.setType(mime.getMimeTypeFromExtension("xls"));
-
-    try {
-      startActivityForResult(intent, FILE_SELECT_CODE);
-    } catch (ActivityNotFoundException ex) {
-      if (getActivity() != null) {
-        Toast.makeText(getActivity(),
-            "Please install a file manager.",
-            Toast.LENGTH_SHORT).show();
-      }
-    }
+    //TODO: Pass a request to show the file manager up to the activity
   }
 
   /**
@@ -224,6 +118,7 @@ public class ImportFragment extends Fragment
     mPBICSelectList.setAdapter(mPBICListAdapter);
 
     mPBICSelectList.setOnItemClickListener(this);
+    mPBICSelectList.setVisibility(VISIBLE);
   }
 
   /**
@@ -252,12 +147,13 @@ public class ImportFragment extends Fragment
   /**
    * Directs the view to add a pbicTV to the list
    *
-   * @param index    position in the list that the pbicTV should be added
-   * @param pbicName String name of he pbicTV from the property book
+   * @param pbics array of PBICs to add to the list
    */
   @Override
-  public void addPBIC(int index, String pbicName) {
-    mPBICListAdapter.add(pbicName);
+  public void addPBIC(String[] pbics) {
+    for (int x = 0; x < pbics.length; x++) {
+      mPBICListAdapter.add(pbics[x]);
+    }
     mPBICListAdapter.notifyDataSetChanged();
   }
 
@@ -283,10 +179,10 @@ public class ImportFragment extends Fragment
    */
   @Override
   public void showImportProgress() {
-    mImportMessage = getString(R.string.import_starting);
+    mImportMessage = getContext().getString(R.string.import_starting);
     mImportProgressDialog = new ProgressDialog(getContext())
         .show(getContext(),
-            getString(R.string.import_progress_title),
+            getContext().getString(R.string.import_progress_title),
             mImportMessage,
             true,
             true,
@@ -312,11 +208,9 @@ public class ImportFragment extends Fragment
 
     mImportProgressDialog.dismiss();
     Toast.makeText(getContext(),
-        getString(R.string.import_complete),
+        getContext().getString(R.string.import_complete),
         Toast.LENGTH_LONG).show();
 
-    getFragmentManager().beginTransaction().remove(mImportFragment).commit();
-    mImportFragment = null;
     EventBus.getDefault().post(new DefaultImportCompleteEvent());
   }
 
@@ -327,19 +221,8 @@ public class ImportFragment extends Fragment
 
     mImportProgressDialog.dismiss();
     Toast.makeText(getContext(),
-        getString(R.string.import_failed),
+        getContext().getString(R.string.import_failed),
         Toast.LENGTH_LONG).show();
-
-    getFragmentManager().beginTransaction().remove(mImportFragment).commit();
-    mImportFragment = null;
-  }
-
-  /**
-   * Provide the presenter with a current copy of the context.
-   */
-  @Override
-  public Context getContext() {
-    return getActivity();
   }
 
   /**
@@ -352,32 +235,16 @@ public class ImportFragment extends Fragment
     return mPresenter;
   }
 
-  /**
-   * Instructs the view to start an ImportTaskFragment
-   */
-  public void startImportFragment(Uri file, int[] sheets, boolean emptyDatabase) {
-
-    if (mImportFragment == null) {
-      FragmentManager fm = getActivity().getSupportFragmentManager();
-      mImportFragment = new ImportTaskFragment();
-
-      Bundle arguments = new Bundle();
-      arguments.putParcelable(ImportTaskFragment.ARGUMENTS_KEY,
-          new ImportParameters(file, sheets, emptyDatabase));
-
-      mImportFragment.setArguments(arguments);
-      fm.beginTransaction()
-          .add(mImportFragment, TAG_IMPORT_FRAGMENT)
-          .commit();
+  @Override public void setSelectedPBICs(SparseBooleanArray selectedPBICs) {
+    for (int x = 0; x < selectedPBICs.size(); x++) {
+      mPBICSelectList.setItemChecked(x, selectedPBICs.get(x));
     }
-
   }
-
 
   /**
    * Callback method to be invoked when an item in this AdapterView has
    * been clicked.
-   * <p/>
+   * <p>
    * Implementers can call getItemAtPosition(position) if they need
    * to access the data associated with the selected item.
    *
@@ -420,28 +287,6 @@ public class ImportFragment extends Fragment
     }
   }
 
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == FILE_SELECT_CODE && resultCode ==
-        Activity.RESULT_OK) {
-      mPresenter.fileSelected(data.getData(), true);
-    }
-  }
-
-  /**
-   * Called when a view has been clicked.
-   *
-   * @param v The view that was clicked.
-   */
-  @Override
-  public void onClick(View v) {
-    if (v == mImportButton) {
-      mPresenter.importRequested();
-    } else if (v == mFileSelectButton) {
-      mPresenter.fileSelectRequested();
-    }
-  }
-
   public void onEvent(ImportMessageEvent event) {
     updateImportProgress(event.getMessage());
   }
@@ -457,4 +302,27 @@ public class ImportFragment extends Fragment
       importFailed();
     }
   }
+
+  /**
+   * Method is called when the event bus emits a FileSelectedEvent
+   *
+   * @param event FileSelectedEvent containing the file Uri of the selected file
+   */
+  public void onEvent(FileSelectedEvent event) {
+    mPresenter.fileSelected(event.getUri());
+  }
+
+  private void fileReceived(Uri uri) {
+    //Put the URI in the
+  }
+
+
+  @OnClick(R.id.import_button) public void importRequested() {
+    mPresenter.importRequested();
+  }
+
+  @OnClick(R.id.import_file_select_button) public void fileSelectButton() {
+    mPresenter.fileSelectRequested();
+  }
+
 }

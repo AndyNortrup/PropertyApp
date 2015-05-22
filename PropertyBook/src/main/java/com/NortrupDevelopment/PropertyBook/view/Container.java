@@ -10,5 +10,7 @@ public interface Container {
 
   void showBrowser();
 
+  void showImport();
+
   boolean onBackPressed();
 }
