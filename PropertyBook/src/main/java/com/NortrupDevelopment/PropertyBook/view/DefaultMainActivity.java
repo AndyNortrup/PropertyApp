@@ -49,10 +49,10 @@ public class DefaultMainActivity
     mPresenter.getCurrentDetailLineNumber();
     setContentView(R.layout.base_layout);
 
-    getSupportActionBar();
-
     mContainer = (Container) findViewById(R.id.container);
     mPresenter.requestCurrentScreen();
+
+    getSupportActionBar();
 
   }
 
@@ -97,6 +97,7 @@ public class DefaultMainActivity
     super.onNewIntent(intent);
     Log.i("Main Activity", "Received New Intent");
     if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+      mContainer.showSearchResults();
       mPresenter.searchRequested(intent.getStringExtra(SearchManager.QUERY));
     }
   }
@@ -121,17 +122,18 @@ public class DefaultMainActivity
     mContainer.showImport();
   }
 
+  @Override public void closeImport() {
+    mContainer.showBrowser();
+  }
+
   /**
    * Handles a request from the bus to display the import screen
    * @param event Bus Event passed through EventBus
    */
   @Override
   public void onEvent(ImportRequestedEvent event) {
-
-    //TODO: Show the import view
     Log.i("Main Activity", "Received import request");
     mPresenter.setImportView();
-    //TODO: Close floating action button menu
   }
 
   @Override
@@ -158,7 +160,6 @@ public class DefaultMainActivity
     }
   }
 
-  //TODO: Retrieve result from file select intent
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK && requestCode == OPEN_FILE_REQUEST) {

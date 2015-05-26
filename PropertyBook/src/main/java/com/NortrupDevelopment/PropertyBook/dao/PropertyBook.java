@@ -7,7 +7,16 @@ public class PropertyBook extends RealmObject {
   private String description;
   private String uic;
   private String pbic;
+  private String unitName;
+
   private RealmList<LineNumber> lineNumbers;
+
+  public PropertyBook() {
+    super();
+    if (lineNumbers == null) {
+      lineNumbers = new RealmList<>();
+    }
+  }
 
   public String getDescription() {
     return description;
@@ -39,5 +48,13 @@ public class PropertyBook extends RealmObject {
 
   public void setLineNumbers(RealmList<LineNumber> lineNumbers) {
     this.lineNumbers = lineNumbers;
+  }
+
+  public String getUnitName() {
+    return unitName;
+  }
+
+  public void setUnitName(String unitName) {
+    this.unitName = unitName;
   }
 }

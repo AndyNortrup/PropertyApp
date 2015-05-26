@@ -56,21 +56,19 @@ public class LineNumberBrowserAdapter extends
   public static class ViewHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener {
 
-    @InjectView(R.id.lin)
-    TextView mLineNumberView;
-    @InjectView(R.id.nomenclature)
-    TextView mNomenclature;
-    @InjectView(R.id.sub_lin)
-    TextView mSubLin;
+    @InjectView(R.id.lin) TextView mLineNumberView;
+    @InjectView(R.id.nomenclature) TextView mNomenclature;
+    @InjectView(R.id.sub_lin) TextView mSubLin;
     LineNumber mLineNumber;
 
     public ViewHolder(View itemView) {
       super(itemView);
-      ButterKnife.inject(itemView);
+      ButterKnife.inject(this, itemView);
       itemView.setOnClickListener(this);
     }
 
     protected void setData(LineNumber lineNumber) {
+      mLineNumber = lineNumber;
       mLineNumberView.setText(lineNumber.getLin());
       mNomenclature.setText(lineNumber.getNomenclature());
 

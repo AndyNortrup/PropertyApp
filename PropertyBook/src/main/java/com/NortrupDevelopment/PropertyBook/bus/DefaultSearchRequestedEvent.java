@@ -6,4 +6,7 @@ package com.NortrupDevelopment.PropertyBook.bus;
  */
 public class DefaultSearchRequestedEvent implements SearchRequestedEvent{
 
+  public DefaultSearchRequestedEvent() {
+  }
+
 }

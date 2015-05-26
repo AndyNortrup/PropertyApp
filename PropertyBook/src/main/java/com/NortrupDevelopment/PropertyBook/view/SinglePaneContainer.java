@@ -10,6 +10,7 @@ import com.NortrupDevelopment.PropertyBook.dao.LineNumber;
 import com.NortrupDevelopment.PropertyBook.model.CurrentView;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 import com.NortrupDevelopment.PropertyBook.presenter.LINDetail;
+import com.NortrupDevelopment.PropertyBook.presenter.SearchResultsView;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,7 @@ public class SinglePaneContainer extends FrameLayout implements Container {
   LINBrowserView linBrowser;
   LINDetail linDetail;
   ImportView importView;
+  private SearchResultsView mSearchView;
 
   @Inject
   public SinglePaneContainer(Context context, AttributeSet attr) {
@@ -54,6 +56,7 @@ public class SinglePaneContainer extends FrameLayout implements Container {
     if (!linBrowserAttached()) {
       removeViewAt(0);
       addView(linBrowser);
+      linBrowser.refresh();
       CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_BROWSE);
     }
   }
@@ -65,6 +68,13 @@ public class SinglePaneContainer extends FrameLayout implements Container {
     View.inflate(getContext(), R.layout.import_view, this);
     importView = (ImportView) getChildAt(0);
     CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_IMPORT);
+  }
+
+  @Override public void showSearchResults() {
+    removeViewAt(0);
+    View.inflate(getContext(), R.layout.search_view, this);
+    mSearchView = (SearchResultsView) getChildAt(0);
+    CurrentView.getInstance().setCurrentScreen(CurrentView.SCREEN_SEARCH);
   }
 
   @Override

@@ -17,6 +17,7 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
   private static final int SCREEN_BROWSER = 0;
   private static final int SCREEN_DETAIL = 1;
   private static final int SCREEN_IMPORT = 2;
+  private static final int SCREEN_SEARCH = 3;
 
   LineNumber mCurrentDetailLineNumber;
   int mCurrentScreen;
@@ -55,9 +56,13 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
       case SCREEN_IMPORT:
         setImportView();
         break;
+      case SCREEN_SEARCH:
+        setViewSearch();
+        break;
       default:
         setViewToBrowser();
         break;
+
     }
   }
 
@@ -100,6 +105,9 @@ public class DefaultMainActivityPresenter implements MainActivityPresenter {
   @Override
   public void searchRequested(String searchTerm) {
 
+  }
+
+  private void setViewSearch() {
   }
 
   @Override public void setImportView() {

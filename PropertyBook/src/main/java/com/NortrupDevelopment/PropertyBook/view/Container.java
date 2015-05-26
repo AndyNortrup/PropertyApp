@@ -13,4 +13,6 @@ public interface Container {
   void showImport();
 
   boolean onBackPressed();
+
+  void showSearchResults();
 }

@@ -106,4 +106,8 @@ public class LINBrowserView extends LinearLayout implements LINBrowser {
     mFloatingActionsMenu.collapse();
     EventBus.getDefault().post(new DefaultSearchRequestedEvent());
   }
+
+  @Override public void refresh() {
+    mPresenter.loadListContents();
+  }
 }

@@ -13,9 +13,16 @@ import java.math.BigDecimal;
  */
 public interface ModelFactory {
 
-  public PropertyBook createOrphanPropertyBook(String pbic,
-                                               String uic,
-                                               String description);
+  /**
+   * Create a Property Book that exists outside of the data store
+   *
+   * @param pbic            PBIC code "PBIC 0"
+   * @param pbicDescription Description of the PBIC "ORGANIZATION PROPERTY (DEPLOYABLE)."
+   * @param uic             Unit UIC
+   * @param unitName        Name of the unit.
+   * @return
+   */
+  PropertyBook createOrphanPropertyBook(String pbic, String pbicDescription, String uic, String unitName);
 
   /**
    * Create a LineNumber without parent PropertyBook or child Stock Numbers

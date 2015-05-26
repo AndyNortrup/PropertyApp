@@ -29,30 +29,17 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
   private LineNumber mLineNumber;
   private PagerAdapter mPagerAdapter;
 
-  @InjectView(R.id.nsn_detail_pager)
-  ViewPager mViewPager;
-  @InjectView(R.id.lin)
-  TextView linTV;
-  @InjectView(R.id.nomenclature)
-  TextView nomenclatureTV;
-  @InjectView(R.id.sub_lin)
-  TextView subLinTV;
-  @InjectView(R.id.authorized_value)
-  TextView authorizedTV;
-  @InjectView(R.id.required_value)
-  TextView requiredTV;
-  @InjectView(R.id.sri_value)
-  TextView sriTV;
-  @InjectView(R.id.due_in_value)
-  TextView mDueInTV;
-  @InjectView(R.id.erc_value)
-  TextView ercTV;
-  @InjectView(R.id.auth_doc_value)
-  TextView authDocTV;
-  @InjectView(R.id.pbic_value)
-  TextView pbicTV;
-  @InjectView(R.id.no_nsn_label)
-  TextView mNoStockNumbersLabel;
+  @InjectView(R.id.nsn_detail_pager) ViewPager mViewPager;
+  @InjectView(R.id.lin) TextView linTV;
+  @InjectView(R.id.nomenclature) TextView nomenclatureTV;
+  @InjectView(R.id.sub_lin) TextView subLinTV;
+  @InjectView(R.id.authorized_value) TextView authorizedTV;
+  @InjectView(R.id.required_value) TextView requiredTV;
+  @InjectView(R.id.due_in_value) TextView mDueInTV;
+  @InjectView(R.id.erc_value) TextView ercTV;
+  @InjectView(R.id.auth_doc_value) TextView authDocTV;
+  @InjectView(R.id.pbic_value) TextView pbicTV;
+  @InjectView(R.id.no_nsn_label) TextView mNoStockNumbersLabel;
 
   public TabbedLINDetail(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -102,14 +89,13 @@ public class TabbedLINDetail extends LinearLayout implements LINDetail {
 
     authorizedTV.setText(String.valueOf(mLineNumber.getAuthorized()));
     requiredTV.setText(String.valueOf(mLineNumber.getRequired()));
-    sriTV.setText(mLineNumber.getSri());
     mDueInTV.setText(Integer.toString(mLineNumber.getDueIn()));
     ercTV.setText(mLineNumber.getErc());
     authDocTV.setText(mLineNumber.getAuthDoc());
 
     if (mLineNumber.getPropertyBook() != null) {
       pbicTV.setText(
-          mLineNumber.getPropertyBook().getPbic().replace("pbicTV ", ""));
+          mLineNumber.getPropertyBook().getPbic().replace("pbic ", ""));
     }
   }
 

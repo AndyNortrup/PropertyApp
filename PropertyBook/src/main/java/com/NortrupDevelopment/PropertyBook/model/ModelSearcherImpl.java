@@ -47,7 +47,7 @@ public class ModelSearcherImpl implements ModelSearcher {
   @Override
   public AbstractList<LineNumber> getAllLineNumbers() {
     return realm.where(LineNumber.class)
-        .findAll();
+        .findAllSorted("lin");
   }
 
   /**

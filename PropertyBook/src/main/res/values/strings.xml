@@ -24,7 +24,7 @@
     <string name="label_di">Due In: </string>
     <string name="label_sri">SRI: </string>
     <string name="label_erc">ERC: </string>
-    <string name="label_auth_doc">Authorizing Document: </string>
+    <string name="label_auth_doc">Auth Doc: </string>
     <string name="search_label">Property Book Search</string>
     <string name="search_hint">LIN, NSN, Nomenclature, or SN</string>
     <string name="search_line_number_nomenclature">LIN Nomenclature</string>

@@ -21,10 +21,8 @@ import com.NortrupDevelopment.PropertyBook.R;
 import com.NortrupDevelopment.PropertyBook.bus.DefaultImportCompleteEvent;
 import com.NortrupDevelopment.PropertyBook.bus.FileSelectedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportCanceledEvent;
-import com.NortrupDevelopment.PropertyBook.bus.ImportFinishedEvent;
 import com.NortrupDevelopment.PropertyBook.bus.ImportMessageEvent;
 import com.NortrupDevelopment.PropertyBook.io.FileUtilities;
-import com.NortrupDevelopment.PropertyBook.io.PropertyBookImporter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportView;
 
@@ -46,11 +44,6 @@ public class ImportViewImpl extends LinearLayout
     ListView.OnItemClickListener,
     DialogInterface.OnCancelListener,
     DialogInterface.OnClickListener {
-  private static final String FILE_URI_KEY = "FILE_URI";
-  private static final String PBIC_LIST_KEY = "PBIC_LIST_KEY";
-  private static final String SELECTED_ITEMS_KEY = "SELECTED_ITEMS_KEY";
-  private static final String PROGRESS_DIALOG_KEY = "PROGRESS_DIALOG_KEY";
-  private final String SUPER_STATE_KEY = "instanceState";
 
   @InjectView(R.id.import_file_select_button) Button mFileSelectButton;
   @InjectView(R.id.import_button) Button mImportButton;
@@ -204,7 +197,7 @@ public class ImportViewImpl extends LinearLayout
    * Directs the view to stop showing the import progress reports and report to
    * the user that the import is complete.
    */
-  public void importComplete() {
+  @Override public void importComplete() {
 
     mImportProgressDialog.dismiss();
     Toast.makeText(getContext(),
@@ -217,7 +210,7 @@ public class ImportViewImpl extends LinearLayout
   /**
    * Directs the view to inform the user that the import has failed.
    */
-  public void importFailed() {
+  @Override public void importFailed() {
 
     mImportProgressDialog.dismiss();
     Toast.makeText(getContext(),
@@ -293,14 +286,6 @@ public class ImportViewImpl extends LinearLayout
 
   public void onEvent(ImportCanceledEvent event) {
     importFailed();
-  }
-
-  public void onEvent(ImportFinishedEvent event) {
-    if (event.getStatus() == PropertyBookImporter.RESULT_OK) {
-      importComplete();
-    } else {
-      importFailed();
-    }
   }
 
   /**

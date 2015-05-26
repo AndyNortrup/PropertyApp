@@ -76,13 +76,17 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.2'
     //File chooser library
     //Realm for database use
-    compile 'io.realm:realm-android:0.80.1'
+    compile 'io.realm:realm-android:0.80.3'
+
     //ButterKnife does view injection
     compile 'com.jakewharton:butterknife:6.0.0'
+
     //Two way view makes RecyclerView easier
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
+
     //Floating Action button library
     compile 'com.getbase:floatingactionbutton:1.5.1'
+
     //Eventbus for message passing
     compile 'de.greenrobot:eventbus:2.4.0'
     //Dagger

@@ -80,11 +80,10 @@
         <TextView
             android:id="@+id/authorized_value"
             style="@style/erc_value"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/authorized_label"
             android:text="5"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
+            android:layout_alignTop="@+id/authorized_label"
+            android:layout_toEndOf="@+id/authorized_label"/>
 
         <TextView
             android:id="@+id/required_label"
@@ -101,40 +100,23 @@
             android:layout_toRightOf="@+id/authorized_label"
             android:text="5"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
-
-        <TextView
-            android:id="@+id/sri_label"
-            style="@style/due_in_label"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/auth_doc_label"
-
-            android:text="@string/label_sri"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-        <TextView
-            android:id="@+id/sri_value"
-            style="@style/erc_value"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/sri_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
+            android:layout_toStartOf="@+id/erc_label"/>
 
         <TextView
             android:id="@+id/erc_label"
             style="@style/due_in_label"
-            android:layout_below="@+id/sri_label"
-            android:layout_toRightOf="@+id/auth_doc_label"
             android:text="@string/label_erc"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_below="@+id/pbic_label"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:id="@+id/erc_value"
             style="@style/erc_value"
-            android:layout_below="@+id/sri_label"
-            android:layout_toRightOf="@+id/erc_label"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
+            android:layout_below="@+id/pbic_value"
+            android:layout_alignStart="@id/auth_doc_value"
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/due_in_label"
@@ -150,43 +132,46 @@
             android:layout_toRightOf="@+id/authorized_label"
             android:text="0"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
+            android:layout_toStartOf="@+id/erc_label"/>
 
         <TextView
             android:id="@+id/auth_doc_label"
             style="@style/due_in_label"
-            android:layout_below="@+id/due_in_label"
-            android:paddingBottom="15sp"
             android:text="@string/label_auth_doc"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_alignTop="@+id/authorized_value"
+            android:layout_alignStart="@+id/pbic_label"
+            android:layout_above="@+id/required_value"/>
 
         <TextView
             android:id="@+id/auth_doc_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/due_in_label"
-            android:layout_toRightOf="@+id/auth_doc_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:text="CTA 50-900"
+            style="@style/erc_value"
+            android:layout_alignTop="@+id/auth_doc_label"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/auth_doc_label"/>
 
         <TextView
             android:id="@+id/pbic_label"
             style="@style/due_in_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/erc_label"
-            android:layout_toRightOf="@+id/auth_doc_label"
             android:text="PBIC: "
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            />
+            android:layout_below="@+id/auth_doc_label"
+            android:layout_alignStart="@+id/erc_label"/>
 
         <TextView
             android:id="@+id/pbic_value"
             style="@style/erc_value"
-            android:layout_below="@+id/erc_label"
-            android:layout_toRightOf="@+id/pbic_label"
             android:text="PBIC ##"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            />
+            android:layout_below="@+id/auth_doc_label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/erc_value"/>
     </RelativeLayout>
 
 

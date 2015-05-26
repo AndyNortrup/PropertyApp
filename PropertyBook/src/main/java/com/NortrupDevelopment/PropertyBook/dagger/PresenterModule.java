@@ -3,18 +3,28 @@ package com.NortrupDevelopment.PropertyBook.dagger;
 import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.io.FileUtilities;
 import com.NortrupDevelopment.PropertyBook.io.PBICNameReader;
+import com.NortrupDevelopment.PropertyBook.io.PrimaryHandReceiptReader;
+import com.NortrupDevelopment.PropertyBook.io.PrimaryHandReceiptReaderImpl;
 import com.NortrupDevelopment.PropertyBook.io.PropertyBookImporter;
+import com.NortrupDevelopment.PropertyBook.model.ModelFactory;
+import com.NortrupDevelopment.PropertyBook.model.ModelFactoryImpl;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcher;
 import com.NortrupDevelopment.PropertyBook.model.ModelSearcherImpl;
+import com.NortrupDevelopment.PropertyBook.model.ModelUtils;
+import com.NortrupDevelopment.PropertyBook.model.ModelUtilsImpl;
 import com.NortrupDevelopment.PropertyBook.presenter.DefaultMainActivityPresenter;
+import com.NortrupDevelopment.PropertyBook.presenter.DefaultSearchPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
 import com.NortrupDevelopment.PropertyBook.presenter.MainActivityPresenter;
+import com.NortrupDevelopment.PropertyBook.presenter.SearchPresenter;
+import com.NortrupDevelopment.PropertyBook.view.SearchResultViewFactory;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
+import io.realm.exceptions.RealmMigrationNeededException;
 
 /**
  * Created by andy on 4/25/15.
@@ -34,7 +44,12 @@ public class PresenterModule {
   }
 
   @Provides Realm provideRealm() {
-    return Realm.getInstance(application);
+    try {
+      return Realm.getInstance(application);
+    } catch (RealmMigrationNeededException ex) {
+      Realm.deleteRealmFile(application);
+      return Realm.getInstance(application);
+    }
   }
 
   @Provides ModelSearcher provideModelSearcher(Realm realm) {
@@ -45,8 +60,10 @@ public class PresenterModule {
     return new ImportPresenter();
   }
 
-  @Provides PropertyBookImporter PropertyBookImporter() {
-    return new PropertyBookImporter();
+  @Provides
+  PropertyBookImporter propertyBookImporterProvider(ModelUtils modelUtils,
+                                                    PrimaryHandReceiptReader reader) {
+    return new PropertyBookImporter(application, modelUtils, reader);
   }
 
   @Provides FileUtilities FileUtilities() {
@@ -55,5 +72,27 @@ public class PresenterModule {
 
   @Provides PBICNameReader pbicNameReaderProvider() {
     return new PBICNameReader(application);
+  }
+
+  @Provides ModelFactory providesModelFactory() {
+    return new ModelFactoryImpl();
+  }
+
+  @Provides PrimaryHandReceiptReader handReceiptReaderProvider(
+      ModelFactory modelFactory) {
+    return new PrimaryHandReceiptReaderImpl(modelFactory);
+  }
+
+  @Provides ModelUtils modelUtilsProvider(Realm realm) {
+    return new ModelUtilsImpl(realm);
+  }
+
+  @Provides SearchResultViewFactory provideSearchResultsViewFactory() {
+    return new SearchResultViewFactory(application);
+  }
+
+  @Provides SearchPresenter provideSearchPresenter(ModelSearcher searcher,
+                                                   SearchResultViewFactory viewFactory) {
+    return new DefaultSearchPresenter(searcher, viewFactory);
   }
 }

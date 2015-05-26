@@ -30,12 +30,6 @@ public class LINBrowserPresenter {
     mInstance = activity;
   }
 
-  /**
-   * Called by the activity to notify the presenter that it has resumed.
-   */
-  public void activityResumed() {
-    loadListContents();
-  }
 
   public void loadListContents() {
     //Show the loading progress bar.

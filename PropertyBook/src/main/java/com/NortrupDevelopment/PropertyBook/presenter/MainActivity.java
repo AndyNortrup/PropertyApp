@@ -45,4 +45,6 @@ public interface MainActivity
   void onEvent(FileSelectRequestedEvent event);
 
   void showImport();
+
+  void closeImport();
 }

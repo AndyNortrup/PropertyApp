@@ -23,6 +23,13 @@ public class StockNumber extends RealmObject {
 
   private RealmList<SerialNumber> serialNumbers;
 
+  public StockNumber() {
+    super();
+    if (serialNumbers == null) {
+      serialNumbers = new RealmList<>();
+    }
+  }
+
   public String getNsn() {
     return nsn;
   }

@@ -16,9 +16,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.format.Border;
+import jxl.format.Colour;
 import jxl.read.biff.BiffException;
 
 public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
@@ -61,16 +65,14 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   //REGEX to identify a NSN 13 alphanumeric characters
   private static final String regexNSN = "[A-Z0-9]{13}";
 
-  private static final String TEMPFILE = "temp.xls";
-
-  private ModelFactory modelFactory;
+  ModelFactory mModelFactory;
 
   LineNumber currentLineNumber;
   StockNumber currentStockNumber;
 
-
+  @Inject
   public PrimaryHandReceiptReaderImpl(ModelFactory modelFactory) {
-    this.modelFactory = modelFactory;
+    mModelFactory = modelFactory;
   }
 
   /**
@@ -86,6 +88,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
                                             int[] sheets)
       throws BiffException,
       IOException {
+
     Workbook workbook;
 
     try {
@@ -190,14 +193,22 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   }
 
   private boolean isStockNumber(Cell cell) {
-    return cell.getContents().matches(regexNSN);
+    return (cell.getContents().matches(regexNSN) &&
+        cell.getCellFormat().getBorder(Border.TOP).getValue() == 1 &&
+        cell.getCellFormat().getBorder(Border.BOTTOM).getValue() == 1);
   }
 
   private boolean isLineNumber(Cell cell) {
-    return cell.getContents().matches(regexLIN);
+    return (cell.getContents().matches(regexLIN) &&
+        cell.getCellFormat().getBackgroundColour() ==
+            Colour.GREY_25_PERCENT);
   }
 
   private PropertyBook getPropertyBook(Sheet sheet) {
+
+    String pbic = sheet.getName();
+    String pbicDescrip = sheet.getCell(0, 0).getContents();
+
     //Pull property book description information
     Cell descriptionCell = sheet.getCell(
         propertyBookDescriptionCell,
@@ -205,15 +216,18 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
 
     String[] descriptionPieces = descriptionCell.getContents().split("/");
 
-    return createPropertyBook(
-        descriptionPieces[3].trim(),
-        descriptionPieces[4].trim());
+    String uic = descriptionPieces[3].trim();
+    String unitName = descriptionPieces[4].trim();
+
+    return createPropertyBook(pbic, pbicDescrip, uic, unitName);
   }
 
   private PropertyBook createPropertyBook(
       String pbic,
-      String uic) {
-    return modelFactory.createOrphanPropertyBook(pbic, uic, "");
+      String pbicDescription,
+      String uic,
+      String unitName) {
+    return mModelFactory.createOrphanPropertyBook(pbic, pbicDescription, uic, unitName);
   }
 
   private LineNumber createLineNumberFrom(Sheet sheet,
@@ -249,7 +263,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
               .getContents());
     }
 
-    LineNumber lineNumber = modelFactory.createOrphanLineNumber(
+    LineNumber lineNumber = mModelFactory.createOrphanLineNumber(
         sheet.getCell(colNumberLIN, currentRowNumber).getContents(),
         sheet.getCell(columnNumberLinSubLin, currentRowNumber).getContents(),
         sheet.getCell(columnNumberLinSri, currentRowNumber).getContents(),
@@ -261,6 +275,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
         dueIn);
 
     pb.getLineNumbers().add(lineNumber);
+    lineNumber.setPropertyBook(pb);
 
     return lineNumber;
   }
@@ -268,7 +283,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
   private LineNumber createSubLineNumberFrom(Sheet sheet,
                                              int currentRowNumber) {
 
-    LineNumber lineNumber = modelFactory.createOrphanLineNumber(currentLineNumber.getLin(),
+    LineNumber lineNumber = mModelFactory.createOrphanLineNumber(currentLineNumber.getLin(),
         sheet.getCell(columnNumberLinSubLin, currentRowNumber).getContents(),
         currentLineNumber.getSri(),
         currentLineNumber.getErc(),
@@ -278,7 +293,8 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
         currentLineNumber.getRequired(),
         currentLineNumber.getDueIn());
 
-    lineNumber.getPropertyBook().getLineNumbers().add(lineNumber);
+    currentLineNumber.getPropertyBook().getLineNumbers().add(lineNumber);
+    lineNumber.setPropertyBook(currentLineNumber.getPropertyBook());
     return lineNumber;
   }
 
@@ -312,7 +328,7 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
       onHand = Integer.parseInt(onHandString);
     }
 
-    return modelFactory.createOrphanStockNumber(
+    StockNumber stockNumber = mModelFactory.createOrphanStockNumber(
         sheet.getCell(columnNumberNSN, currentRowNumber).getContents(),
         sheet.getCell(columnNumberNsnUi, currentRowNumber).getContents(),
         unitPrice,
@@ -327,14 +343,19 @@ public class PrimaryHandReceiptReaderImpl implements PrimaryHandReceiptReader {
         sheet.getCell(columnNumberNsnPubData, currentRowNumber).getContents(),
         onHand);
 
+    stockNumber.setParentLineNumber(currentLineNumber);
+    return stockNumber;
   }
 
   private SerialNumber createSerialNumber(Sheet sheet,
                                           int currentRowNumber,
                                           int columnIndex) {
-    return modelFactory.createOrphanSerialNumber(
+    SerialNumber sn = mModelFactory.createOrphanSerialNumber(
         sheet.getCell(columnIndex, currentRowNumber).getContents(),
         sheet.getCell(columnIndex - 1, currentRowNumber).getContents());
+
+    sn.setStockNumber(currentStockNumber);
+    return sn;
   }
 
   @Override

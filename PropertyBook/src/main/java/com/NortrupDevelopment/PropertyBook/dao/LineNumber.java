@@ -17,6 +17,13 @@ public class LineNumber extends RealmObject {
   private PropertyBook propertyBook;
   private RealmList<StockNumber> stockNumbers;
 
+  public LineNumber() {
+    super();
+    if (stockNumbers == null) {
+      stockNumbers = new RealmList<>();
+    }
+  }
+
   public String getLin() {
     return lin;
   }

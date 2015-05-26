@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.NortrupDevelopment.PropertyBook.dagger.PresenterModule;
 import com.NortrupDevelopment.PropertyBook.presenter.ImportPresenter;
+import com.NortrupDevelopment.PropertyBook.presenter.SearchResultsView;
 import com.NortrupDevelopment.PropertyBook.view.DefaultMainActivity;
 import com.NortrupDevelopment.PropertyBook.view.ImportViewImpl;
 import com.NortrupDevelopment.PropertyBook.view.LINBrowserView;
@@ -35,6 +36,8 @@ public class App extends Application {
     void inject(ImportViewImpl importFragment);
 
     void inject(ImportPresenter importPresenter);
+
+    void inject(SearchResultsView searchResultsView);
   }
 
 

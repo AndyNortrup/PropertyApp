@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <TextView
         android:id="@+id/import_header"
         android:layout_width="match_parent"
@@ -35,12 +36,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@null"
         android:drawableLeft="@drawable/ic_action_folder_open"
         android:src="@drawable/ic_action_folder_open"
         android:text="@string/select_import_file"
-        />
-
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:background="@android:color/white"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -86,9 +89,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@null"
         android:drawableLeft="@drawable/ic_action_import"
         android:text="@string/pbic_select_button"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:background="@android:color/white"/>
 
 </com.NortrupDevelopment.PropertyBook.view.ImportViewImpl>

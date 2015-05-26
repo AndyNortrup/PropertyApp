@@ -33,4 +33,9 @@ public interface LINBrowser {
   public void setList(AbstractList<LineNumber> LineNumbers);
 
   public Context getContext();
+
+  /**
+   * Direct the list to be refreshed with any new data that might be there
+   */
+  void refresh();
 }

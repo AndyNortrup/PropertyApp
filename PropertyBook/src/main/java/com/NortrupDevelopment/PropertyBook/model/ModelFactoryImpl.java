@@ -17,16 +17,14 @@ public class ModelFactoryImpl implements ModelFactory {
 
   }
 
-  @Override
-  public PropertyBook createOrphanPropertyBook(String pbic,
-                                               String uic,
-                                               String description) {
 
+  @Override
+  public PropertyBook createOrphanPropertyBook(String pbic, String pbicDescription, String uic, String unitName) {
     PropertyBook pb = new PropertyBook();
     pb.setPbic(pbic);
     pb.setUic(uic);
-    pb.setDescription(description);
-
+    pb.setDescription(pbicDescription);
+    pb.setUnitName(unitName);
     return pb;
   }
 

@@ -48,6 +48,10 @@ public interface ImportView {
    */
   public Context getContext();
 
+  void importComplete();
+
+  void importFailed();
+
   /**
    * Return a copy of the Activity's presenter
    *

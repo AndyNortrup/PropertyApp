@@ -7,6 +7,7 @@ import com.NortrupDevelopment.PropertyBook.App;
 import com.NortrupDevelopment.PropertyBook.bus.FileSelectRequestedEvent;
 import com.NortrupDevelopment.PropertyBook.io.FileUtilities;
 import com.NortrupDevelopment.PropertyBook.io.PBICNameReader;
+import com.NortrupDevelopment.PropertyBook.io.PropertyBookImporter;
 
 import javax.inject.Inject;
 
@@ -20,15 +21,16 @@ import rx.schedulers.Schedulers;
  */
 public class ImportPresenter {
 
+  private static final String LOG_TAG = "Import Presenter";
+
+  @Inject public PBICNameReader mPBICNameReader;
+  @Inject public FileUtilities mFileUtilities;
+  @Inject public PropertyBookImporter mImporter;
+
   ImportView mView;
   String mFilePath;
   String[] mPBICSheetNames;
   SparseBooleanArray mSelectedPBICs;
-
-
-  private static final String LOG_TAG = "Import Presenter";
-  @Inject public PBICNameReader mPBICNameReader;
-  @Inject public FileUtilities mFileUtilities;
 
   @Inject
   public ImportPresenter() {
@@ -62,10 +64,18 @@ public class ImportPresenter {
       }
     }
 
-    //TODO: Start the import process
-
+    mImporter.importPropertyBook(Uri.parse(mFilePath), sheetsToImport, true)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(s -> importComplete(), e -> mView.importFailed());
   }
 
+  private void importComplete() {
+    mSelectedPBICs = null;
+    mFilePath = null;
+    mPBICSheetNames = null;
+    mView.importComplete();
+  }
 
   /**
    * Called when the user requests to select a file to import from
